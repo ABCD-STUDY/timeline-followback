@@ -1,7 +1,7 @@
 <?php
   session_start();
 
-  include("code/php/AC.php");
+  include($_SERVER["DOCUMENT_ROOT"]."/code/php/AC.php");
   $user_name = check_logged(); /// function checks if visitor is logged.
   //$user_name = "admin";
   $admin = false;

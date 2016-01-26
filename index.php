@@ -45,6 +45,66 @@
 
 <body>
 
+  <!-- Session information section -->
+  <section id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="section-heading">Session information</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <form name="sentMessage" id="sessionInfoForm" novalidate>
+            <div class="row">
+              <div class="col-md-6">
+
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Participant number *" id="participantNumber" required data-validation-required-message="Please enter the participant number.">
+                  <p class="help-block text-danger"></p>
+                </div>
+
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Session number *" id="sessionNumber" required data-validation-required-message="Please enter the session number.">
+                  <p class="help-block text-danger"></p>
+                </div>
+
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Date *" id="date" required data-validation-required-message="Please enter the date.">
+                  <p class="help-block text-danger"></p>
+                </div>
+
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Follow-up period *" id="followUpPeriod" required data-validation-required-message="Please the follow-up period.">
+                  <p class="help-block text-danger"></p>
+                </div>
+
+                <!-- start date picker -->
+                <div class="form-group has-feedback">
+                  <label class="control-label col-sm-3" for="session-date">Date *</label>
+                  <div class="col-sm-9">
+                    <div class='input-group date' id='datetimepicker1'>
+                      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="session-date" class="form-control" />
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-lg-12">
+                <div id="success"></div>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Calendar section -->
   <section id="calendar-top" class="bg-light-gray">
     <div class="container">
@@ -71,56 +131,10 @@
         <label>Logged in as: </label><label id="user_name"></label>
       </div>
       <div>
-        <a href="applications/User/admin.php" class="btn btn-primary" id="user_admin_button">User Administration</a>
+        <a href="/applications/User/admin.php" class="btn btn-primary" id="user_admin_button">User Administration</a>
         <label>Roles: </label><label id="roles"></label>
       </div>
 
-    </div>
-  </section>
-
-  <!-- Participant information section -->
-  <section id="contact">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-heading">Participant information</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <form name="sentMessage" id="contactForm" novalidate>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Participant number *" id="participantNumber" required data-validation-required-message="Please enter the participant number.">
-                  <p class="help-block text-danger"></p>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Date *" id="date" required data-validation-required-message="Please enter the date.">
-                  <p class="help-block text-danger"></p>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Follow-up period *" id="followUpPeriod" required data-validation-required-message="Please the follow-up period.">
-                  <p class="help-block text-danger"></p>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Interviewer *" id="interviewer" required data-validation-required-message="Please enter the interviewer name.">
-                  <p class="help-block text-danger"></p>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Site ID *" id="siteID" required data-validation-required-message="Please enter the site ID.">
-                  <p class="help-block text-danger"></p>
-                </div>
-              </div>
-              <div class="clearfix"></div>
-              <div class="col-lg-12">
-                <div id="success"></div>
-                <button type="submit" class="btn btn-primary">Update</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -452,7 +466,7 @@ function logout() {
   function loadEvents() {
     console.log("function loadEvents()");
 
-    jQuery.getJSON('events.php?action=list', function(data) {
+    jQuery.getJSON('code/php/events.php?action=list', function(data) {
       console.log('response: '+ data)
 
       for (var i = 0; i < data.length; i++) {
@@ -510,7 +524,7 @@ function logout() {
     e = event.end.roundNext15Min().format();
 
     // form a url to create the event
-    var url = encodeURI('events.php' +
+    var url = encodeURI('code/php/events.php' +
       '?action=create' +
       '&value=' + event.title +
       '&value2=' + encodeURIComponent(s) +
@@ -555,7 +569,7 @@ function logout() {
     }
 
     // form a url to remove the event
-    var url = encodeURI('events.php' +
+    var url = encodeURI('code/php/events.php' +
       '?action=remove' +
       '&value=' + event.title +
       '&value2=' + encodeURIComponent(event.start.format()) +
@@ -607,7 +621,7 @@ function logout() {
     }
 
     // form a url to update the event
-    var url = encodeURI('events.php' +
+    var url = encodeURI('code/php/events.php' +
       '?action=update' +
       '&value=' + event.title +
       '&value2=' + encodeURIComponent(s) +

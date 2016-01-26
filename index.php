@@ -452,7 +452,7 @@ function logout() {
   function loadEvents() {
     console.log("function loadEvents()");
 
-    jQuery.getJSON('code/php/events.php?action=list', function(data) {
+    jQuery.getJSON('events.php?action=list', function(data) {
       console.log('response: '+ data)
 
       for (var i = 0; i < data.length; i++) {
@@ -510,7 +510,7 @@ function logout() {
     e = event.end.roundNext15Min().format();
 
     // form a url to create the event
-    var url = encodeURI('code/php/events.php' +
+    var url = encodeURI('events.php' +
       '?action=create' +
       '&value=' + event.title +
       '&value2=' + encodeURIComponent(s) +
@@ -555,7 +555,7 @@ function logout() {
     }
 
     // form a url to remove the event
-    var url = encodeURI('code/php/events.php' +
+    var url = encodeURI('events.php' +
       '?action=remove' +
       '&value=' + event.title +
       '&value2=' + encodeURIComponent(event.start.format()) +
@@ -607,7 +607,7 @@ function logout() {
     }
 
     // form a url to update the event
-    var url = encodeURI('code/php/events.php' +
+    var url = encodeURI('events.php' +
       '?action=update' +
       '&value=' + event.title +
       '&value2=' + encodeURIComponent(s) +

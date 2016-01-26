@@ -344,13 +344,13 @@
 
 // logout the current user
 function logout() {
-  jQuery.get('../../code/php/logout.php', function(data) {
+  jQuery.get('/code/php/logout.php', function(data) {
     if (data == "success") {
       // user is logged out, reload this page
     } else {
       alert('something went terribly wrong during logout: ' + data);
     }
-    window.location.href = "applications/User/login.php";
+    window.location.href = "/applications/User/login.php";
   });
 }
 

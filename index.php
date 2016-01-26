@@ -70,11 +70,6 @@
                 </div>
 
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Date *" id="date" required data-validation-required-message="Please enter the date.">
-                  <p class="help-block text-danger"></p>
-                </div>
-
-                <div class="form-group">
                   <input type="text" class="form-control" placeholder="Follow-up period *" id="followUpPeriod" required data-validation-required-message="Please the follow-up period.">
                   <p class="help-block text-danger"></p>
                 </div>
@@ -105,6 +100,23 @@
     </div>
   </section>
 
+  <!-- List of sessions -->
+  <div>
+    <table class="table-striped table table-condensed" id="sessions-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Participant ID</th>
+          <th>Session ID</th>
+          <th>User</th>
+          <th>Site ID</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="sessions-list"></tbody>
+    </table>
+  </div>
+
   <!-- Calendar section -->
   <section id="calendar-top" class="bg-light-gray">
     <div class="container">
@@ -129,9 +141,6 @@
       <div>
         <a href="#" class="btn btn-primary" onclick="logout();">Logout</a>
         <label>Logged in as: </label><label id="user_name"></label>
-      </div>
-      <div>
-        <a href="/applications/User/admin.php" class="btn btn-primary" id="user_admin_button">User Administration</a>
         <label>Roles: </label><label id="roles"></label>
       </div>
 
@@ -365,6 +374,22 @@ function logout() {
       alert('something went terribly wrong during logout: ' + data);
     }
     window.location.href = "/applications/User/login.php";
+  });
+}
+
+function reloadContacts() {
+  // remove all rows from the table
+  jQuery('#contacts-list').children().remove();
+
+  // fill the table with the list of contacts
+  jQuery.getJSON('getSessions.php?action=load', function( refs ) {
+    console.log( refs.length );
+    refs.sort(function(a,b) { return b.date - a.date; });
+    for (var i = 0; i < refs.length; i++) {
+      var d = new Date(refs[i].date*1000);
+      jQuery('#sessions-list').append('<tr contact-id="' + refs[i].id + '" title="last changed: ' + d.toDateString() + '"><td>'+ refs[i].date + '</td><td>'+ refs[i].id + '</td><td>'+ refs[i].sessionID + '</td><td>' + refs[i].userName + '</td><td>' + refs[i].siteID + '</td><td>' + refs[i].status + '</td></tr>');
+    }
+    jQuery('#sessions-table').DataTable();
   });
 }
 
@@ -827,6 +852,7 @@ function logout() {
     jQuery('#user_admin_button').prop('disabled', true);
   }
 
+    reloadContacts();
     loadEvents();
   });
 

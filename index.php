@@ -45,6 +45,25 @@
 
 <body>
 
+  <!-- User Administration section -->
+  <!-- TODO: Change this to a navigation bar -->
+  <section id="admin-top" class="bg-light-gray">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="section-heading">User Administration</h2>
+        </div>
+      </div>
+      <div>
+        <a href="#" class="btn btn-primary" onclick="logout();">Logout</a>
+        <label>Logged in as: </label><label id="user_name"></label>
+        <label>Roles: </label><label id="roles"></label>
+      </div>
+
+    </div>
+  </section>
+
   <!-- Session information section -->
   <section id="contact">
     <div class="container">
@@ -60,39 +79,33 @@
               <div class="col-md-6">
 
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Participant number *" id="participantNumber" required data-validation-required-message="Please enter the participant number.">
+                  <label for="session-participant" class="control-label">Participant *</label>
+                  <input type="text" class="form-control" placeholder="NDAR-#####" id="session-participant" required data-validation-required-message="Please enter the participant NDAR ID.">
                   <p class="help-block text-danger"></p>
                 </div>
 
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Session number *" id="sessionNumber" required data-validation-required-message="Please enter the session number.">
+                  <label for="session-name" class="control-label">Session name *</label>
+                  <input type="text" class="form-control" placeholder="Baseline-01" id="session-name" required data-validation-required-message="Please enter the session ID.">
                   <p class="help-block text-danger"></p>
                 </div>
 
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Follow-up period *" id="followUpPeriod" required data-validation-required-message="Please the follow-up period.">
-                  <p class="help-block text-danger"></p>
-                </div>
-
-                <!-- start date picker -->
-                <div class="form-group has-feedback">
-                  <label class="control-label col-sm-3" for="session-date">Date *</label>
-                  <div class="col-sm-9">
-                    <div class='input-group date' id='datetimepicker1'>
-                      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="session-date" class="form-control" />
+                  <label for="session-date" class="control-label">Date *</label>
+                    <div class='input-group date' id='datetimepicker0'>
+                      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="session-date" class="form-control" placeholder="(TODO: Fill in with the current date)" />
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>
-                  </div>
                 </div>
 
               </div>
-              <div class="clearfix"></div>
-              <div class="col-lg-12">
-                <div id="success"></div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <div class="clearfix"></div>
+                <div class="col-lg-12">
+                  <a href="#" class="btn btn-primary" onclick="openCalendar();">Start</a>
               </div>
+
             </div>
           </form>
         </div>
@@ -101,6 +114,7 @@
   </section>
 
   <!-- List of sessions -->
+  <!-- HIDE THIS FOR NOW 
   <div>
     <table class="table-striped table table-condensed" id="sessions-table">
       <thead>
@@ -116,6 +130,7 @@
       <tbody id="sessions-list"></tbody>
     </table>
   </div>
+  -->
 
   <!-- Calendar section -->
   <section id="calendar-top" class="bg-light-gray">
@@ -126,24 +141,6 @@
         </div>
       </div>
       <div id='calendar-loc'></div>
-    </div>
-  </section>
-
-  <!-- User Administration section -->
-  <section id="admin-top" class="bg-light-gray">
-    <div class="container">
-
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-heading">User Administration</h2>
-        </div>
-      </div>
-      <div>
-        <a href="#" class="btn btn-primary" onclick="logout();">Logout</a>
-        <label>Logged in as: </label><label id="user_name"></label>
-        <label>Roles: </label><label id="roles"></label>
-      </div>
-
     </div>
   </section>
 
@@ -365,6 +362,14 @@
 
   <script type="text/javascript">
 
+// open the calendar
+function openCalendar() {
+
+  console.log("function openCalendar()");
+  jQuery('#addEvent').modal( 'show');
+
+}
+
 // logout the current user
 function logout() {
   jQuery.get('/code/php/logout.php', function(data) {
@@ -382,14 +387,14 @@ function reloadContacts() {
   jQuery('#contacts-list').children().remove();
 
   // fill the table with the list of contacts
-  jQuery.getJSON('getSessions.php?action=load', function( refs ) {
+  jQuery.getJSON('code/php/getSessions.php?action=load', function( refs ) {
     console.log( refs.length );
     refs.sort(function(a,b) { return b.date - a.date; });
     for (var i = 0; i < refs.length; i++) {
       var d = new Date(refs[i].date*1000);
       jQuery('#sessions-list').append('<tr contact-id="' + refs[i].id + '" title="last changed: ' + d.toDateString() + '"><td>'+ refs[i].date + '</td><td>'+ refs[i].id + '</td><td>'+ refs[i].sessionID + '</td><td>' + refs[i].userName + '</td><td>' + refs[i].siteID + '</td><td>' + refs[i].status + '</td></tr>');
     }
-    jQuery('#sessions-table').DataTable();
+    //jQuery('#sessions-table').DataTable();
   });
 }
 
@@ -448,6 +453,7 @@ function reloadContacts() {
     }
 
     jQuery('#addEvent').modal( 'show');
+
     setTimeout(function() {
       jQuery('#add-event-title').focus();
     }, 200);
@@ -476,6 +482,8 @@ function reloadContacts() {
 
     jQuery('#save-event-button').attr('event-start', s);
     jQuery('#save-event-button').attr('event-end', e);
+
+    jQuery('#datetimepicker0').data("DateTimePicker").setDate(event.start);
 
     // initialize the field for the start date
     //jQuery('#datetimepicker1').data("DateTimePicker").setMinDate(new Date());
@@ -726,9 +734,13 @@ function reloadContacts() {
   });
 
   // required to display the date and time picker
+  jQuery('#datetimepicker0').datetimepicker({language: 'en' });
   jQuery('#datetimepicker1').datetimepicker({language: 'en' });
   jQuery('#datetimepicker2').datetimepicker({language: 'en' });
 
+  jQuery("#datetimepicker0").on("change.dp",function (e) {
+     //jQuery('#datetimepicker2').data("DateTimePicker").setMinDate(e.date);
+  });
   jQuery("#datetimepicker1").on("change.dp",function (e) {
      //jQuery('#datetimepicker2').data("DateTimePicker").setMinDate(e.date);
   });

@@ -212,13 +212,14 @@
                     <table class="table" id="sessions-table">
                       <thead>
                         <tr>
+                          <th>Event name</th>
                           <th>Start date</th>
                           <th>End date</th>
-                          <th>Event name</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
+                          <td><input type="text" class="form-control" id="special-event-01-name" placeholder="Event name"></td>
                           <td>
                             <div class='input-group date' id='special-event-01-start-date-picker'>
                               <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-01-start-date" class="form-control" />
@@ -235,9 +236,9 @@
                               </span>
                             </div>
                           </td>
-                          <td><input type="text" class="form-control" id="special-event-01-name" placeholder="Event name"></td>
                         </tr>
                         <tr>
+                          <td><input type="text" class="form-control" id="special-event-02-name" placeholder="Event name"></td>
                           <td>
                             <div class='input-group date' id='special-event-02-start-date-picker'>
                               <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-02-start-date" class="form-control" />
@@ -254,9 +255,9 @@
                               </span>
                             </div>
                           </td>
-                          <td><input type="text" class="form-control" id="special-event-02-name" placeholder="Event name"></td>
                         </tr>
                         <tr>
+                          <td><input type="text" class="form-control" id="special-event-03-name" placeholder="Event name"></td>
                           <td>
                             <div class='input-group date' id='special-event-03-start-date-picker'>
                               <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-03-start-date" class="form-control" />
@@ -273,7 +274,6 @@
                               </span>
                             </div>
                           </td>
-                          <td><input type="text" class="form-control" id="special-event-03-name" placeholder="Event name"></td>
                         </tr>
                       </tbody>
                     </table>

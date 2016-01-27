@@ -146,13 +146,12 @@
           <div class="col-lg-8 col-lg-offset-2">
             <div class="modal-body">
               <!-- Details Go Here -->
-              <h2>Substances and Special Dates</h2>
+              <h3>Select substances and enter special events</h3>
               <form role="form" class="form-horizontal">
 
                 <!-- substances -->
                 <div class="form-group">
-                  <label class="control-label col-sm-3" for="select-substances-checkboxes">Substances</label>
-                  <div class="col-sm-9">
+                  <label class="control-label" for="select-substances-checkboxes">Substances</label>
                   <div class="btn-group" data-toggle="buttons" id="select-substances-checkboxes">
                     <label class="btn btn-default">
                       <input type="checkbox" name="options" id="alcohol-checkbox"> Alcohol
@@ -206,13 +205,11 @@
                       <input type="checkbox" name="options" id="other-checkbox"> Other
                     </label>
                   </div>
-                  </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="control-label col-sm-3" for="select-substances-checkboxes">Special Dates</label>
-                  <div class="col-sm-9">
-                    <table class="table-striped table table-condensed" id="sessions-table">
+                  <label class="control-label" for="select-substances-checkboxes">Special Events</label>
+                    <table class="table" id="sessions-table">
                       <thead>
                         <tr>
                           <th>Start date</th>
@@ -238,7 +235,7 @@
                               </span>
                             </div>
                           </td>
-                          <td><input type="text" class="form-control" id="special-event-01-name" placeholder="Birthday"></td>
+                          <td><input type="text" class="form-control" id="special-event-01-name" placeholder="Event name"></td>
                         </tr>
                         <tr>
                           <td>
@@ -257,7 +254,7 @@
                               </span>
                             </div>
                           </td>
-                          <td><input type="text" class="form-control" id="special-event-02-name" placeholder="Birthday"></td>
+                          <td><input type="text" class="form-control" id="special-event-02-name" placeholder="Event name"></td>
                         </tr>
                         <tr>
                           <td>
@@ -276,7 +273,7 @@
                               </span>
                             </div>
                           </td>
-                          <td><input type="text" class="form-control" id="special-event-03-name" placeholder="Birthday"></td>
+                          <td><input type="text" class="form-control" id="special-event-03-name" placeholder="Event name"></td>
                         </tr>
                       </tbody>
                     </table>
@@ -285,9 +282,8 @@
 
               </form>
 
-              <a href="#" class="btn btn-primary" onclick="openCalendar();">Open Calendar</a>
-              <button id="save-event-button" style="margin-top: 50px;" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Save</button>
-              <button style="margin-top: 50px;" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+              <button id="open-calendar-button" style="margin-top: 50px;" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Save</button>
+              <button style="margin-top: 50px;" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Back</button>
             </div>
           </div>
         </div>
@@ -952,6 +948,11 @@
   function eventEditable( event ) {
     return {ok: true}; // allow all changes
   }
+
+  // triggered when the user presses the start button
+  jQuery('#open-calendar-button').click(function() {
+    openCalendar();
+  });
 
   // triggered when the user presses the save button
   jQuery('#save-event-button').click(function() {

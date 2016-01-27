@@ -50,15 +50,9 @@
   <section id="admin-top" class="bg-light-gray">
     <div class="container">
 
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-heading">User Administration</h2>
-        </div>
-      </div>
       <div>
         <a href="#" class="btn btn-primary" onclick="logout();">Logout</a>
-        <label>Logged in as: </label><label id="user_name"></label>
-        <label>Roles: </label><label id="roles"></label>
+        <label>Logged in as: </label><label id="user_name"></label> <!-- "TODO: Pull right" -->
       </div>
 
     </div>
@@ -87,6 +81,12 @@
                 <div class="form-group">
                   <label for="session-name" class="control-label">Session name *</label>
                   <input type="text" class="form-control" placeholder="Baseline-01" id="session-name" required data-validation-required-message="Please enter the session ID.">
+                  <p class="help-block text-danger"></p>
+                </div>
+
+                <div class="form-group">
+                  <label for="session-months" class="control-label">Number of months since last assessment *</label>
+                  <input type="text" class="form-control" placeholder="3" id="session-months" required data-validation-required-message="Please enter the number of months since the last assessment.">
                   <p class="help-block text-danger"></p>
                 </div>
 
@@ -291,38 +291,38 @@
     </div>
   </div>
 
-  <!-- Modal Calendar
-  <div class="portfolio-modal modal fade" id="open-calendar" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-content">
-      <div class="close-modal" data-dismiss="modal">
-        <div class="lr">
-          <div class="rl">
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2">
-            <div class="modal-body">
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-calendar">
+    Open Modal Calendar
+  </button>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-heading">Calendar</h2>
+  <!-- Modal Calendar -->
+  <div class="modal fade" id="modal-calendar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Modal Calendar</h4>
         </div>
-      </div>
-      <div id='calendar-loc'></div>
-    </div>
+        <div class="modal-body">
 
-              <button id="save-event-button" style="margin-top: 50px;" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Save</button>
-              <button style="margin-top: 50px;" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <h2 class="section-heading">Calendar</h2>
+              </div>
             </div>
+            <div id='calendar-loc'></div>
           </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
   </div>
-  -->
 
   <!-- Non-modal calendar -->
   <section id="calendar-top" class="bg-light-gray">
@@ -579,8 +579,9 @@
   function openCalendar() {
 
     console.log("function openCalendar()");
-    jQuery('#open-calendar').modal( 'show');
-    jQuery('#calendar-loc').fullCalendar('refetchEvents');
+    jQuery('#modal-calendar').modal( 'show');
+    loadEvents();
+    //jQuery('#calendar-loc').fullCalendar('refetchEvents');
 
   }
 
@@ -611,9 +612,14 @@
     }
   });
 
+
+ 
   //----------------------------------------
   // Manage the selected substances
   //----------------------------------------
+  var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
+  var active_substances = active_input_fields.map(function(a) { return active_input_fields[a].parent().text(); });
+
   var substances = new Set;
   function printSubstances() {
     //for (let item of substances) console.log(item);
@@ -1138,7 +1144,17 @@
   
   });
 
+
+  var substances = [ "Alcohol", "Mari" ];
+
   jQuery(document).ready(function() {
+
+    // Add substances to page
+    str = "";
+    for (var i = 0; i < substances.length; i++) {
+       str = str + "<label class=\"btn btn-default active\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + substances[i] + "\">" + substances[i] + "</label>";
+    }
+    jQuery('#select-substances-checkboxes').append(str);
 
     if (typeof user_name != 'undefined') {
       jQuery('#user_name').text(user_name);

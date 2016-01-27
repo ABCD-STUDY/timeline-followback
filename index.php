@@ -92,7 +92,7 @@
 
                 <div class="form-group">
                   <label for="session-date" class="control-label">Date *</label>
-                    <div class='input-group date' id='datetimepicker0'>
+                    <div class='input-group date' id='session-date-picker'>
                       <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="session-date" class="form-control" placeholder="(TODO: Fill in with the current date)" />
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -103,7 +103,7 @@
               </div>
                 <div class="clearfix"></div>
                 <div class="col-lg-12">
-                  <a href="#" class="btn btn-primary" onclick="openCalendar();">Start</a>
+                  <a href="#" class="btn btn-primary" onclick="selectSubstances();">Start</a>
               </div>
 
             </div>
@@ -132,7 +132,173 @@
   </div>
   -->
 
-  <!-- Calendar section -->
+  <!-- Select substances modal -->
+  <div class="portfolio-modal modal fade" id="select-substances" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+      <div class="close-modal" data-dismiss="modal">
+        <div class="lr">
+          <div class="rl">
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="modal-body">
+              <!-- Details Go Here -->
+              <h2>Substances and Special Dates</h2>
+              <form role="form" class="form-horizontal">
+
+                <!-- substances -->
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="select-substances-checkboxes">Substances</label>
+                  <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons" id="select-substances-checkboxes">
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="alcohol"> Alcohol
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="cigarettes"> Cigarettes
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="marijuana"> Marijuana
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="substance-04"> Substance 04
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="substance-05"> Substance 05
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="substance-06"> Substance 06
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="substance-07"> Substance 07
+                    </label>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="select-substances-checkboxes">Special Dates</label>
+                  <div class="col-sm-9">
+                    <table class="table-striped table table-condensed" id="sessions-table">
+                      <thead>
+                        <tr>
+                          <th>Start date</th>
+                          <th>End date</th>
+                          <th>Event name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div class='input-group date' id='special-event-01-start-date-picker'>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-01-start-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class='input-group date' id='special-event-01-end-date-picker'>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-01-end-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                            </div>
+                          </td>
+                          <td><input type="text" class="form-control" id="special-event-01-name" placeholder="Birthday"></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class='input-group date' id='special-event-02-start-date-picker'>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-02-start-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class='input-group date' id='special-event-02-end-date-picker'>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-02-end-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                            </div>
+                          </td>
+                          <td><input type="text" class="form-control" id="special-event-02-name" placeholder="Birthday"></td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class='input-group date' id='special-event-03-start-date-picker'>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-03-start-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class='input-group date' id='special-event-03-end-date-picker'>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-03-end-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                            </div>
+                          </td>
+                          <td><input type="text" class="form-control" id="special-event-03-name" placeholder="Birthday"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </form>
+
+              <a href="#" class="btn btn-primary" onclick="openCalendar();">Open Calendar</a>
+              <button id="save-event-button" style="margin-top: 50px;" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Save</button>
+              <button style="margin-top: 50px;" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Calendar
+  <div class="portfolio-modal modal fade" id="open-calendar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+      <div class="close-modal" data-dismiss="modal">
+        <div class="lr">
+          <div class="rl">
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="modal-body">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="section-heading">Calendar</h2>
+        </div>
+      </div>
+      <div id='calendar-loc'></div>
+    </div>
+
+              <button id="save-event-button" style="margin-top: 50px;" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Save</button>
+              <button style="margin-top: 50px;" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  -->
+
+  <!-- Non-modal calendar -->
   <section id="calendar-top" class="bg-light-gray">
     <div class="container">
       <div class="row">
@@ -143,6 +309,7 @@
       <div id='calendar-loc'></div>
     </div>
   </section>
+  <!-- -->
 
   <!-- add event -->
   <div class="portfolio-modal modal fade" id="addEvent" tabindex="-1" role="dialog" aria-hidden="true">
@@ -242,7 +409,7 @@
                 <div class="form-group has-feedback">
                   <label class="control-label col-sm-3" for="add-event-start-time">Start Time</label>
                   <div class="col-sm-9">
-                    <div class='input-group date' id='datetimepicker1'>
+                    <div class='input-group date' id='add-event-start-date-picker'>
                       <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="add-event-start-time" class="form-control" />
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -255,7 +422,7 @@
                 <div class="form-group has-feedback" id="display-end-time">
                   <label class="control-label col-sm-3" for="add-event-end-time">End Time</label>
                   <div class="col-sm-9">
-                    <div class='input-group date' id='datetimepicker2'>
+                    <div class='input-group date' id='add-event-end-date-picker'>
                       <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="add-event-end-time" class="form-control" />
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -362,11 +529,17 @@
 
   <script type="text/javascript">
 
+function selectSubstances() {
+  console.log("function selectSubstances()");
+  jQuery('#select-substances').modal('show');
+}
+
 // open the calendar
 function openCalendar() {
 
   console.log("function openCalendar()");
-  jQuery('#addEvent').modal( 'show');
+  jQuery('#open-calendar').modal( 'show');
+  jQuery('#calendar-loc').fullCalendar('refetchEvents');
 
 }
 
@@ -431,8 +604,8 @@ function reloadContacts() {
       jQuery('#add-event-title').prop('disabled', true);
       jQuery('#save-event-button').prop('disabled', true);
       jQuery('#delete-event-button').prop('disabled', true);
-      jQuery('#datetimepicker1').prop('disabled', true);
-      jQuery('#datetimepicker2').prop('disabled', true);
+      jQuery('#add-event-start-date-picker').prop('disabled', true);
+      jQuery('#add-event-end-date-picker').prop('disabled', true);
       jQuery('#add-event-substance').prop('disabled', true);
       jQuery('#add-event-amount').prop('disabled', true);
       jQuery('#add-event-units').prop('disabled', true);
@@ -443,8 +616,8 @@ function reloadContacts() {
       jQuery('#add-event-title').prop('disabled', true);
       jQuery('#save-event-button').prop('disabled', false);
       jQuery('#delete-event-button').prop('disabled', false);
-      jQuery('#datetimepicker1').prop('disabled', false);
-      jQuery('#datetimepicker2').prop('disabled', false);
+      jQuery('#add-event-start-date-picker').prop('disabled', false);
+      jQuery('#add-event-end-date-picker').prop('disabled', false);
       jQuery('#add-event-substance').prop('disabled', true);
       jQuery('#add-event-amount').prop('disabled', false);
       jQuery('#add-event-units').prop('disabled', true);
@@ -483,15 +656,22 @@ function reloadContacts() {
     jQuery('#save-event-button').attr('event-start', s);
     jQuery('#save-event-button').attr('event-end', e);
 
-    jQuery('#datetimepicker0').data("DateTimePicker").setDate(event.start);
+    jQuery('#session-date-picker').data("DateTimePicker").setDate(event.start);
+
+    jQuery('#special-event-01-start-date-picker').data("DateTimePicker").setDate(event.start);
+    jQuery('#special-event-01-end-date-picker').data("DateTimePicker").setDate(event.start);
+    jQuery('#special-event-02-start-date-picker').data("DateTimePicker").setDate(event.start);
+    jQuery('#special-event-02-end-date-picker').data("DateTimePicker").setDate(event.start);
+    jQuery('#special-event-03-start-date-picker').data("DateTimePicker").setDate(event.start);
+    jQuery('#special-event-03-end-date-picker').data("DateTimePicker").setDate(event.start);
 
     // initialize the field for the start date
-    //jQuery('#datetimepicker1').data("DateTimePicker").setMinDate(new Date());
-    jQuery('#datetimepicker1').data("DateTimePicker").setDate(event.start);
+    //jQuery('#add-event-start-date-picker').data("DateTimePicker").setMinDate(new Date());
+    jQuery('#add-event-start-date-picker').data("DateTimePicker").setDate(event.start);
 
     // initialize the field for the end date
-    //jQuery('#datetimepicker2').data("DateTimePicker").setMinDate(new Date());
-    jQuery('#datetimepicker2').data("DateTimePicker").setDate(event.end);
+    //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(new Date());
+    jQuery('#add-event-end-date-picker').data("DateTimePicker").setDate(event.end);
 
   }
 
@@ -714,8 +894,8 @@ function reloadContacts() {
     //
     ////////////////////////////////////
     var offsetInMinutes = moment().zone();
-    ev.start = jQuery('#datetimepicker1').data('DateTimePicker').getDate().format();
-    ev.end   = jQuery('#datetimepicker2').data('DateTimePicker').getDate().format();
+    ev.start = jQuery('#add-event-start-date-picker').data('DateTimePicker').getDate().format();
+    ev.end   = jQuery('#add-event-end-date-picker').data('DateTimePicker').getDate().format();
     ev.start = ev.start.replace("+00:00", "-08:00");
     ev.end   = ev.end.replace("+00:00", "-08:00");
     var cal  = jQuery('#calendar-loc').fullCalendar('getCalendar');
@@ -734,18 +914,42 @@ function reloadContacts() {
   });
 
   // required to display the date and time picker
-  jQuery('#datetimepicker0').datetimepicker({language: 'en' });
-  jQuery('#datetimepicker1').datetimepicker({language: 'en' });
-  jQuery('#datetimepicker2').datetimepicker({language: 'en' });
+  jQuery('#session-date-picker').datetimepicker({language: 'en' });
+  jQuery('#special-event-01-start-date-picker').datetimepicker({language: 'en' });
+  jQuery('#special-event-01-end-date-picker').datetimepicker({language: 'en' });
+  jQuery('#special-event-02-start-date-picker').datetimepicker({language: 'en' });
+  jQuery('#special-event-02-end-date-picker').datetimepicker({language: 'en' });
+  jQuery('#special-event-03-start-date-picker').datetimepicker({language: 'en' });
+  jQuery('#special-event-03-end-date-picker').datetimepicker({language: 'en' });
+  jQuery('#add-event-start-date-picker').datetimepicker({language: 'en' });
+  jQuery('#add-event-end-date-picker').datetimepicker({language: 'en' });
 
-  jQuery("#datetimepicker0").on("change.dp",function (e) {
-     //jQuery('#datetimepicker2').data("DateTimePicker").setMinDate(e.date);
+  jQuery("#session-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
   });
-  jQuery("#datetimepicker1").on("change.dp",function (e) {
-     //jQuery('#datetimepicker2').data("DateTimePicker").setMinDate(e.date);
+  jQuery("#special-event-01-start-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
   });
-  jQuery("#datetimepicker2").on("change.dp",function (e) {
-     //jQuery('#datetimepicker1').data("DateTimePicker").setMaxDate(e.date);
+  jQuery("#special-event-01-end-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
+  });
+  jQuery("#special-event-02-start-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
+  });
+  jQuery("#special-event-02-end-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
+  });
+  jQuery("#special-event-03-start-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
+  });
+  jQuery("#special-event-03-end-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
+  });
+  jQuery("#add-event-start-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
+  });
+  jQuery("#add-event-end-date-picker").on("change.dp",function (e) {
+     //jQuery('#add-event-start-date-picker').data("DateTimePicker").setMaxDate(e.date);
   });
 
   // triggered with the user selects the substance dropdown menu
@@ -766,8 +970,8 @@ function reloadContacts() {
 
     var ev = new Object();
     ev.title = jQuery('#add-event-title').val();
-    ev.start = jQuery('#datetimepicker1').data('DateTimePicker').getDate();
-    ev.end   = jQuery('#datetimepicker2').data('DateTimePicker').getDate();
+    ev.start = jQuery('#add-event-start-date-picker').data('DateTimePicker').getDate();
+    ev.end   = jQuery('#add-event-end-date-picker').data('DateTimePicker').getDate();
     ev.eid   = jQuery('#delete-event-button').data('eid');
     removeEvent(ev);
   });

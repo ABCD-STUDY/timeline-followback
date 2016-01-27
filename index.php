@@ -103,7 +103,7 @@
               </div>
                 <div class="clearfix"></div>
                 <div class="col-lg-12">
-                  <a href="#" class="btn btn-primary" onclick="selectSubstances();">Start</a>
+                  <a href="#" class="btn btn-primary" onclick="openSubstancesForm();">Start</a>
               </div>
 
             </div>
@@ -155,25 +155,55 @@
                   <div class="col-sm-9">
                   <div class="btn-group" data-toggle="buttons" id="select-substances-checkboxes">
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="alcohol"> Alcohol
+                      <input type="checkbox" name="options" id="alcohol-checkbox"> Alcohol
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="cigarettes"> Cigarettes
+                      <input type="checkbox" name="options" id="cigarettes-checkbox"> Cigarettes
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="marijuana"> Marijuana
+                      <input type="checkbox" name="options" id="marijuana-checkbox"> Marijuana
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="substance-04"> Substance 04
+                      <input type="checkbox" name="options" id="stimulant-checkbox"> Stimulant
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="substance-05"> Substance 05
+                      <input type="checkbox" name="options" id="cathinone-checkbox"> Cathinone
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="substance-06"> Substance 06
+                      <input type="checkbox" name="options" id="methamphetamine-checkbox"> Methamphetamine
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="substance-07"> Substance 07
+                      <input type="checkbox" name="options" id="ecstasy-checkbox"> Ecstasy
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="ketamine-checkbox"> Ketamine
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="ghb-checkbox"> GHB
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="tranquilizer-checkbox"> Tranquilizer
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="pain-reliever-checkbox"> Pain Reliever
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="cough-cold-medicine-checkbox"> Cough or cold medicine
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="hallucinogen-checkbox"> Hallucinogen
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="liquids-sprays-gases-checkbox"> Liquids, sprays, and gases
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="steroids-checkbox"> Steroids
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="bittamugen-checkbox"> Bittamugen
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="checkbox" name="options" id="other-checkbox"> Other
                     </label>
                   </div>
                   </div>
@@ -529,47 +559,50 @@
 
   <script type="text/javascript">
 
-function selectSubstances() {
-  console.log("function selectSubstances()");
-  jQuery('#select-substances').modal('show');
-}
+  //----------------------------------------
+  // User accounts
+  //----------------------------------------
+  // logout the current user
+  function logout() {
+    jQuery.get('/code/php/logout.php', function(data) {
+      if (data == "success") {
+        // user is logged out, reload this page
+      } else {
+        alert('something went terribly wrong during logout: ' + data);
+      }
+      window.location.href = "/applications/User/login.php";
+    });
+  }
 
-// open the calendar
-function openCalendar() {
+  function openSubstancesForm() {
+    console.log("function openSubstancesForm()");
+    jQuery('#select-substances').modal('show');
+  }
 
-  console.log("function openCalendar()");
-  jQuery('#open-calendar').modal( 'show');
-  jQuery('#calendar-loc').fullCalendar('refetchEvents');
+  // open the calendar
+  function openCalendar() {
 
-}
+    console.log("function openCalendar()");
+    jQuery('#open-calendar').modal( 'show');
+    jQuery('#calendar-loc').fullCalendar('refetchEvents');
 
-// logout the current user
-function logout() {
-  jQuery.get('/code/php/logout.php', function(data) {
-    if (data == "success") {
-      // user is logged out, reload this page
-    } else {
-      alert('something went terribly wrong during logout: ' + data);
-    }
-    window.location.href = "/applications/User/login.php";
-  });
-}
+  }
 
-function reloadContacts() {
-  // remove all rows from the table
-  jQuery('#contacts-list').children().remove();
+  function reloadContacts() {
+    // remove all rows from the table
+    jQuery('#contacts-list').children().remove();
 
-  // fill the table with the list of contacts
-  jQuery.getJSON('code/php/getSessions.php?action=load', function( refs ) {
-    console.log( refs.length );
-    refs.sort(function(a,b) { return b.date - a.date; });
-    for (var i = 0; i < refs.length; i++) {
-      var d = new Date(refs[i].date*1000);
-      jQuery('#sessions-list').append('<tr contact-id="' + refs[i].id + '" title="last changed: ' + d.toDateString() + '"><td>'+ refs[i].date + '</td><td>'+ refs[i].id + '</td><td>'+ refs[i].sessionID + '</td><td>' + refs[i].userName + '</td><td>' + refs[i].siteID + '</td><td>' + refs[i].status + '</td></tr>');
-    }
-    //jQuery('#sessions-table').DataTable();
-  });
-}
+    // fill the table with the list of contacts
+    jQuery.getJSON('code/php/getSessions.php?action=load', function( refs ) {
+      console.log( refs.length );
+      refs.sort(function(a,b) { return b.date - a.date; });
+      for (var i = 0; i < refs.length; i++) {
+        var d = new Date(refs[i].date*1000);
+        jQuery('#sessions-list').append('<tr contact-id="' + refs[i].id + '" title="last changed: ' + d.toDateString() + '"><td>'+ refs[i].date + '</td><td>'+ refs[i].id + '</td><td>'+ refs[i].sessionID + '</td><td>' + refs[i].userName + '</td><td>' + refs[i].siteID + '</td><td>' + refs[i].status + '</td></tr>');
+      }
+      //jQuery('#sessions-table').DataTable();
+    });
+  }
 
   var recurring;
   jQuery('#add-event-recurring').change(function() {
@@ -582,20 +615,74 @@ function reloadContacts() {
     }
   });
 
-  var sunday;
+  //----------------------------------------
+  // Manage the selected substances
+  //----------------------------------------
+  var substances = new Set;
+  function printSubstances() {
+    //for (let item of substances) console.log(item);
+    substances.forEach(function(value) {
+      console.log(value);
+    });
+  }
+  jQuery('#alcohol-checkbox').change(function() {
+    if (this.checked) {
+      substances.add("Alcohol");
+    } else {
+      substances.delete("Alcohol");
+    }
+    printSubstances();
+  });
+  jQuery('#cigarettes-checkbox').change(function() {
+    if (this.checked) {
+      substances.add("Cigarettes");
+    } else {
+      substances.delete("Cigarettes");
+    }
+    printSubstances();
+  });
+  jQuery('#marijuana-checkbox').change(function() {
+    if (this.checked) {
+      substances.add("Marijuana");
+    } else {
+      substances.delete("Marijuana");
+    }
+    printSubstances();
+  });
+
+  //----------------------------------------
+  // Manage the selected days of the week
+  //----------------------------------------
+  var daysOfWeek = new Set;
+  function printDaysOfWeek() {
+    //for (let item of daysOfWeek) console.log(item);
+    daysOfWeek.forEach(function(value) {
+      console.log(value);
+    });
+  }
   jQuery('#sunday').change(function() {
-    sunday = this.checked;
-    // OR: var sunday = jQuery('#sunday').prop('checked');
+    if (this.checked) {
+      daysOfWeek.add("sunday");
+    } else {
+      daysOfWeek.delete("sunday");
+    }
+    printDaysOfWeek();
   });
-
-  var monday;
   jQuery('#monday').change(function() {
-    monday = this.checked;
+    if (this.checked) {
+      daysOfWeek.add("monday");
+    } else {
+      daysOfWeek.delete("monday");
+    }
+    printDaysOfWeek();
   });
-
-  var tuesday;
   jQuery('#tuesday').change(function() {
-    tuesday = this.checked;
+    if (this.checked) {
+      daysOfWeek.add("tuesday");
+    } else {
+      daysOfWeek.delete("tuesday");
+    }
+    printDaysOfWeek();
   });
 
   function specifyEvent( event ) {
@@ -1052,21 +1139,21 @@ function reloadContacts() {
 
   jQuery(document).ready(function() {
 
-  if (typeof user_name != 'undefined') {
-    jQuery('#user_name').text(user_name);
-    if (user_name == "admin") {
-      console.log(user_name + "YES");
-    } else {
-      console.log(user_name + "NO");
+    if (typeof user_name != 'undefined') {
+      jQuery('#user_name').text(user_name);
+      if (user_name == "admin") {
+        console.log(user_name + "YES");
+      } else {
+        console.log(user_name + "NO");
+      }
     }
-  }
 
-  // if the user is an admin, then show the user admin button
-  if (admin) {
-    jQuery('#user_admin_button').prop('disabled', false);
-  } else {
-    jQuery('#user_admin_button').prop('disabled', true);
-  }
+    // if the user is an admin, then show the user admin button
+    if (admin) {
+      jQuery('#user_admin_button').prop('disabled', false);
+    } else {
+      jQuery('#user_admin_button').prop('disabled', true);
+    }
 
     reloadContacts();
     loadEvents();

@@ -77,3 +77,16 @@
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
+.connection-status {
+    background-color: red;
+    color: white;
+}
+.connection-status-ok {
+    background-color: green;
+    color: white;
+}
+#calendar-loc {
+    height: 600px;
+    width: 100%;
+}

@@ -41,6 +41,8 @@
   <!-- media="print" is required to display the fullcalendar header buttons -->
   <link rel='stylesheet' media='print' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.print.css' />
 
+  <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
@@ -49,10 +51,16 @@
   <!-- TODO: Change this to a navigation bar -->
   <section id="admin-top" class="bg-light-gray">
     <div class="container">
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-md-12">
 
-      <div>
-        <a href="#" class="btn btn-primary" onclick="logout();">Logout</a>
-        <label>Logged in as: </label><label id="user_name"></label> <!-- "TODO: Pull right" -->
+          <div class="btn pull-right connection-status" id="connection-status">Connection Status</div>
+
+          <div>
+            <a href="#" class="btn btn-default" onclick="logout();">Logout</a>
+            <label>Logged in as: </label>&nbsp;<label id="user_name"></label> <!-- "TODO: Pull right" -->
+          </div>
+        </div>
       </div>
 
     </div>
@@ -86,7 +94,7 @@
 
                 <div class="form-group">
                   <label for="session-months" class="control-label">Number of months since last assessment *</label>
-                  <input type="text" class="form-control" placeholder="3" id="session-months" required data-validation-required-message="Please enter the number of months since the last assessment.">
+                  <input type="text" class="form-control" placeholder="3" id="session-months" required data-validation-required-message="Please enter the number of months since the last assessment." value="3">
                   <p class="help-block text-danger"></p>
                 </div>
 
@@ -156,59 +164,11 @@
                     <label class="btn btn-default">
                       <input type="checkbox" name="options" id="alcohol-checkbox"> Alcohol
                     </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="cigarettes-checkbox"> Cigarettes
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="marijuana-checkbox"> Marijuana
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="stimulant-checkbox"> Stimulant
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="cathinone-checkbox"> Cathinone
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="methamphetamine-checkbox"> Methamphetamine
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="ecstasy-checkbox"> Ecstasy
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="ketamine-checkbox"> Ketamine
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="ghb-checkbox"> GHB
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="tranquilizer-checkbox"> Tranquilizer
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="pain-reliever-checkbox"> Pain Reliever
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="cough-cold-medicine-checkbox"> Cough or cold medicine
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="hallucinogen-checkbox"> Hallucinogen
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="liquids-sprays-gases-checkbox"> Liquids, sprays, and gases
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="steroids-checkbox"> Steroids
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="bittamugen-checkbox"> Bittamugen
-                    </label>
-                    <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="other-checkbox"> Other
-                    </label>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="control-label" for="select-substances-checkboxes">Special Events</label>
+                  <label class="control-label" for="sessions-table">Special Events (TODO: Show number of months)</label>
                     <table class="table" id="sessions-table">
                       <thead>
                         <tr>
@@ -282,7 +242,7 @@
 
               </form>
 
-              <button id="open-calendar-button" style="margin-top: 50px;" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Save</button>
+              <button id="open-calendar-button" style="margin-top: 50px;" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Start Followback Timeline</button>
               <button style="margin-top: 50px;" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Back</button>
             </div>
           </div>
@@ -296,35 +256,35 @@
     Open Modal Calendar
   </button>
 
-  <!-- Modal Calendar -->
-  <div class="modal fade" id="modal-calendar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Modal Calendar</h4>
+  <!-- -->
+  <div class="portfolio-modal modal fade" id="modal-calendar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+      <div class="close-modal" data-dismiss="modal">
+        <div class="lr">
+          <div class="rl">
+          </div>
         </div>
-        <div class="modal-body">
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="modal-body">
 
           <div class="container">
-            <div class="row">
-              <div class="col-lg-12">
-                <h2 class="section-heading">Calendar</h2>
-              </div>
+            <div style="height: 100%; width: 100%; position: relative;">
+               <div id='calendar-loc'></div>
             </div>
-            <div id='calendar-loc'></div>
           </div>
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <!-- -->
 
-  <!-- Non-modal calendar -->
+  <!-- Non-modal calendar ->
   <section id="calendar-top" class="bg-light-gray">
     <div class="container">
       <div class="row">
@@ -335,7 +295,7 @@
       <div id='calendar-loc'></div>
     </div>
   </section>
-  <!-- -->
+  <!- -->
 
   <!-- add event -->
   <div class="portfolio-modal modal fade" id="addEvent" tabindex="-1" role="dialog" aria-hidden="true">
@@ -579,8 +539,11 @@
   function openCalendar() {
 
     console.log("function openCalendar()");
+
     jQuery('#modal-calendar').modal( 'show');
-    loadEvents();
+
+    createCalendar();
+    //loadEvents();
     //jQuery('#calendar-loc').fullCalendar('refetchEvents');
 
   }
@@ -617,9 +580,7 @@
   //----------------------------------------
   // Manage the selected substances
   //----------------------------------------
-  var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
-  var active_substances = active_input_fields.map(function(a) { return active_input_fields[a].parent().text(); });
-
+  /* OLD CODE
   var substances = new Set;
   function printSubstances() {
     //for (let item of substances) console.log(item);
@@ -651,6 +612,7 @@
     }
     printSubstances();
   });
+  */
 
   //----------------------------------------
   // Manage the selected days of the week
@@ -794,7 +756,12 @@
 
         jQuery('#calendar-loc').fullCalendar('renderEvent', event, true);
       }
-    });        
+      // ugly workaround
+      setTimeout(function() {
+        jQuery("#calendar-loc").fullCalendar('render');
+      }, 1000);
+
+    });
   }
 
   moment.fn.roundNext15Min = function () {
@@ -1070,18 +1037,26 @@
     removeEvent(ev);
   });
 
+var calendar = null;
+ 
   // setup the calendar
-  jQuery('#calendar-loc').fullCalendar({
-    
-    // defines the buttons and title at the top of the calendar
-    header: { 
-      left: 'prev,next today',
-      center: 'title',
-      right: ''
-    },
+function createCalendar() {
+  console.log(jQuery('#calendar-loc').height() );
 
-    // the initial view when the calendar loads
-    defaultView: 'month',
+
+  if (calendar == null) {
+
+    calendar = jQuery('#calendar-loc').fullCalendar({
+    
+      // defines the buttons and title at the top of the calendar
+      header: { 
+        left: 'prev,next today',
+        center: 'title',
+        right: ''
+      },
+
+      // the initial view when the calendar loads
+      defaultView: 'month',
 
     // the starting time that will be displayed
     //minTime: '06:00:00',
@@ -1109,52 +1084,84 @@
       }
     },
 
-    // triggered when resizing stops and the event has changed in duration
-    eventResize: function(calEvent, jsEvent, view) {
-      alert("eventResize: function(calEvent, jsEvent, view)");
-     if (!updateEvent(calEvent)) {
-        jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
-     }
-    },
+      // triggered when resizing stops and the event has changed in duration
+      eventResize: function(calEvent, jsEvent, view) {
+       alert("eventResize: function(calEvent, jsEvent, view)");
+       if (!updateEvent(calEvent)) {
+          jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
+       }
+      },
 
-    // a method for programmatically selecting a period of time
-    select: function(start, end) {
-      var s = start.format();
-      var e = end.format();
-      console.log("select: function("+ s +", "+ e +")");
+      // a method for programmatically selecting a period of time
+      select: function(start, end) {
+        var s = start.format();
+        var e = end.format();
+        console.log("select: function("+ s +", "+ e +")");
 
-      // is this a full day event?
-      var fullDay = !start.hasTime() && !end.hasTime();
-      console.log("fullday: " + fullDay);
+        // is this a full day event?
+        var fullDay = !start.hasTime() && !end.hasTime();
+        console.log("fullday: " + fullDay);
 
-      // create a new event
-      var eventData = {
-        title: '',
-        start: start,
-        end: end,
-        fullDay: fullDay
-      };
-      jQuery('#calendar-loc').fullCalendar('unselect');
-      jQuery('#add-event-title').val("");
-      jQuery('#add-event-substance').val("");
-      jQuery('#add-event-amount').val("");
-      jQuery('#add-event-units').val("");
-      specifyEvent( eventData );
-    }
+        // create a new event
+        var eventData = {
+          title: '',
+          start: start,
+          end: end,
+          fullDay: fullDay
+        };
+        jQuery('#calendar-loc').fullCalendar('unselect');
+        jQuery('#add-event-title').val("");
+        jQuery('#add-event-substance').val("");
+        jQuery('#add-event-amount').val("");
+        jQuery('#add-event-units').val("");
+        specifyEvent( eventData );
+      }
   
-  });
+    });
+  }
+  /*  jQuery('#modal-calendar').on('shown.bs.modal', function () {
+      //alert('hi9');
+      jQuery("#calendar-loc").fullCalendar('render');
+    }); */
 
+  loadEvents();
+}
 
-  var substances = [ "Alcohol", "Mari" ];
+  var substances = [
+    "Alcohol", "Tobacco", "E-cigarettes", "Cigars", "Hookah", "Blunts", "Smoked Marijuana", "Edible Marijuana", "Fake Marijuana", "Marijuana oils",
+    "Stimulant", "Cathinone", "Methamphetamine", "Ecstasy", "Ketamine", "GHB", "Tranquilizers", "Heroin", "Pain relievers", "Cough or cold medicine",
+    "Hallucinogen", "Liquids, sprays, and gases", "Steroids", "Bittamugen", "Other"
+  ];
+
+  function getActiveSubstances() {
+    var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
+    var active_substances = active_input_fields.map(function(a) { return active_input_fields[a].parent().text(); });
+    console.log("function getActiveSubstances(): " + active_substances);
+  }
 
   jQuery(document).ready(function() {
+
+    createCalendar();
+
+    setInterval(function() {
+        jQuery.getJSON('/code/php/heartbeat.php', function() {
+           jQuery('#connection-status').addClass('connection-status-ok');
+           jQuery('#connection-status').attr('title', 'Connection established last at ' + Date());
+        }).error(function() {
+           jQuery('#connection-status').removeClass('connection-status-ok');
+           jQuery('#connection-status').attr('title', 'Connection failed at ' + Date());
+        });
+    }, 5000);
 
     // Add substances to page
     str = "";
     for (var i = 0; i < substances.length; i++) {
-       str = str + "<label class=\"btn btn-default active\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + substances[i] + "\">" + substances[i] + "</label>";
+      //<label class="btn btn-default active"> <input type="checkbox" name="options" aria-invalid="false" substance="Alcohol">Alcohol</label>
+      str = str + "<label class=\"btn btn-default active\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + substances[i] + "\">" + substances[i] + "</label>";
     }
     jQuery('#select-substances-checkboxes').append(str);
+
+    getActiveSubstances();
 
     if (typeof user_name != 'undefined') {
       jQuery('#user_name').text(user_name);

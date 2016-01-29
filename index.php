@@ -3,7 +3,6 @@
 
   include($_SERVER["DOCUMENT_ROOT"]."/code/php/AC.php");
   $user_name = check_logged(); /// function checks if visitor is logged.
-  //$user_name = "admin";
   $admin = false;
 
   if ($user_name == "") {
@@ -14,6 +13,11 @@
     echo('<script type="text/javascript"> user_name = "'.$user_name.'"; </script>'."\n");
     echo('<script type="text/javascript"> admin = '.($admin?"true":"false").'; </script>'."\n");
   }
+   // if there is a running session it would have the follow information
+   $subjid  = $_SESSION['subjid'];
+   $session = $_SESSION['sessionid'];
+   echo('<script type="text/javascript"> subjid = "'.$subjid.'"; </script>'."\n");
+   echo('<script type="text/javascript"> session = "'.$session.'"; </script>'."\n");
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +51,44 @@
 
 <body>
 
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	<span class="sr-only">Toggle navigation</span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Timeline Followback</a>
+    </div>
+    
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+	<li class="active"><a href="/index.php" title="Back to report page">Report</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+	<li><a href="#" class="connection-status" id="connection-status">Connection Status</a></li>
+	<li class="dropdown">
+	  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="session-active">User</span> <span class="caret"></span></a>
+	  <ul class="dropdown-menu">
+	    <li><a href="#" id="user_name"></a></li>
+	    <li><a href="#" class="subject-id"></a></li>
+	    <li><a href="#" class="session-id"></a></li>
+            <li role="separator" class="divider"></li>
+	    <li><a href="#" onclick="closeSession();">Close Session</a></li>
+	    <li><a href="#" onclick="logout();">Logout</a></li>
+	  </ul>
+	</li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
   <!-- User Administration section -->
   <!-- TODO: Change this to a navigation bar -->
   <section id="admin-top" class="bg-light-gray">
@@ -54,130 +96,23 @@
       <div class="row" style="margin-top: 10px;">
         <div class="col-md-12">
 
-          <div class="btn pull-right connection-status" id="connection-status">Connection Status</div>
+       <!--    <div class="btn pull-right connection-status" id="connection-status">Connection Status</div> -->
 
           <div>
-            <a href="#" class="btn btn-default" onclick="logout();">Logout</a>&nbsp;
-            <label>user name: </label>&nbsp;<label id="user_name"></label>
+           <!--  <a href="#" class="btn btn-default" onclick="logout();">Logout</a>&nbsp; -->
+           <!--  <label>user name: </label>&nbsp;<label id="user_name"></label> -->
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
 	  <center>
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#defineSession">Define New Session</button>
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#defineSession" title="Start a new assessment session">New Session</button>
 	  </center>
 	</div>
       </div>	
     </div>
   </section>
-
-  <!-- Session information section -->
-<!--   <section id="contact">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-heading">Session information</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <form name="sentMessage" id="sessionInfoForm" novalidate>
-            <div class="row">
-              <div class="col-md-6">
-
-                <div class="form-group">
-                  <label for="session-participant" class="control-label">Participant</label>
-                  <input type="text" class="form-control" placeholder="NDAR-#####" id="session-participant" required data-validation-required-message="Please enter the participant NDAR ID.">
-                  <p class="help-block text-danger"></p>
-                </div>
-
-                <div class="form-group">
-                  <label for="session-name" class="control-label">Session name</label>
-                  <input type="text" class="form-control" placeholder="Baseline-01" id="session-name" required data-validation-required-message="Please enter the session ID.">
-                  <p class="help-block text-danger"></p>
-                </div>
-
-                <div class="form-group">
-                  <label for="session-months" class="control-label">Number of months captured</label>
-                  <input type="number" class="form-control" placeholder="3" id="session-months" required data-validation-required-message="Please enter the number of months since the last assessment." value="3">
-                  <p class="help-block text-danger"></p>
-                </div>
-
-                <div class="form-group">
-                  <label for="session-date" class="control-label">Session Date</label>
-                    <div class='input-group date' id='session-date-picker'>
-                      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="session-date" class="form-control" />
-                      <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                      </span>
-                    </div>
-                </div>
-
-              </div>
-                <div class="clearfix"></div>
-                <div class="col-lg-12">
-                  <a href="#" class="btn btn-primary" onclick="openSubstancesForm();">Start Session</a>
-              </div>
-
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section> -->
-
-  <!-- List of sessions -->
-  <!-- HIDE THIS FOR NOW 
-  <div>
-    <table class="table-striped table table-condensed" id="sessions-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Participant ID</th>
-          <th>Session ID</th>
-          <th>User</th>
-          <th>Site ID</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="sessions-list"></tbody>
-    </table>
-  </div>
-  -->
-
-  <!-- Button trigger modal -->
-  <!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-calendar">
-    Open Modal Calendar
-  </button> -->
-
-  <!-- -->
-<!--   <div class="portfolio-modal modal fade" id="modal-calendar" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-content">
-      <div class="close-modal" data-dismiss="modal">
-        <div class="lr">
-          <div class="rl">
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2">
-            <div class="modal-body">
-
-          <div class="container">
-            <div style="height: 100%; width: 100%; position: relative;">
-               <div id='calendar-loc'></div>
-            </div>
-          </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <!-- -->
 
   <!-- Non-modal calendar -->
   <section id="calendar-top" class="bg-light-gray">
@@ -196,6 +131,51 @@
     </div>
   </section>
   <!-- -->
+
+  <section class="bg-light-gray">
+    <div class="container">
+      <div class="row">
+	<div class="col-lg-12">
+	  <center>
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveSession" id="open-save-session">Save Session</button>
+	  </center>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="portfolio-modal modal fade" id="saveSession" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+      <div class="close-modal" data-dismiss="modal">
+        <div class="lr">
+          <button class="close">x</button>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="modal-body">
+              <h3>Finish and upload the current session?</h3>
+              <form name="sentMessage" id="sessionInfoForm" novalidate>
+		<div class="col-md-6">
+
+                  <div class="form-group">
+                    <label for="session-participant" class="control-label">Confirm Participant ID</label>
+                    <input type="text" class="form-control" placeholder="NDAR-#####" id="session-participant-again" required data-validation-required-message="Please enter the participant NDAR ID.">
+                    <p class="help-block text-danger"></p>
+                  </div>
+
+                  <button id="save-session-button" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Safe Session</button> &nbsp;
+                  <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Back</button>&nbsp;
+		  
+		</div>
+	    </div>
+	    </div>
+	  </div>
+	</div>
+      </div>
+    </div>
+  </div>
   
   <!-- define session -->
   <div class="portfolio-modal modal fade" id="defineSession" tabindex="-1" role="dialog" aria-hidden="true">
@@ -209,7 +189,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="modal-body">
-              <h3>Define a new session</h3>
+              <h3>Assessment Setup</h3>
     
               <form name="sentMessage" id="sessionInfoForm" novalidate>
 		<div class="col-md-6">
@@ -256,7 +236,7 @@
 		
                   <!-- substances -->
                   <div class="form-group">
-                    <label class="control-label" for="select-substances-checkboxes">Substances <span id="num-selected-substances"></span></label>
+                    <label class="control-label" for="select-substances-checkboxes">Substances <span id="num-selected-substances">(none selected)</span></label>
                     <div class="btn-group btn-group-lg" style="margin-top: 5px;" data-toggle="buttons" id="select-substances-checkboxes"> </div>
                   </div>
 		  

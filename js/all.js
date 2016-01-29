@@ -14,7 +14,6 @@
   }
 
   function openSubstancesForm() {
-    console.log("function openSubstancesForm()");
     jQuery('#select-substances').modal('show');
   }
 
@@ -24,7 +23,6 @@
 
     // fill the table with the list of contacts
     jQuery.getJSON('code/php/getSessions.php?action=load', function( refs ) {
-      console.log( refs.length );
       refs.sort(function(a,b) { return b.date - a.date; });
       for (var i = 0; i < refs.length; i++) {
         var d = new Date(refs[i].date*1000);
@@ -135,10 +133,8 @@
 
   // load the events
   function loadEvents() {
-    console.log("function loadEvents()");
 
     jQuery.getJSON('code/php/events.php?action=list', function(data) {
-      console.log('response: '+ data)
 
       for (var i = 0; i < data.length; i++) {
         var event = new Object();
@@ -160,7 +156,6 @@
         event.eid     = data[i].eid; // event id
 
         if (eventEditable(event).ok) {
-          console.log(eventEditable(event).ok);
           // enable drag and drop for events
           event.editable = true;
         } else {
@@ -177,20 +172,8 @@
     });
   }
 
-  moment.fn.roundNext15Min = function () {
-    var intervals = Math.floor((this.minutes()+(15/2.0)) / 15);
-    if(intervals == 4) {
-      this.add('hours', 1);
-      intervals = 0;
-    }
-    this.minutes(intervals * 15);
-    this.seconds(0);
-    return this;
-  }
-
   // save a new calendar event
   function storeEvent( event ) {
-    console.log("function storeEvent( event )");
 
     // check if the event is not editable
     if (!eventEditable(event).ok) {
@@ -218,7 +201,6 @@
 
     // send the url to create the event
     jQuery.getJSON(url, function(data) {
-      console.log('response: '+ data.message)
 
       // if the response is ok
       if (data.ok == 1) {
@@ -226,7 +208,6 @@
         if (typeof(data.eid) !== 'undefined') {
           // set the event id
           event.eid = data.eid;
-          console.log(event)
           // render the event to the calendar
           jQuery('#calendar-loc').fullCalendar('renderEvent', event, true);
         } else {
@@ -241,7 +222,6 @@
 
   // remove an event
   function removeEvent( event ) {
-    console.log("function removeEvent( event )");
 
     // check if the event is not editable
     if (!eventEditable(event).ok) {
@@ -259,7 +239,6 @@
 
     // send the url to remove the event
     jQuery.getJSON(url, function(data) {
-      console.log('response: '+ data.message)
 
       // if the response is ok
       if (data.ok == 1) {
@@ -267,7 +246,6 @@
         var events = jQuery('#calendar-loc').fullCalendar('clientEvents');
         events.forEach(function(e) {
           if (typeof(event.eid) !== 'undefined' && e.eid == event.eid) {
-            console.log("jQuery('#calendar-loc').fullCalendar('removeEvents', e._id)");
             jQuery('#calendar-loc').fullCalendar('removeEvents', e._id);
           }
         });
@@ -279,7 +257,6 @@
 
   // update an event
   function updateEvent( event ) {
-    console.log("function updateEvent( event )");
 
     // check if the event is not editable
     if (!eventEditable(event).ok) {
@@ -316,7 +293,6 @@
 
     // send the url to update the event
     jQuery.getJSON(url, function(data) {
-      console.log('response: '+ data.message)
 
       // if the response is ok
       if (data.ok == 1) {
@@ -387,43 +363,16 @@
   });
 
   // required to display the date and time picker
-  jQuery('#session-date-picker').datetimepicker({language: 'en' });
-  jQuery('#special-event-01-start-date-picker').datetimepicker({language: 'en' });
-  jQuery('#special-event-01-end-date-picker').datetimepicker({language: 'en' });
-  jQuery('#special-event-02-start-date-picker').datetimepicker({language: 'en' });
-  jQuery('#special-event-02-end-date-picker').datetimepicker({language: 'en' });
-  jQuery('#special-event-03-start-date-picker').datetimepicker({language: 'en' });
-  jQuery('#special-event-03-end-date-picker').datetimepicker({language: 'en' });
-  jQuery('#add-event-start-date-picker').datetimepicker({language: 'en' });
-  jQuery('#add-event-end-date-picker').datetimepicker({language: 'en' });
+  jQuery('#session-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  jQuery('#special-event-01-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  jQuery('#special-event-01-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  jQuery('#special-event-02-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  jQuery('#special-event-02-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  jQuery('#special-event-03-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  jQuery('#special-event-03-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  jQuery('#add-event-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  jQuery('#add-event-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
 
-  jQuery("#session-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
-  });
-  jQuery("#special-event-01-start-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
-  });
-  jQuery("#special-event-01-end-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
-  });
-  jQuery("#special-event-02-start-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
-  });
-  jQuery("#special-event-02-end-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
-  });
-  jQuery("#special-event-03-start-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
-  });
-  jQuery("#special-event-03-end-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
-  });
-  jQuery("#add-event-start-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(e.date);
-  });
-  jQuery("#add-event-end-date-picker").on("change.dp",function (e) {
-     //jQuery('#add-event-start-date-picker').data("DateTimePicker").setMaxDate(e.date);
-  });
 
   // triggered with the user selects the substance dropdown menu
   jQuery(document).on('click', '.substance-selection', function(event) {
@@ -439,7 +388,6 @@
 
   // triggered when the user presses the delete button
   jQuery('#delete-event-button').click(function() {
-    console.log("jQuery('#delete-event-button').click(function()");
 
     var ev = new Object();
     ev.title = jQuery('#add-event-title').val();
@@ -460,7 +408,6 @@ function createCalendar() {
     for(var i = 0; i < active_substances.length; i++) {
        jQuery('#substance-list').append("<li><a class=\"substance-selection\">" + active_substances[i] + "</a></li>");
     }
-
 
     // if the calendar does not exist, create it (store in global variable)
     if (calendar == null) {
@@ -489,13 +436,11 @@ function createCalendar() {
 	    
 	    // triggered when the user clicks an event
 	    eventClick: function(calEvent, jsEvent, view) {
-		console.log("eventClick: function(calEvent, jsEvent, view)");
 		specifyEvent(calEvent);
 	    },
 	    
 	    // triggered when dragging stops and the event has moved to a different day/time
 	    eventDrop: function(calEvent, jsEvent, view) {
-		console.log("eventDrop: function(calEvent, jsEvent, view)");
 		if (!updateEvent(calEvent)) {
 		    jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
 		}
@@ -513,11 +458,9 @@ function createCalendar() {
 	    select: function(start, end) {
 		var s = start.format();
 		var e = end.format();
-		console.log("select: function("+ s +", "+ e +")");
 		
 		// is this a full day event?
 		var fullDay = !start.hasTime() && !end.hasTime();
-		console.log("fullday: " + fullDay);
 		
 		// create a new event
 		var eventData = {
@@ -604,15 +547,16 @@ var substances = [
   function getActiveSubstances() {
     var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
       var active_substances = active_input_fields.map(function(a) { return jQuery(active_input_fields[a]).attr('substance'); });
-    console.log("function getActiveSubstances(): " + active_substances);
   }
 
   function checkConnectionStatus() {
       jQuery.getJSON('/code/php/heartbeat.php', function() {
-          jQuery('#connection-status').addClass('connection-status-ok');
+          //jQuery('#connection-status').addClass('connection-status-ok');
+	  jQuery('#connection-status').css('color', "#228B22");
           jQuery('#connection-status').attr('title', 'Connection established last at ' + Date());
       }).error(function() {
-          jQuery('#connection-status').removeClass('connection-status-ok');
+          // jQuery('#connection-status').removeClass('connection-status-ok');
+	  jQuery('#connection-status').css('color', "#CD5C5C");
           jQuery('#connection-status').attr('title', 'Connection failed at ' + Date());
       });
   }
@@ -636,10 +580,30 @@ function storeSubjectAndName() {
    var session = jQuery('#session-name').val().replace(/\s/g, '');
    jQuery('#session-participant').val(subject);
    jQuery('#session-name').val(session);
+   jQuery('.subject-id').text("Subject ID: " + subject);
+   jQuery('.session-id').text("Session: " + session);
 
+   if (subject.length > 0 && session.length > 0) {
+      jQuery('#session-active').text("Active Session");
+       jQuery('#calendar-loc').fadeIn();
+       jQuery('#open-save-session').fadeIn();
+   } else {
+       jQuery('#session-active').text("No Active Session");
+       jQuery('#calendar-loc').fadeOut();
+       jQuery('#open-save-session').fadeOut();
+   }
+    
    jQuery.get('../../code/php/session.php?subjid=' + subject + "&session=" + session, function() {
        console.log('stored subject and session names: ' +  subject + ", " + session );
    });
+}
+
+// forget about the current session
+function closeSession() {
+    // just set to empty strings and submit
+    jQuery('#session-participant').val("");
+    jQuery('#session-name').val("");
+    storeSubjectAndName();
 }
 
   jQuery(document).ready(function() {
@@ -651,7 +615,12 @@ function storeSubjectAndName() {
      	      jQuery('#recurring-details').hide();
 	  }
       });
-      
+
+    // add the session variables to the interface
+    jQuery('#session-participant').val(subjid);
+    jQuery('#session-name').val(session);
+    storeSubjectAndName();
+
     createCalendar();
 
     checkConnectionStatus();
@@ -663,7 +632,27 @@ function storeSubjectAndName() {
     jQuery('#session-name').change(function() {
        storeSubjectAndName();
     });
-
+ 
+    jQuery('#open-save-session').click(function() {
+	jQuery('#session-participant-again').val(""); // clear the value from before
+    });
+      
+    // 
+    jQuery('#save-session-button').click(function() {  
+        // test if subjid matches
+	var nameNow = jQuery('#session-participant-again').val().replace(/\s/g, '');
+	var nameBefore = jQuery('#session-participant').val().replace(/\s/g, '');
+        if ( nameNow != nameBefore ) {
+	    alert("Error: Your subject ID is not correct, please check the subject ID for correctness again.");
+	    return false;
+	}
+	
+	// clean interface again
+	jQuery('#session-participant').val("");
+	jQuery('#session-name').val("");
+	storeSubjectAndName();
+    });
+      
     // Let the user start a new session
     // jQuery('#defineSession').modal('show');
 
@@ -690,7 +679,7 @@ function storeSubjectAndName() {
     getActiveSubstances();
 
     if (typeof user_name != 'undefined') {
-      jQuery('#user_name').text(user_name);
+      jQuery('#user_name').text("User: " + user_name);
       if (user_name == "admin") {
         console.log(user_name + "YES");
       } else {

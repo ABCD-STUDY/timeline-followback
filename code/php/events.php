@@ -1,34 +1,65 @@
 <?php
   // TODO: add index number field to each scan in report view
 
-  session_start(); /// initialize session
-  //include("AC.php");
-  //$user_name = check_logged(); /// function checks if visitor is logged.
-  $user_name = "admin";
+  session_start(); /// initialize session, we will use session variables to store the subjid
+
+  include($_SERVER["DOCUMENT_ROOT"]."/code/php/AC.php");
+  $user_name = check_logged(); /// function checks if visitor is logged.
+
   if (!$user_name || $user_name == "") {
      echo (json_encode ( array( "message" => "no user name" ) ) );
      return; // nothing
   }
 
-  $events_file = "events.json";
+  $permissions = list_permissions_for_user( $user_name );
+
+  // find the first permission that corresponds to a site
+  // Assumption here is that a user can only add assessment for the first site he has permissions for!
+  $site = "";
+  foreach ($permissions as $per) {
+     $a = explode("Site", $per);
+
+     if (count($a) > 0) {
+        $site = $a[1];
+	break;
+     }
+  }
+  if ($site == "") {
+     echo (json_encode ( array( "message" => "Error: no site assigned to this user" ) ) );
+     return;
+  }
+
+  // Both the subject id and the visit (session) are used to make the assessment unique
+  $subjid = "";
+  $session = "";
+  if (isset($_SESSION['subjid'])) {
+     $subjid = $_SESSION['subjid'];
+  } else {
+     echo(json_encode ( array( "message" => "Error: no subject id assigned" ) ) );
+     return;
+  }
+  if (isset($_SESSION['session'])) {
+     $session = $_SESSION['session'];
+  } else {
+     echo(json_encode ( array( "message" => "Error: no session specified" ) ) );
+     return;
+  }
+
+  // this events file needs to be saved here (should we add date here as well?)
+  $events_file = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site . "/events_".$subjid."_".$session.".json";
 
   function loadEvents() {
      global $events_file;
 
      // parse permissions
      if (!file_exists($events_file)) {
-        //echo ('error: events file does not exist');
-        file_put_contents($events_file, json_encode( array( array( 'title' => 'Some Title' )) ));
-        // return;
+        file_put_contents($events_file, json_encode( array( ) ));
      }
      if (!is_readable($events_file)) {
-        echo ('error: cannot read file...');
+        echo ('error: cannot read file: '.$events_file);
         return;
      }
      $d = json_decode(file_get_contents($events_file), true);
-     if ($d == NULL) {
-        //echo('error: could not parse the events file');
-     }
 
      return $d;
   }
@@ -212,7 +243,7 @@
       }
     }
     echo(json_encode(array_values($events)));
-  } else {
+  } else { // if we just list
     $e = loadEvents();
     echo(json_encode($e));
   }

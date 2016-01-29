@@ -86,7 +86,19 @@
     background-color: green;
     color: white;
 }
-#calendar-loc {
-    height: 600px;
-    width: 100%;
+.substance-checkbox {
+    width: 150px;
+    overflow-x: hidden;
+}
+#select-substances-checkboxes label.active {
+    background-color: lightblue;
+    color: black;
+}
+.modal-content {
+    height: 100%;
+}
+.close {
+    margin-right: 20px;
+    font-size: 64pt;
+    font-weight: 200;
 }

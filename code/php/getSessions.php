@@ -19,8 +19,9 @@
 
      // parse permissions
      if (!file_exists($contacts_file)) {
-        echo ('error: contacts file does not exist');
-        return;
+        file_put_contents($contacts_file, json_encode( array () ) );
+        //echo ('error: contacts file does not exist');
+        //return;
      }
      if (!is_readable($contacts_file)) {
         echo ('error: cannot read file '.$contacts_file.'...');

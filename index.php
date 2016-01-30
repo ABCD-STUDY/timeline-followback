@@ -37,7 +37,6 @@
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
   <!-- Custom CSS -->
-  <!--link href="css/agency.css" rel="stylesheet"--> <!-- yellow and black theme -->
   <!-- required for the date and time pickers -->
   <link href="css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 
@@ -56,61 +55,47 @@
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-	<span class="sr-only">Toggle navigation</span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">Timeline Followback</a>
     </div>
-    
+
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-	<li class="active"><a href="/index.php" title="Back to report page">Report</a></li>
+        <li class="active"><a href="/index.php" title="Back to report page">Report</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-	<li><a href="#" class="connection-status" id="connection-status">Connection Status</a></li>
-	<li class="dropdown">
-	  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="session-active">User</span> <span class="caret"></span></a>
-	  <ul class="dropdown-menu">
-	    <li><a href="#" id="user_name"></a></li>
-	    <li><a href="#" class="subject-id"></a></li>
-	    <li><a href="#" class="session-id"></a></li>
+        <li><a href="#" class="connection-status" id="connection-status">Connection Status</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="session-active">User</span> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#" id="user_name"></a></li>
+            <li><a href="#" class="subject-id"></a></li>
+            <li><a href="#" class="session-id"></a></li>
             <li role="separator" class="divider"></li>
-	    <li><a href="#" onclick="closeSession();">Close Session</a></li>
-	    <li><a href="#" onclick="logout();">Logout</a></li>
-	  </ul>
-	</li>
+            <li><a href="#" onclick="closeSession();">Close Session</a></li>
+            <li><a href="#" onclick="logout();">Logout</a></li>
+          </ul>
+        </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 
-
-
-  <!-- User Administration section -->
-  <!-- TODO: Change this to a navigation bar -->
+  <!-- start session button -->
   <section id="admin-top" class="bg-light-gray">
     <div class="container">
-      <div class="row" style="margin-top: 10px;">
-        <div class="col-md-12">
-
-       <!--    <div class="btn pull-right connection-status" id="connection-status">Connection Status</div> -->
-
-          <div>
-           <!--  <a href="#" class="btn btn-default" onclick="logout();">Logout</a>&nbsp; -->
-           <!--  <label>user name: </label>&nbsp;<label id="user_name"></label> -->
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-md-12">
-	  <center>
+          <center>
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#defineSession" title="Start a new assessment session">New Session</button>
-	  </center>
-	</div>
-      </div>	
+          </center>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -118,27 +103,26 @@
   <section id="calendar-top" class="bg-light-gray">
     <div class="container">
       <div class="row">
-	<div class="col-lg-12">
-	  &nbsp;
+        <div class="col-lg-12">
+          &nbsp;
         </div>
       </div>
       <div class="row">
-	<div id='calendar-loc'></div>
+        <div id='calendar-loc'></div>
       </div>
       <div class="row">
-         &nbsp;
+        &nbsp;
       </div>
     </div>
   </section>
-  <!-- -->
 
   <section class="bg-light-gray">
     <div class="container">
       <div class="row">
-	<div class="col-lg-12">
-	  <center>
+        <div class="col-lg-12">
+          <center>
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveSession" id="open-save-session">Save Session</button>
-	  </center>
+          </center>
         </div>
       </div>
     </div>
@@ -157,7 +141,7 @@
             <div class="modal-body">
               <h3>Finish and upload the current session?</h3>
               <form name="sentMessage" id="sessionInfoForm" novalidate>
-		<div class="col-md-6">
+                <div class="col-md-6">
 
                   <div class="form-group">
                     <label for="session-participant" class="control-label">Confirm Participant ID</label>
@@ -165,17 +149,16 @@
                     <p class="help-block text-danger"></p>
                   </div>
 
-                  <button id="save-session-button" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Safe Session</button> &nbsp;
+                  <button id="save-session-button" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Save Session</button> &nbsp;
                   <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Back</button>&nbsp;
-		  
-		</div>
-	    </div>
-	    </div>
-	  </div>
-	</div>
-      </div>
-    </div>
-  </div>
+                </div>
+              </form>
+            </div><!-- /.modal-body -->
+          </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.portfolio-modal -->
   
   <!-- define session -->
   <div class="portfolio-modal modal fade" id="defineSession" tabindex="-1" role="dialog" aria-hidden="true">
@@ -190,153 +173,139 @@
           <div class="col-lg-12">
             <div class="modal-body">
               <h3>Assessment Setup</h3>
-    
               <form name="sentMessage" id="sessionInfoForm" novalidate>
-		<div class="col-md-6">
-		  
+                <div class="col-md-6">
+
                   <div class="form-group">
                     <label for="session-participant" class="control-label">Participant</label>
                     <input type="text" class="form-control" placeholder="NDAR-#####" id="session-participant" required data-validation-required-message="Please enter the participant NDAR ID.">
                     <p class="help-block text-danger"></p>
                   </div>
-		  
+
                   <div class="form-group">
                     <label for="session-name" class="control-label">Session name</label>
                     <input type="text" class="form-control" placeholder="Baseline-01" id="session-name" required data-validation-required-message="Please enter the session ID.">
                     <p class="help-block text-danger"></p>
                   </div>
-		  
+
                   <div class="form-group">
                     <label for="session-months" class="control-label">Number of months captured</label>
                     <input type="text" class="form-control" placeholder="3" id="session-months" required data-validation-required-message="Please enter the number of months since the last assessment." value="3">
                     <p class="help-block text-danger"></p>
                   </div>
-		  
+
                   <div class="form-group">
                     <label for="session-date" class="control-label">Session Date</label>
                     <div class='input-group date' id='session-date-picker'>
-		      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="session-date" class="form-control" placeholder="(TODO: Fill in with the current date)" />
-		      <span class="input-group-addon">
+                      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="session-date" class="form-control" placeholder="(TODO: Fill in with the current date)" />
+                      <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
-		      </span>
+                      </span>
                     </div>
                   </div>
-		  
+
                   <div class="clearfix"></div>
-		</div>
-	      </form>
-	    </div>
-	  </div>
-	</div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-lg-12">
             <div class="modal-body">
-	      <form role="form" class="form-horizontal">
-		<div class="col-md-12">
-		
+              <form role="form" class="form-horizontal">
+                <div class="col-md-12">
+
                   <!-- substances -->
                   <div class="form-group">
                     <label class="control-label" for="select-substances-checkboxes">Substances <span id="num-selected-substances">(none selected)</span></label>
                     <div class="btn-group btn-group-lg" style="margin-top: 5px;" data-toggle="buttons" id="select-substances-checkboxes"> </div>
                   </div>
-		  
+
                   <div class="form-group">
                     <label class="control-label" for="sessions-table">Special Events Range:</label>&nbsp;<span class="session-date-range"></span>
                     <table class="table" id="sessions-table">
-		      <thead>
-			<tr>
+                      <thead>
+                        <tr>
                           <th>Event name</th>
                           <th>Start date</th>
                           <th>End date</th>
-			</tr>
-		      </thead>
-		      <tbody>
-			<tr>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
                           <td><input type="text" class="form-control" id="special-event-01-name" placeholder="Event name"></td>
                           <td>
                             <div class='input-group date' id='special-event-01-start-date-picker'>
-			      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-01-start-date" class="form-control" />
-			      <span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
-			      </span>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-01-start-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
                             </div>
                           </td>
                           <td>
                             <div class='input-group date' id='special-event-01-end-date-picker'>
-			      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-01-end-date" class="form-control" />
-			      <span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
-			      </span>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-01-end-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
                             </div>
                           </td>
-			</tr>
-			<tr>
+                        </tr>
+                        <tr>
                           <td><input type="text" class="form-control" id="special-event-02-name" placeholder="Event name"></td>
                           <td>
                             <div class='input-group date' id='special-event-02-start-date-picker'>
-			      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-02-start-date" class="form-control" />
-			      <span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
-			      </span>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-02-start-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
                             </div>
                           </td>
                           <td>
                             <div class='input-group date' id='special-event-02-end-date-picker'>
-			      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-02-end-date" class="form-control" />
-			      <span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
-			      </span>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-02-end-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
                             </div>
                           </td>
-			</tr>
-			<tr>
+                        </tr>
+                        <tr>
                           <td><input type="text" class="form-control" id="special-event-03-name" placeholder="Event name"></td>
                           <td>
                             <div class='input-group date' id='special-event-03-start-date-picker'>
-			      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-03-start-date" class="form-control" />
-			      <span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
-			      </span>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-03-start-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
                             </div>
                           </td>
                           <td>
                             <div class='input-group date' id='special-event-03-end-date-picker'>
-			      <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-03-end-date" class="form-control" />
-			      <span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
-			      </span>
+                              <input type='text' data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-03-end-date" class="form-control" />
+                              <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
                             </div>
                           </td>
-			</tr>
-		      </tbody>
+                        </tr>
+                      </tbody>
                     </table>
-                  </div>
-		</div>  
-	      </form>
-	      
-	      <!-- <button style="margin-top: 50px;" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Back</button> -->
-	      
-	      
-	      
+                  </div><!-- /.form-group -->
+                </div><!-- /.col-md-12 -->
+              </form>
               <div>
                 <button id="open-calendar-button" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Start Followback Timeline</button> &nbsp;
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Back</button>&nbsp;
-                <!-- <a href="#" class="btn btn-primary" onclick="openSubstancesForm();">Start Session</a> -->
-	      </div>
-	      
-	      
-	      <!--         <button id="save-session-button" style="margin-top: 50px;" type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> </button>
-			   <button style="margin-top: 50px;" type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Back</button>
-			   <button id="delete-session-button" style="margin-top: 50px;" type="button" class="btn btn-warning pull-right" data-dismiss="modal"><i class="fa fa-close"></i> Delete Session</button> -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-
-
+              </div>
+            </div><!-- /.modal-body -->
+          </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.portfolio-modal -->
 
   <!-- add event -->
   <div class="portfolio-modal modal fade" id="addEvent" tabindex="-1" role="dialog" aria-hidden="true">
@@ -484,7 +453,6 @@
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-  <!--script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script-->
   <script src='js/moment.min.js'></script>
 
   <!-- allow users to download tables as csv and excel -->
@@ -498,12 +466,7 @@
   <script src="js/bootstrap-colorselector.js"></script>
 
   <!-- Plugin JavaScript -->
-  <!-- MISSING FILES
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-  -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-  <!--script src="js/classie.js"></script--> <!-- required by cbpAnimatedHeader.js -->
-  <!--script src="js/cbpAnimatedHeader.js"></script--> <!-- required for animated navigation bar -->
 
   <!-- Contact Form JavaScript -->
   <script src="js/jqBootstrapValidation.js"></script>

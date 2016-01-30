@@ -13,10 +13,6 @@
     });
   }
 
-  function openSubstancesForm() {
-    jQuery('#select-substances').modal('show');
-  }
-
   function reloadContacts() {
     // remove all rows from the table
     jQuery('#contacts-list').children().remove();

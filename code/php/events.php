@@ -17,7 +17,7 @@
   // Assumption here is that a user can only add assessment for the first site he has permissions for!
   $site = "";
   foreach ($permissions as $per) {
-     $a = explode("Site", $per);
+     $a = explode("Site-", $per);
 
      if (count($a) > 0) {
         $site = $a[1];
@@ -38,8 +38,8 @@
      echo(json_encode ( array( "message" => "Error: no subject id assigned" ) ) );
      return;
   }
-  if (isset($_SESSION['session'])) {
-     $session = $_SESSION['session'];
+  if (isset($_SESSION['sessionid'])) {
+     $session = $_SESSION['sessionid'];
   } else {
      echo(json_encode ( array( "message" => "Error: no session specified" ) ) );
      return;

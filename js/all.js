@@ -404,9 +404,10 @@ function createCalendar() {
 
     // copy the active substances to #substance-list
     var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
-    var active_substances = active_input_fields.map(function(a) { return jQuery(active_input_fields[a]).attr('substance'); });
+    var active_substances = active_input_fields.map(function(a) { return [[ jQuery(active_input_fields[a]).attr('substance'), jQuery(active_input_fields[a]).attr('units') ]]; });
     for(var i = 0; i < active_substances.length; i++) {
-       jQuery('#substance-list').append("<li><a class=\"substance-selection\">" + active_substances[i] + "</a></li>");
+	// jQuery('#substance-list').append("<li><a class=\"substance-selection\">" + active_substances[i] + "</a></li>");
+	jQuery('#select-substance').append("<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + active_substances[i][0] + "\" unit=\"" + active_substances[i][1] + "\">" + active_substances[i][0] + "</label>");
     }
 
     // if the calendar does not exist, create it (store in global variable)
@@ -517,28 +518,28 @@ function createCalendar() {
     
 var substances = [
     [ "Alcohol", "ml" ],
-    [ "Tobacco", 'gram' ],
-    [ "E-cigarettes", "" ],
-    [ "Cigars", "" ],
-    [ "Hookah", "" ],
+    [ "Tobacco", 'grams' ],
+    [ "E-cigarettes", "min" ],
+    [ "Cigars", "#" ],
+    [ "Hookah", "min" ],
     [ "Blunts", "" ],
     [ "Smoked Marijuana", "" ],
-    [ "Edible Marijuana", "gram"],
-    [ "Fake Marijuana", "gram" ],
-    [ "Marijuana oils", "gram" ],
+    [ "Edible Marijuana", "grams"],
+    [ "Fake Marijuana", "grams" ],
+    [ "Marijuana oils", "grams" ],
     [ "Stimulant", "ml" ],
-    [ "Cathinone", "gram" ],
-    [ "Methamphetamine", "gram"],
+    [ "Cathinone", "grams" ],
+    [ "Methamphetamine", "grams"],
     [ "Ecstasy", "" ],
     [ "Ketamine", "" ],
     [ "GHB", "" ],
     [ "Tranquilizers", "" ],
-    [ "Heroin", "gram" ],
+    [ "Heroin", "grams" ],
     [ "Pain relievers", "" ],
     [ "Cough or cold medicine", "" ],
     [ "Hallucinogen", "" ],
     [ "Liquids", "" ],
-    [ "sprays, and gases", "" ],
+    [ "sprays, and gases", "min" ],
     [ "Steroids", ""],
     [ "Bittamugen", "" ],
     [ "Other", "" ]
@@ -546,7 +547,7 @@ var substances = [
 
   function getActiveSubstances() {
     var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
-      var active_substances = active_input_fields.map(function(a) { return jQuery(active_input_fields[a]).attr('substance'); });
+    var active_substances = active_input_fields.map(function(a) { return jQuery(active_input_fields[a]).attr('substance'); });
   }
 
   function checkConnectionStatus() {
@@ -585,12 +586,12 @@ function storeSubjectAndName() {
 
    if (subject.length > 0 && session.length > 0) {
       jQuery('#session-active').text("Active Session");
-       jQuery('#calendar-loc').fadeIn();
-       jQuery('#open-save-session').fadeIn();
+      jQuery('#calendar-loc').fadeIn();
+      jQuery('#open-save-session').fadeIn();
    } else {
-       jQuery('#session-active').text("No Active Session");
-       jQuery('#calendar-loc').fadeOut();
-       jQuery('#open-save-session').fadeOut();
+      jQuery('#session-active').text("No Active Session");
+      jQuery('#calendar-loc').fadeOut();
+      jQuery('#open-save-session').fadeOut();
    }
     
    jQuery.get('../../code/php/session.php?subjid=' + subject + "&session=" + session, function() {
@@ -608,6 +609,13 @@ function closeSession() {
 
   jQuery(document).ready(function() {
 
+      jQuery('#select-substance').on('click', 'label', function() {
+	  // copy the unit over
+	  jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
+	  // disable all other label
+	  jQuery(this).siblings().removeClass('active');
+      });
+      
       jQuery('#add-event-recurring').change(function() {
 	  if (jQuery('#add-event-recurring').prop('checked')) {
      	      jQuery('#recurring-details').show();
@@ -668,7 +676,7 @@ function closeSession() {
     // Add substances to page
     str = "";
     for (var i = 0; i < substances.length; i++) {
-      str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + substances[i][0] + "\">" + substances[i][0] + "</label>";
+      str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + substances[i][0] + "\" units=\"" + substances[i][1] + "\">" + substances[i][0] + "</label>";
     }
     jQuery('#select-substances-checkboxes').append(str);
     jQuery('#select-substances-checkboxes').on('change', 'label', function() {

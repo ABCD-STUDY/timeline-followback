@@ -38,8 +38,8 @@
      echo(json_encode ( array( "message" => "Error: no subject id assigned" ) ) );
      return;
   }
-  if (isset($_SESSION['session'])) {
-     $session = $_SESSION['session'];
+  if (isset($_SESSION['sessionid'])) {
+     $session = $_SESSION['sessionid'];
   } else {
      echo(json_encode ( array( "message" => "Error: no session specified" ) ) );
      return;

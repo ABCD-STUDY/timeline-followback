@@ -364,12 +364,8 @@
                   <label class="control-label col-sm-3" for="add-event-substance" title="Substance type">Substance</label>
                   <div class="col-sm-9">
                     <div class="input-group">
+                      <div class="btn-group btn-group-lg" data-toggle="buttons" id="select-substance"></div>
 
-                      <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select <span class="caret"></span></button>
-                        <ul class="dropdown-menu dropdown-menu-right multi-level" role="menu" id="substance-list"> </ul>
-                      </div>
-                      <input type="text" class="form-control" aria-label="..." id="add-event-substance">
                     </div>
                   </div>
                 </div>
@@ -382,14 +378,6 @@
                       <input type="text" class="form-control" aria-label="..." id="add-event-amount">
                       <div class="input-group-addon">grams</div>
                     </div>
-                  </div>
-                </div>
-
-                <!-- title -->
-                <div class="form-group has-feedback">
-                  <label class="control-label col-sm-3" for="add-event-title">Title</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="add-event-title" placeholder="amount units of substance">
                   </div>
                 </div>
 

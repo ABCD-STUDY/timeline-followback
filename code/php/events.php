@@ -17,7 +17,7 @@
   // Assumption here is that a user can only add assessment for the first site he has permissions for!
   $site = "";
   foreach ($permissions as $per) {
-     $a = explode("Site", $per);
+     $a = explode("Site-", $per);
 
      if (count($a) > 0) {
         $site = $a[1];

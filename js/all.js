@@ -13,25 +13,6 @@
     });
   }
 
-  function openSubstancesForm() {
-    jQuery('#select-substances').modal('show');
-  }
-
-  function reloadContacts() {
-    // remove all rows from the table
-    jQuery('#contacts-list').children().remove();
-
-    // fill the table with the list of contacts
-    jQuery.getJSON('code/php/getSessions.php?action=load', function( refs ) {
-      refs.sort(function(a,b) { return b.date - a.date; });
-      for (var i = 0; i < refs.length; i++) {
-        var d = new Date(refs[i].date*1000);
-        jQuery('#sessions-list').append('<tr contact-id="' + refs[i].id + '" title="last changed: ' + d.toDateString() + '"><td>'+ refs[i].date + '</td><td>'+ refs[i].id + '</td><td>'+ refs[i].sessionID + '</td><td>' + refs[i].userName + '</td><td>' + refs[i].siteID + '</td><td>' + refs[i].status + '</td></tr>');
-      }
-      //jQuery('#sessions-table').DataTable();
-    });
-  }
-
   var recurring;
   jQuery('#add-event-recurring').change(function() {
     recurring = this.checked;
@@ -42,20 +23,6 @@
       jQuery('#add-event-days-of-week').css('visibility', 'hidden');
     }
   });
-
-
- 
-  //----------------------------------------
-  // Manage the selected substances
-  //----------------------------------------
-  /* OLD CODE
-  var substances = new Set;
-  function printSubstances() {
-    //for (let item of substances) console.log(item);
-    substances.forEach(function(value) {
-      console.log(value);
-    });
-  } */
 
   function specifyEvent( event ) {
     if (!eventEditable(event).ok) {
@@ -142,12 +109,12 @@
         event.substance = data[i].substance;
         event.amount = data[i].amount;
         event.units = "";
-	for (var j = 0; j < substances.length; j++) {
-            if (substances[j][0] == event.substance) {
-	       event.units = substances[j][1];
-	       break;
-	    }
-	}
+        for (var j = 0; j < substances.length; j++) {
+          if (substances[j][0] == event.substance) {
+            event.units = substances[j][1];
+            break;
+          }
+        }
 
         event.title =  event.substance + ' (' + event.amount + ' ' + event.units + ')';
         event.start = moment.parseZone(data[i].start);
@@ -184,7 +151,6 @@
     var cal = jQuery('#calendar-loc').fullCalendar('getCalendar');
     var s = cal.moment(event.start).format();
     var e = cal.moment(event.end).format();
-    // round events at 15 minutes
     s = event.start.format();
     e = event.end.format();
 
@@ -214,6 +180,8 @@
           alert("Error: data.eid is not defined");
         }
       } else {
+        // getting this error message:
+        // Error: no site assigned to this user
         alert(data.message);
       }
     });
@@ -324,6 +292,10 @@
     // if we change an existing event this should exist
     var originalEvent = jQuery('#add-event-origevent').data('origevent');
     if (typeof(originalEvent) !== 'undefined') {
+
+      // BUG: this if statement always evaluates as true,
+      // even if no event was selected.
+
       // start from here (copies event id in eid)
       ev = originalEvent;
     }
@@ -355,8 +327,8 @@
       if (!updateEvent(ev)) {
         jQuery('#calendar-loc').fullCalendar('refetchEvents');
       }
-      } else {
-        if (!storeEvent(ev)) {
+    } else {
+      if (!storeEvent(ev)) {
         jQuery('#calendar-loc').fullCalendar('refetchEvents');
       }
     }
@@ -374,13 +346,13 @@
   jQuery('#add-event-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
 
 
-  // triggered with the user selects the substance dropdown menu
+  // triggered when the user selects the substance dropdown menu
   jQuery(document).on('click', '.substance-selection', function(event) {
     event.preventDefault();
     jQuery('#add-event-substance').val( jQuery(this).text() );
   });
 
-  // triggered with the user selects the units dropdown menu
+  // triggered when the user selects the units dropdown menu
   jQuery(document).on('click', '.units-selection', function(event) {
     event.preventDefault();
     jQuery('#add-event-units').val( jQuery(this).text() );
@@ -412,109 +384,105 @@ function createCalendar() {
 
     // if the calendar does not exist, create it (store in global variable)
     if (calendar == null) {
-	calendar = jQuery('#calendar-loc').fullCalendar({    
-	    // defines the buttons and title at the top of the calendar
-	    header: { 
-		left: 'prev,next today',
-		center: 'title',
-		right: ''
-	    },
+      calendar = jQuery('#calendar-loc').fullCalendar({
+        // defines the buttons and title at the top of the calendar
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: ''
+        },
 	    
-	    // the initial view when the calendar loads
-	    defaultView: 'month',
-	    
-	    // the starting time that will be displayed
-	    //minTime: '06:00:00',
-	    
-	    // the timezone in which dates throughout the API are parsed and rendered
-	    timezone: 'America/Los_Angeles',
-	    
-	    // allows a user to highlight multiple days or timeslots by clicking and dragging
-	    selectable: true,
-	    
-	    // draw a "placeholder" event while the user is dragging
-	    selectHelper: true,
-	    
-	    // triggered when the user clicks an event
-	    eventClick: function(calEvent, jsEvent, view) {
-		specifyEvent(calEvent);
-	    },
-	    
-	    // triggered when dragging stops and the event has moved to a different day/time
-	    eventDrop: function(calEvent, jsEvent, view) {
-		if (!updateEvent(calEvent)) {
-		    jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
-		}
-	    },
-	    
-	    // triggered when resizing stops and the event has changed in duration
-	    eventResize: function(calEvent, jsEvent, view) {
-		alert("eventResize: function(calEvent, jsEvent, view)");
-		if (!updateEvent(calEvent)) {
-		    jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
-		}
-	    },
-	    
-	    // a method for programmatically selecting a period of time
-	    select: function(start, end) {
-		var s = start.format();
-		var e = end.format();
-		
-		// is this a full day event?
-		var fullDay = !start.hasTime() && !end.hasTime();
-		
-		// create a new event
-		var eventData = {
-		    title: '',
-		    start: start,
-		    end: end,
-		    fullDay: fullDay
-		};
-		jQuery('#calendar-loc').fullCalendar('unselect');
-		jQuery('#add-event-title').val("");
-		jQuery('#add-event-substance').val("");
-		jQuery('#add-event-amount').val("");
-		jQuery('#add-event-recurring').prop('checked', false);
-		specifyEvent( eventData );
-	    }
-	    
-	});
-    }
-    /*  jQuery('#modal-calendar').on('shown.bs.modal', function () {
-    //alert('hi9');
-    jQuery("#calendar-loc").fullCalendar('render');
-    }); */
+        // the initial view when the calendar loads
+        defaultView: 'month',
 
-    // collect the current list of special events and add to the calendar (if they don't exist already)
-    for (var i = 1; i < 4; i++) {
-	
-	var name = jQuery('#special-event-' + pad(i, 2) + '-name').val();
-	if (name == "") {
-            continue;
-	}
- 	var d1 = jQuery('#special-event-' + pad(i, 2) + '-start-date').datetimepicker('getDate').val();
-	var d2 = "";
-	if (jQuery('#special-event-' + pad(i,2) + '-end-date').datetimepicker('getData').val() == "") {
-	    d2 = d1;
-	} else {
-            d2 = jQuery('#special-event-' + pad(i, 2) + '-end-date').datetimepicker('getDate').val();
-	}
-	var event = new Object();
-	event.title = name;
-	event.start = moment.parseZone(d1);
-	event.end   = moment.parseZone(d2);
-	event.editable = false; // only allow edit on the datetimepicker for these
-	storeEvent( event );
+        // the starting time that will be displayed
+        //minTime: '06:00:00',
+
+        // the timezone in which dates throughout the API are parsed and rendered
+        timezone: 'America/Los_Angeles',
+
+        // allows a user to highlight multiple days or timeslots by clicking and dragging
+        selectable: true,
+
+        // draw a "placeholder" event while the user is dragging
+        selectHelper: true,
+	    
+        // triggered when the user clicks an event
+        eventClick: function(calEvent, jsEvent, view) {
+          specifyEvent(calEvent);
+        },
+	    
+        // triggered when dragging stops and the event has moved to a different day/time
+        eventDrop: function(calEvent, jsEvent, view) {
+          if (!updateEvent(calEvent)) {
+            jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
+          }
+        },
+	    
+        // triggered when resizing stops and the event has changed in duration
+        eventResize: function(calEvent, jsEvent, view) {
+          alert("eventResize: function(calEvent, jsEvent, view)");
+          if (!updateEvent(calEvent)) {
+            jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
+          }
+        },
+	    
+        // a method for programmatically selecting a period of time
+        select: function(start, end) {
+        var s = start.format();
+        var e = end.format();
+
+        // is this a full day event?
+        var fullDay = !start.hasTime() && !end.hasTime();
+
+        // create a new event
+        var eventData = {
+          title: '',
+          start: start,
+          end: end,
+          fullDay: fullDay
+        };
+        jQuery('#calendar-loc').fullCalendar('unselect');
+        jQuery('#add-event-title').val("");
+        jQuery('#add-event-substance').val("");
+        jQuery('#add-event-amount').val("");
+        jQuery('#add-event-recurring').prop('checked', false);
+        specifyEvent( eventData );
+      }
+	    
+    });
+  }
+
+  // collect the current list of special events and add to the calendar (if they don't exist already)
+  for (var i = 1; i < 4; i++) {
+
+    var name = jQuery('#special-event-' + pad(i, 2) + '-name').val();
+    if (name == "") {
+      continue;
     }
-    
-    loadEvents();
+    var d1 = jQuery('#special-event-' + pad(i, 2) + '-start-date').datetimepicker('getDate').val();
+    var d2 = "";
+    if (jQuery('#special-event-' + pad(i,2) + '-end-date').datetimepicker('getData').val() == "") {
+      d2 = d1;
+    } else {
+      d2 = jQuery('#special-event-' + pad(i, 2) + '-end-date').datetimepicker('getDate').val();
+    }
+    var event = new Object();
+    event.title = name;
+    event.start = moment.parseZone(d1);
+    event.end   = moment.parseZone(d2);
+    event.editable = false; // only allow edit on the datetimepicker for these
+    storeEvent( event );
+  }
+
+  loadEvents();
 }
 
-    function pad(num, size) {
-	var s = num+"";
-	while (s.length < size) s = "0" + s;
-	return s;
-    }
+function pad(num, size) {
+  var s = num+"";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
     
 var substances = [
     [ "Alcohol", "ml" ],
@@ -539,75 +507,75 @@ var substances = [
     [ "Cough or cold medicine", "" ],
     [ "Hallucinogen", "" ],
     [ "Liquids", "" ],
-    [ "sprays, and gases", "min" ],
+    [ "Sprays and gases", "ml" ],
     [ "Steroids", ""],
     [ "Bittamugen", "" ],
     [ "Other", "" ]
 ];
 
-  function getActiveSubstances() {
-    var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
-    var active_substances = active_input_fields.map(function(a) { return jQuery(active_input_fields[a]).attr('substance'); });
-  }
+function getActiveSubstances() {
+  var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
+  var active_substances = active_input_fields.map(function(a) { return jQuery(active_input_fields[a]).attr('substance'); });
+}
 
-  function checkConnectionStatus() {
-      jQuery.getJSON('/code/php/heartbeat.php', function() {
-          //jQuery('#connection-status').addClass('connection-status-ok');
-	  jQuery('#connection-status').css('color', "#228B22");
-          jQuery('#connection-status').attr('title', 'Connection established last at ' + Date());
-      }).error(function() {
-          // jQuery('#connection-status').removeClass('connection-status-ok');
-	  jQuery('#connection-status').css('color', "#CD5C5C");
-          jQuery('#connection-status').attr('title', 'Connection failed at ' + Date());
-      });
-  }
+function checkConnectionStatus() {
+  jQuery.getJSON('/code/php/heartbeat.php', function() {
+    //jQuery('#connection-status').addClass('connection-status-ok');
+    jQuery('#connection-status').css('color', "#228B22");
+    jQuery('#connection-status').attr('title', 'Connection established last at ' + Date());
+  }).error(function() {
+    // jQuery('#connection-status').removeClass('connection-status-ok');
+    jQuery('#connection-status').css('color', "#CD5C5C");
+    jQuery('#connection-status').attr('title', 'Connection failed at ' + Date());
+  });
+}
 
 // calculate the special event range for this session
 function updateEventRange() {
-    var m = parseInt(jQuery('#session-months').val());
-    var d = jQuery('#session-date-picker').data("DateTimePicker").getDate();
-    // get first of this month, we don't need that if we just want to display the month range obmitting the date
-    
-    // console.log("calculate the data range for this session");
-    jQuery('.session-date-range').text(  moment(d).subtract(0, 'month').format('MMM YYYY') + " to " + moment(d).subtract(m, 'month').format('MMM YYYY') );
+  var m = parseInt(jQuery('#session-months').val());
+  var d = jQuery('#session-date-picker').data("DateTimePicker").getDate();
+  // get first of this month, we don't need that if we just want to display the month range obmitting the date
 
-    // tell the calendar about the first month to display
-    jQuery('#calendar-loc').fullCalendar('gotoDate', moment(d));
-			  
+  // console.log("calculate the data range for this session");
+  jQuery('.session-date-range').text(  moment(d).subtract(0, 'month').format('MMM YYYY') + " to " + moment(d).subtract(m, 'month').format('MMM YYYY') );
+
+  // tell the calendar about the first month to display
+  jQuery('#calendar-loc').fullCalendar('gotoDate', moment(d));
+
 }
 
 function storeSubjectAndName() {
-   var subject = jQuery('#session-participant').val().replace(/\s/g, '');
-   var session = jQuery('#session-name').val().replace(/\s/g, '');
-   jQuery('#session-participant').val(subject);
-   jQuery('#session-name').val(session);
-   jQuery('.subject-id').text("Subject ID: " + subject);
-   jQuery('.session-id').text("Session: " + session);
+  var subject = jQuery('#session-participant').val().replace(/\s/g, '');
+  var session = jQuery('#session-name').val().replace(/\s/g, '');
+  jQuery('#session-participant').val(subject);
+  jQuery('#session-name').val(session);
+  jQuery('.subject-id').text("Subject ID: " + subject);
+  jQuery('.session-id').text("Session: " + session);
 
-   if (subject.length > 0 && session.length > 0) {
-      jQuery('#session-active').text("Active Session");
-      jQuery('#calendar-loc').fadeIn();
-      jQuery('#open-save-session').fadeIn();
-   } else {
-      jQuery('#session-active').text("No Active Session");
-      jQuery('#calendar-loc').fadeOut();
-      jQuery('#open-save-session').fadeOut();
-   }
+  if (subject.length > 0 && session.length > 0) {
+    jQuery('#session-active').text("Active Session");
+    jQuery('#calendar-loc').fadeIn();
+    jQuery('#open-save-session').fadeIn();
+  } else {
+    jQuery('#session-active').text("No Active Session");
+    jQuery('#calendar-loc').fadeOut();
+    jQuery('#open-save-session').fadeOut();
+  }
     
-   jQuery.get('../../code/php/session.php?subjid=' + subject + "&session=" + session, function() {
-       console.log('stored subject and session names: ' +  subject + ", " + session );
-   });
+  jQuery.get('../../code/php/session.php?subjid=' + subject + "&session=" + session, function() {
+    console.log('stored subject and session names: ' +  subject + ", " + session );
+  });
 }
 
 // forget about the current session
 function closeSession() {
-    // just set to empty strings and submit
-    jQuery('#session-participant').val("");
-    jQuery('#session-name').val("");
-    storeSubjectAndName();
+  // just set to empty strings and submit
+  jQuery('#session-participant').val("");
+  jQuery('#session-name').val("");
+  storeSubjectAndName();
 }
 
-  jQuery(document).ready(function() {
+jQuery(document).ready(function() {
 
       jQuery('#select-substance').on('click', 'label', function() {
 	  // copy the unit over
@@ -624,54 +592,42 @@ function closeSession() {
 	  }
       });
 
-    // add the session variables to the interface
-    jQuery('#session-participant').val(subjid);
-    jQuery('#session-name').val(session);
+  // add the session variables to the interface
+  jQuery('#session-participant').val(subjid);
+  jQuery('#session-name').val(session);
+  storeSubjectAndName();
+
+  createCalendar();
+
+  checkConnectionStatus();
+  setInterval( checkConnectionStatus, 5000 );
+
+  jQuery('#session-participant').change(function() {
     storeSubjectAndName();
+  });
+  jQuery('#session-name').change(function() {
+    storeSubjectAndName();
+  });
 
-    createCalendar();
+  jQuery('#open-save-session').click(function() {
+    jQuery('#session-participant-again').val(""); // clear the value from before
+  });
 
-    checkConnectionStatus();
-    setInterval( checkConnectionStatus, 5000 );
+  // 
+  jQuery('#save-session-button').click(function() {  
+    // test if subjid matches
+    var nameNow = jQuery('#session-participant-again').val().replace(/\s/g, '');
+    var nameBefore = jQuery('#session-participant').val().replace(/\s/g, '');
+    if ( nameNow != nameBefore ) {
+      alert("Error: Your subject ID is not correct, please check the subject ID for correctness again.");
+      return false;
+    }
 
-    jQuery('#session-participant').change(function() {
-       storeSubjectAndName();
-    });
-    jQuery('#session-name').change(function() {
-       storeSubjectAndName();
-    });
- 
-    jQuery('#open-save-session').click(function() {
-	jQuery('#session-participant-again').val(""); // clear the value from before
-    });
-      
-    // 
-    jQuery('#save-session-button').click(function() {  
-        // test if subjid matches
-	var nameNow = jQuery('#session-participant-again').val().replace(/\s/g, '');
-	var nameBefore = jQuery('#session-participant').val().replace(/\s/g, '');
-        if ( nameNow != nameBefore ) {
-	    alert("Error: Your subject ID is not correct, please check the subject ID for correctness again.");
-	    return false;
-	}
-	
-	// clean interface again
-	jQuery('#session-participant').val("");
-	jQuery('#session-name').val("");
-	storeSubjectAndName();
-    });
-      
-    // Let the user start a new session
-    // jQuery('#defineSession').modal('show');
-
-    // clear the current session setting
-    // jQuery.get('../../code/php/session.php?subjid=&session=', function() {});
-
-    jQuery('#session-date-picker').on("dp.change", function() { updateEventRange(); });
-    jQuery('#session-date-picker').data("DateTimePicker").setDate(new Date());
-    setTimeout( updateEventRange, 1000);
-    jQuery('#session-months').change( updateEventRange );
-
+    // clean interface again
+    jQuery('#session-participant').val("");
+    jQuery('#session-name').val("");
+    storeSubjectAndName();
+  });
       
     // Add substances to page
     str = "";
@@ -684,25 +640,26 @@ function closeSession() {
        jQuery('#num-selected-substances').text( '(' + jQuery('#select-substances-checkboxes input:checked').length + ')' );
     });
 
-    getActiveSubstances();
+  // clear the current session setting
+  // jQuery.get('../../code/php/session.php?subjid=&session=', function() {});
 
-    if (typeof user_name != 'undefined') {
-      jQuery('#user_name').text("User: " + user_name);
-      if (user_name == "admin") {
-        console.log(user_name + "YES");
-      } else {
-        console.log(user_name + "NO");
-      }
-    }
+  jQuery('#session-date-picker').on("dp.change", function() { updateEventRange(); });
+  jQuery('#session-date-picker').data("DateTimePicker").setDate(new Date());
+  setTimeout( updateEventRange, 1000);
+  jQuery('#session-months').change( updateEventRange );
 
-    // if the user is an admin, then show the user admin button
-    if (admin) {
-      jQuery('#user_admin_button').prop('disabled', false);
-    } else {
-      jQuery('#user_admin_button').prop('disabled', true);
-    }
 
-    reloadContacts();
-    loadEvents();
+  // Add substances to page
+  str = "";
+  for (var i = 0; i < substances.length; i++) {
+    str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + substances[i][0] + "\">" + substances[i][0] + "</label>";
+  }
+  jQuery('#select-substances-checkboxes').append(str);
+  jQuery('#select-substances-checkboxes').on('change', 'label', function() {
+    // update number of selected substances
+    jQuery('#num-selected-substances').text( '(' + jQuery('#select-substances-checkboxes input:checked').length + ')' );
   });
 
+  getActiveSubstances();
+  loadEvents();
+});

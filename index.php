@@ -16,8 +16,10 @@
    // if there is a running session it would have the follow information
    $subjid  = $_SESSION['subjid'];
    $session = $_SESSION['sessionid'];
+   $act_subst     = $_SESSION['act_subst'];
    echo('<script type="text/javascript"> subjid = "'.$subjid.'"; </script>'."\n");
    echo('<script type="text/javascript"> session = "'.$session.'"; </script>'."\n");
+   echo('<script type="text/javascript"> act_subst = '.urldecode($act_subst).'; </script>'."\n");
 ?>
 
 <!DOCTYPE html>

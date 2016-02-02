@@ -591,6 +591,38 @@ function closeSession() {
   storeSubjectAndName();
 }
 
+function exportToCsv(filename, rows) {
+    var processRow = function (row) {
+	var finalVal = "\"" + row.user + "\", \"" + row.substance + "\", \"" + "\", \"" + row.amount + "\", \""
+	    + row.units + "\", \"" + moment(row.start).format("MM/DD/YYYY") + "\", \""
+	    + moment(row.end).format("MM/DD/YYYY") + "\"";
+	return finalVal + '\n';
+    };
+
+    var csvFile = '';
+    for (var i = 0; i < rows.length; i++) {
+	csvFile += processRow(rows[i]);
+    }
+
+    var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+	navigator.msSaveBlob(blob, filename);
+    } else {
+	var link = document.createElement("a");
+	if (link.download !== undefined) { // feature detection
+	    // Browsers that support HTML5 download attribute
+	    var url = URL.createObjectURL(blob);
+	    link.setAttribute("href", url);
+	    link.setAttribute("download", filename);
+	    link.style.visibility = 'hidden';
+	    document.body.appendChild(link);
+	    link.click();
+	    document.body.removeChild(link);
+	}
+    }
+}
+
+
 jQuery(document).ready(function() {
 
       jQuery('#select-substance').on('click', 'label', function() {
@@ -631,7 +663,7 @@ jQuery(document).ready(function() {
   });
 
   // 
-  jQuery('#save-session-button').click(function() {  
+  jQuery('#save-session-button').click(function() {
     // test if subjid matches
     var nameNow = jQuery('#session-participant-again').val().replace(/\s/g, '');
     var nameBefore = jQuery('#session-participant').val().replace(/\s/g, '');
@@ -640,12 +672,27 @@ jQuery(document).ready(function() {
       return false;
     }
 
-    // clean interface again
-    jQuery('#session-participant').val("");
-    jQuery('#session-name').val("");
-    jQuery('#select-substances-checkboxes').children().removeClass('active');
-    jQuery('#num-selected-substances').text("");
-    storeSubjectAndName();
+    // mark the session as closed
+
+
+    // create spreadsheet with data
+    setTimeout( (function( subject, session ) {
+	// return a function
+        return function() {
+            var filename = user_name + "_" + subject + "_" + session + "_" + (new Date()).toLocaleString() + ".csv";
+           jQuery.getJSON('code/php/events.php', function(rows) {
+               exportToCsv(filename, rows);
+
+	       // clean interface again
+	       jQuery('#session-participant').val("");
+	       jQuery('#session-name').val("");
+	       jQuery('#select-substances-checkboxes').children().removeClass('active');
+	       jQuery('#num-selected-substances').text("");
+	       storeSubjectAndName();
+           });
+	};
+    })( jQuery('#session-participant').val(), jQuery('#session-name').val() ), 1000);
+ 
   });
       
     // Add substances to page

@@ -109,9 +109,9 @@
         event.substance = data[i].substance;
         event.amount = data[i].amount;
         event.units = "";
-        for (var j = 0; j < substances.length; j++) {
-          if (substances[j][0] == event.substance) {
-            event.units = substances[j][1];
+        for (var j = 0; j < substance_units.length; j++) {
+          if (substance_units[j][0] == event.substance) {
+            event.units = substance_units[j][1];
             break;
           }
         }
@@ -280,6 +280,8 @@
 
   // triggered when the user presses the start button
   jQuery('#open-calendar-button').click(function() {
+
+    storeSubjectAndName();
     // update the calendar and display all special events
     createCalendar();
   });
@@ -484,7 +486,7 @@ function pad(num, size) {
   return s;
 }
     
-var substances = [
+var substance_units = [
     [ "Alcohol", "ml" ],
     [ "Tobacco", 'grams' ],
     [ "E-cigarettes", "min" ],
@@ -516,6 +518,7 @@ var substances = [
 function getActiveSubstances() {
   var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
   var active_substances = active_input_fields.map(function(a) { return jQuery(active_input_fields[a]).attr('substance'); });
+  return active_substances;
 }
 
 function checkConnectionStatus() {
@@ -561,8 +564,15 @@ function storeSubjectAndName() {
     jQuery('#calendar-loc').fadeOut();
     jQuery('#open-save-session').fadeOut();
   }
-    
-  jQuery.get('../../code/php/session.php?subjid=' + subject + "&session=" + session, function() {
+  var active_substances = getActiveSubstances();
+
+  var data = {
+    "subjid": subject,
+    "session": session,
+    "act_subst": encodeURIComponent(JSON.stringify(active_substances.toArray()))
+  };
+  
+  jQuery.get('../../code/php/session.php', data, function() {
     console.log('stored subject and session names: ' +  subject + ", " + session );
   });
 }
@@ -600,7 +610,7 @@ jQuery(document).ready(function() {
   createCalendar();
 
   checkConnectionStatus();
-  setInterval( checkConnectionStatus, 5000 );
+  // Disable for now: setInterval( checkConnectionStatus, 5000 );
 
   jQuery('#session-participant').change(function() {
     storeSubjectAndName();
@@ -631,8 +641,10 @@ jQuery(document).ready(function() {
       
     // Add substances to page
     str = "";
-    for (var i = 0; i < substances.length; i++) {
-      str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + substances[i][0] + "\" units=\"" + substances[i][1] + "\">" + substances[i][0] + "</label>";
+    for (var i = 0; i < substance_units.length; i++) {
+      var active = ( act_subst.indexOf( substance_units[i][0] ) < 0 ) ? "" : "active";
+      str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" 
+            + substance_units[i][0] + "\" units=\"" + substance_units[i][1] + "\" "+active+">" + substance_units[i][0] + "</label>";
     }
     jQuery('#select-substances-checkboxes').append(str);
     jQuery('#select-substances-checkboxes').on('change', 'label', function() {
@@ -647,19 +659,7 @@ jQuery(document).ready(function() {
   jQuery('#session-date-picker').data("DateTimePicker").setDate(new Date());
   setTimeout( updateEventRange, 1000);
   jQuery('#session-months').change( updateEventRange );
-
-
-  // Add substances to page
-  str = "";
-  for (var i = 0; i < substances.length; i++) {
-    str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + substances[i][0] + "\">" + substances[i][0] + "</label>";
-  }
-  jQuery('#select-substances-checkboxes').append(str);
-  jQuery('#select-substances-checkboxes').on('change', 'label', function() {
-    // update number of selected substances
-    jQuery('#num-selected-substances').text( '(' + jQuery('#select-substances-checkboxes input:checked').length + ')' );
-  });
-
-  getActiveSubstances();
+  
+  // Does this do anything?: getActiveSubstances();
   loadEvents();
 });

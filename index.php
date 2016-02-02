@@ -19,7 +19,11 @@
    $act_subst     = $_SESSION['act_subst'];
    echo('<script type="text/javascript"> subjid = "'.$subjid.'"; </script>'."\n");
    echo('<script type="text/javascript"> session = "'.$session.'"; </script>'."\n");
-   echo('<script type="text/javascript"> act_subst = '.urldecode($act_subst).'; </script>'."\n");
+   if (isset($_SESSION['act_subst'])) {
+     echo('<script type="text/javascript"> act_subst = '.urldecode($act_subst).'; </script>'."\n");
+   } else {
+     echo('<script type="text/javascript"> act_subst = []; </script>'."\n");      
+   }
 ?>
 
 <!DOCTYPE html>

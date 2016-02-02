@@ -643,6 +643,8 @@ jQuery(document).ready(function() {
     // clean interface again
     jQuery('#session-participant').val("");
     jQuery('#session-name').val("");
+    jQuery('#select-substances-checkboxes').children().removeClass('active');
+    jQuery('#num-selected-substances').text("");
     storeSubjectAndName();
   });
       

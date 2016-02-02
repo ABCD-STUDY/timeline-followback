@@ -431,27 +431,33 @@ function createCalendar() {
 	    
         // a method for programmatically selecting a period of time
         select: function(start, end) {
-        var s = start.format();
-        var e = end.format();
-
-        // is this a full day event?
-        var fullDay = !start.hasTime() && !end.hasTime();
-
-        // create a new event
-        var eventData = {
-          title: '',
-          start: start,
-          end: end,
-          fullDay: fullDay
-        };
-        jQuery('#calendar-loc').fullCalendar('unselect');
-        jQuery('#add-event-title').val("");
-        jQuery('#add-event-substance').val("");
-        jQuery('#add-event-amount').val("");
-        jQuery('#add-event-recurring').prop('checked', false);
-        specifyEvent( eventData );
-      }
+            var s = start.format();
+            var e = end.format();
 	    
+            // is this a full day event?
+            var fullDay = !start.hasTime() && !end.hasTime();
+	    
+            // create a new event
+            var eventData = {
+		title: '',
+		start: start,
+		end: end,
+		fullDay: fullDay
+            };
+            jQuery('#calendar-loc').fullCalendar('unselect');
+            jQuery('#add-event-title').val("");
+            jQuery('#add-event-substance').val("");
+            jQuery('#add-event-amount').val("");
+            jQuery('#add-event-recurring').prop('checked', false);
+            specifyEvent( eventData );
+	},
+        eventSources: [ "code/php/events.php", [
+	      {
+		  title: 'Some Holiday',
+		  start: '2014-10-27'
+	      }
+	    ]]
+	      
     });
   }
 
@@ -477,7 +483,7 @@ function createCalendar() {
     storeEvent( event );
   }
 
-  loadEvents();
+  //loadEvents();
 }
 
 function pad(num, size) {
@@ -662,5 +668,5 @@ jQuery(document).ready(function() {
   jQuery('#session-months').change( updateEventRange );
   
   // Does this do anything?: getActiveSubstances();
-  loadEvents();
+  //loadEvents();
 });

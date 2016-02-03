@@ -370,17 +370,22 @@
   });
 
 var calendar = null;
- 
+
+function addEventSubstances( active_substances ) {
+    jQuery('#select-substance').children().remove();
+    for(var i = 0; i < active_substances.length; i++) {
+	// jQuery('#substance-list').append("<li><a class=\"substance-selection\">" + active_substances[i] + "</a></li>");
+	jQuery('#select-substance').append("<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + active_substances[i][0] + "\" unit=\"" + active_substances[i][1] + "\">" + active_substances[i][0] + "</label>");
+    }
+}
+
 // setup the calendar
 function createCalendar() {
 
     // copy the active substances to #substance-list
     var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
     var active_substances = active_input_fields.map(function(a) { return [[ jQuery(active_input_fields[a]).attr('substance'), jQuery(active_input_fields[a]).attr('units') ]]; });
-    for(var i = 0; i < active_substances.length; i++) {
-	// jQuery('#substance-list').append("<li><a class=\"substance-selection\">" + active_substances[i] + "</a></li>");
-	jQuery('#select-substance').append("<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + active_substances[i][0] + "\" unit=\"" + active_substances[i][1] + "\">" + active_substances[i][0] + "</label>");
-    }
+    addEventSubstances( active_substances );
 
     // if the calendar does not exist, create it (store in global variable)
     if (calendar == null) {
@@ -521,7 +526,7 @@ var substance_units = [
 
 function getActiveSubstances() {
   var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
-  var active_substances = active_input_fields.map(function(a) { return jQuery(active_input_fields[a]).attr('substance'); });
+  var active_substances = active_input_fields.map(function(a) { return [[ jQuery(active_input_fields[a]).attr('substance'), jQuery(active_input_fields[a]).attr('units') ]] });
   return active_substances;
 }
 
@@ -623,36 +628,49 @@ function exportToCsv(filename, rows) {
 
 jQuery(document).ready(function() {
 
-      jQuery('#select-substance').on('click', 'label', function() {
-	  // copy the unit over
-	  jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
-	  // disable all other label
-	  jQuery(this).siblings().removeClass('active');
-      });
-      
-      jQuery('#add-event-recurring').change(function() {
-	  if (jQuery('#add-event-recurring').prop('checked')) {
-     	      jQuery('#recurring-details').show();
-	  } else {
-     	      jQuery('#recurring-details').hide();
-	  }
-      });
-
-  // add the session variables to the interface
-  jQuery('#user_name').text("User: " + user_name);
-  jQuery('#session-participant').val(subjid);
-  jQuery('#session-name').val(session);
-  storeSubjectAndName();
-
-  createCalendar();
-
-  checkConnectionStatus();
-  // Disable for now: setInterval( checkConnectionStatus, 5000 );
+    jQuery('#select-substance').on('click', 'label', function() {
+	// copy the unit over
+	jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
+	// disable all other label
+	jQuery(this).siblings().removeClass('active');
+    });
+    
+    jQuery('#add-event-recurring').change(function() {
+	if (jQuery('#add-event-recurring').prop('checked')) {
+     	    jQuery('#recurring-details').show();
+	} else {
+     	    jQuery('#recurring-details').hide();
+	}
+    });
+    
+    // add the session variables to the interface
+    jQuery('#user_name').text("User: " + user_name);
+    jQuery('#session-participant').val(subjid);
+    jQuery('#session-name').val(session);
+    // add the list of active substances to the session dialog
+    jQuery('#select-substances-checkboxes').find('label').removeClass('active');
+    jQuery('#select-substances-checkboxes').each(function() {
+	if (jQuery.inArray(jQuery(this).attr('substance'), act_subst)) {
+	    jQuery(this).addClass("active");
+	}
+    });
+    // add the list of active substances to the events dialog
+    addEventSubstances( act_subst );
+    
+    storeSubjectAndName();
+    
+    createCalendar();
+    
+    checkConnectionStatus();
+    // Disable for now: setInterval( checkConnectionStatus, 5000 );
 
   jQuery('#session-participant').change(function() {
     storeSubjectAndName();
   });
   jQuery('#session-name').change(function() {
+    storeSubjectAndName();
+  });
+  jQuery('#select-substances-checkboxes').on('change', 'label', function() {
     storeSubjectAndName();
   });
 

@@ -99,6 +99,7 @@
   }
 
   // load the events
+  /* use full calendar eventsource instead of loadEvents
   function loadEvents() {
 
     jQuery.getJSON('code/php/events.php?action=list', function(data) {
@@ -138,6 +139,7 @@
 
     });
   }
+  */
 
   // save a new calendar event
   function storeEvent( event ) {
@@ -160,8 +162,6 @@
       '&value=' + event.title +
       '&value2=' + encodeURIComponent(s) +
       '&value3=' + encodeURIComponent(e) +
-      '&value5=' + 'event.noshow' +
-      '&value6=' + 'event.referrer' +
       '&value7=' + event.substance +
       '&value8=' + event.amount);
 
@@ -253,8 +253,6 @@
       '&value2=' + encodeURIComponent(s) +
       '&value3=' + encodeURIComponent(e) +
       '&value4=' + encodeURIComponent(event.eid) +
-      '&value5=' + 'event.noshow' +
-      '&value6=' + 'event.referrer' +
       '&value7=' + event.substance +
       '&value8=' + event.amount +
       '&value9=' + event.units);

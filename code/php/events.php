@@ -54,6 +54,8 @@
      // parse permissions
      if (!file_exists($events_file)) {
         file_put_contents($events_file, json_encode( array( ) ));
+        // TODO: Create a directory
+        // Create an empty session json here. empty arrray
      }
      if (!is_readable($events_file)) {
         echo ('error: cannot read file: '.$events_file);
@@ -113,16 +115,6 @@
   else
     $value4 = null;
 
-  if (isset($_GET['value5']))
-    $value5 = rawurldecode($_GET['value5']);
-  else
-    $value5 = null;
-
-  if (isset($_GET['value6']))
-    $value6 = rawurldecode($_GET['value6']);
-  else
-    $value6 = null;
-
   if (isset($_GET['value7']))
     $value7 = rawurldecode($_GET['value7']);
   else
@@ -156,7 +148,6 @@
     $e = loadEvents();
     $eid = uniqid();
 
-    // remove this: $e[] = array('scantitle' => $value, 'start' => $value2, 'end' => $value3, 'project' => $project, 'user' => $user_name, 'eid' => $eid, 'noshow' => $value5, 'referrer' => $value6, 'amount' => $value7, 'protocol' => $value8, 'units' => $value9);
     $e[] = array('title' => $value, 'start' => $value2, 'end' => $value3, 'user' => $user_name, 'eid' => $eid, 'substance' => $value7, 'amount' => $value8, 'units' => $value9);
  
     saveEvents($e);

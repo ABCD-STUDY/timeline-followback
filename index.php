@@ -339,7 +339,7 @@
                   <label class="control-label col-sm-3" for="add-event-substance" title="Substance type">Substance</label>
                   <div class="col-sm-9">
                     <div class="input-group">
-                      <div class="btn-group btn-group-lg" data-toggle="buttons" id="select-substance"></div>
+                      <div class="btn-group btn-group-lg" data-toggle="buttons" id="select-substance-radio-group"></div>
 
                     </div>
                   </div>

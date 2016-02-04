@@ -331,89 +331,90 @@ function addEventActiveSubstances( active_substances ) {
 // setup the calendar
 function createCalendar() {
 
-    // copy the active substances to #substance-list
-    var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
-    var active_substances = active_input_fields.map(function(a) { return [[ jQuery(active_input_fields[a]).attr('substance'), jQuery(active_input_fields[a]).attr('units') ]]; });
-    // BUG: active_substances is empty after page reload
-    addEventActiveSubstances( active_substances );
+  // copy the active substances to #substance-list
+  var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
+  var active_substances = active_input_fields.map(function(a) { return [[ jQuery(active_input_fields[a]).attr('substance'), jQuery(active_input_fields[a]).attr('units') ]]; });
+  // BUG: active_substances is empty after page reload
+  addEventActiveSubstances( active_substances );
 
-    // if the calendar does not exist, create it (store in global variable)
-    if (calendar == null) {
-      calendar = jQuery('#calendar-loc').fullCalendar({
-        // defines the buttons and title at the top of the calendar
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: ''
-        },
-	    
-        // the initial view when the calendar loads
-        defaultView: 'month',
+  // if the calendar does not exist, create it (store in global variable)
+  if (calendar == null) {
+    calendar = jQuery('#calendar-loc').fullCalendar({
+      // defines the buttons and title at the top of the calendar
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: ''
+      },
 
-        // the starting time that will be displayed
-        //minTime: '06:00:00',
+      // the initial view when the calendar loads
+      defaultView: 'month',
 
-        // the timezone in which dates throughout the API are parsed and rendered
-        timezone: 'America/Los_Angeles',
+      // the starting time that will be displayed
+      //minTime: '06:00:00',
 
-        // do not display the time in the event title
-        timeFormat: '',
+      // the timezone in which dates throughout the API are parsed and rendered
+      timezone: 'America/Los_Angeles',
 
-        // allows a user to highlight multiple days or timeslots by clicking and dragging
-        selectable: true,
+      // do not display the time in the event title
+      timeFormat: '',
 
-        // draw a "placeholder" event while the user is dragging
-        selectHelper: true,
+      // allows a user to highlight multiple days or timeslots by clicking and dragging
+      selectable: true,
+
+      // draw a "placeholder" event while the user is dragging
+      selectHelper: true,
+
+      // triggered when the user clicks an event
+      eventClick: function(calEvent, jsEvent, view) {
+        specifyEvent(calEvent);
+      },
+
+      // triggered when dragging stops and the event has moved to a different day/time
+      eventDrop: function(calEvent, jsEvent, view) {
+        if (!updateEvent(calEvent)) {
+          jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
+        }
+      },
+
+      // triggered when resizing stops and the event has changed in duration
+      eventResize: function(calEvent, jsEvent, view) {
+        alert("eventResize: function(calEvent, jsEvent, view)");
+        if (!updateEvent(calEvent)) {
+          jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
+        }
+      },
 	    
-        // triggered when the user clicks an event
-        eventClick: function(calEvent, jsEvent, view) {
-          specifyEvent(calEvent);
-        },
-	    
-        // triggered when dragging stops and the event has moved to a different day/time
-        eventDrop: function(calEvent, jsEvent, view) {
-          if (!updateEvent(calEvent)) {
-            jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
-          }
-        },
-	    
-        // triggered when resizing stops and the event has changed in duration
-        eventResize: function(calEvent, jsEvent, view) {
-          alert("eventResize: function(calEvent, jsEvent, view)");
-          if (!updateEvent(calEvent)) {
-            jQuery('#calendar-loc').fullCalendar('refetchEvents');                 
-          }
-        },
-	    
-        // a method for programmatically selecting a period of time
-        select: function(start, end) {
-            var s = start.format();
-            var e = end.format();
-	    
-            // is this a full day event?
-            var fullDay = !start.hasTime() && !end.hasTime();
-	    
-            // create a new event
-            var eventData = {
-		title: '',
-		start: start,
-		end: end,
-		fullDay: fullDay
-            };
-            jQuery('#calendar-loc').fullCalendar('unselect');
-            jQuery('#add-event-title').val("");
-            jQuery('#add-event-substance').val("");
-            jQuery('#add-event-amount').val("");
-            jQuery('#add-event-recurring').prop('checked', false);
-            specifyEvent( eventData );
-	},
-        eventSources: [ "code/php/events.php", [
-	      {
-		  title: 'Some Holiday',
-		  start: '2014-10-27'
-	      }
-	    ]]
-	      
+      // a method for programmatically selecting a period of time
+      select: function(start, end) {
+        var s = start.format();
+        var e = end.format();
+
+        // is this a full day event?
+        var fullDay = !start.hasTime() && !end.hasTime();
+
+        // create a new event
+        var eventData = {
+          title: '',
+          start: start,
+          end: end,
+          fullDay: fullDay
+        };
+        jQuery('#calendar-loc').fullCalendar('unselect');
+        jQuery('#add-event-title').val("");
+        jQuery('#add-event-substance').val("");
+        jQuery('#add-event-amount').val("");
+        jQuery('#add-event-recurring').prop('checked', false);
+        specifyEvent( eventData );
+      },
+
+      eventSources: [ "code/php/events.php", [
+        {
+          title: 'Some Holiday',
+          start: '2014-10-27'
+        }
+      ]]
+
     });
   }
 
@@ -548,79 +549,78 @@ function closeSession() {
 }
 
 function exportToCsv(filename, rows) {
-    var processRow = function (row) {
-	var finalVal = "\"" + row.user + "\", \"" + row.substance + "\", \"" + "\", \"" + row.amount + "\", \""
-	    + row.units + "\", \"" + moment(row.start).format("MM/DD/YYYY") + "\", \""
-	    + moment(row.end).format("MM/DD/YYYY") + "\"";
-	return finalVal + '\n';
-    };
+  var processRow = function (row) {
+    var finalVal = "\"" + row.user + "\", \"" + row.substance + "\", \"" + "\", \"" + row.amount + "\", \""
+      + row.units + "\", \"" + moment(row.start).format("MM/DD/YYYY") + "\", \""
+      + moment(row.end).format("MM/DD/YYYY") + "\"";
+    return finalVal + '\n';
+  };
 
-    var csvFile = '';
-    for (var i = 0; i < rows.length; i++) {
-	csvFile += processRow(rows[i]);
-    }
+  var csvFile = '';
+  for (var i = 0; i < rows.length; i++) {
+    csvFile += processRow(rows[i]);
+  }
 
-    var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
-    if (navigator.msSaveBlob) { // IE 10+
-	navigator.msSaveBlob(blob, filename);
-    } else {
-	var link = document.createElement("a");
-	if (link.download !== undefined) { // feature detection
-	    // Browsers that support HTML5 download attribute
-	    var url = URL.createObjectURL(blob);
-	    link.setAttribute("href", url);
-	    link.setAttribute("download", filename);
-	    link.style.visibility = 'hidden';
-	    document.body.appendChild(link);
-	    link.click();
-	    document.body.removeChild(link);
-	}
+  var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+  if (navigator.msSaveBlob) { // IE 10+
+    navigator.msSaveBlob(blob, filename);
+  } else {
+    var link = document.createElement("a");
+    if (link.download !== undefined) { // feature detection
+      // Browsers that support HTML5 download attribute
+      var url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
+  }
 }
-
 
 jQuery(document).ready(function() {
 
-    jQuery('#select-substance-radio-group').on('click', 'label', function() {
-      // copy the unit over
-      jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
-      // disable all other label
-      jQuery(this).siblings().removeClass('active');
+  jQuery('#select-substance-radio-group').on('click', 'label', function() {
+    // copy the unit over
+    jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
+    // disable all other label
+    jQuery(this).siblings().removeClass('active');
 
-      // store the selected substance and units
-      selectedSubstance = jQuery(this).text();
-      selectedUnits = jQuery(this).find('input').attr('unit');
-    });
+    // store the selected substance and units
+    selectedSubstance = jQuery(this).text();
+    selectedUnits = jQuery(this).find('input').attr('unit');
+  });
     
-    jQuery('#add-event-recurring').change(function() {
-	if (jQuery('#add-event-recurring').prop('checked')) {
-     	    jQuery('#recurring-details').show();
-	} else {
-     	    jQuery('#recurring-details').hide();
-	}
-    });
+  jQuery('#add-event-recurring').change(function() {
+    if (jQuery('#add-event-recurring').prop('checked')) {
+      jQuery('#recurring-details').show();
+    } else {
+      jQuery('#recurring-details').hide();
+    }
+  });
     
-    // add the session variables to the interface
-    jQuery('#user_name').text("User: " + user_name);
-    jQuery('#session-participant').val(subjid);
-    jQuery('#session-name').val(session);
-    // add the list of active substances to the session dialog
-    jQuery('#select-substances-checkboxes').find('label').removeClass('active');
-    jQuery('#select-substances-checkboxes').each(function() {
-	if (jQuery.inArray(jQuery(this).attr('substance'), act_subst)) {
-	    jQuery(this).addClass("active");
-	}
-    });
+  // add the session variables to the interface
+  jQuery('#user_name').text("User: " + user_name);
+  jQuery('#session-participant').val(subjid);
+  jQuery('#session-name').val(session);
+  // add the list of active substances to the session dialog
+  jQuery('#select-substances-checkboxes').find('label').removeClass('active');
+  jQuery('#select-substances-checkboxes').each(function() {
+    if (jQuery.inArray(jQuery(this).attr('substance'), act_subst)) {
+      jQuery(this).addClass("active");
+    }
+  });
 
-    // REMOVE: don't need this, will be called later by createCalendar()
-    //addEventActiveSubstances( act_subst );
-    
-    storeSubjectAndName();
-    
-    createCalendar();
-    
-    checkConnectionStatus();
-    // Disable for now: setInterval( checkConnectionStatus, 5000 );
+  // REMOVE: don't need this, will be called later by createCalendar()
+  //addEventActiveSubstances( act_subst );
+
+  storeSubjectAndName();
+
+  createCalendar();
+
+  checkConnectionStatus();
+  // Disable for now: setInterval( checkConnectionStatus, 5000 );
 
   jQuery('#session-participant').change(function() {
     storeSubjectAndName();
@@ -649,39 +649,38 @@ jQuery(document).ready(function() {
 
     // mark the session as closed
 
-
     // create spreadsheet with data
     setTimeout( (function( subject, session ) {
-	// return a function
-        return function() {
-            var filename = user_name + "_" + subject + "_" + session + "_" + (new Date()).toLocaleString() + ".csv";
-           jQuery.getJSON('code/php/events.php', function(rows) {
-               exportToCsv(filename, rows);
+      // return a function
+      return function() {
+        var filename = user_name + "_" + subject + "_" + session + "_" + (new Date()).toLocaleString() + ".csv";
+        jQuery.getJSON('code/php/events.php', function(rows) {
+          exportToCsv(filename, rows);
 
-	       // clean interface again
-	       jQuery('#session-participant').val("");
-	       jQuery('#session-name').val("");
-	       jQuery('#select-substances-checkboxes').children().removeClass('active');
-	       jQuery('#num-selected-substances').text("");
-	       storeSubjectAndName();
-           });
-	};
+          // clean interface again
+          jQuery('#session-participant').val("");
+          jQuery('#session-name').val("");
+          jQuery('#select-substances-checkboxes').children().removeClass('active');
+          jQuery('#num-selected-substances').text("");
+          storeSubjectAndName();
+        });
+      };
     })( jQuery('#session-participant').val(), jQuery('#session-name').val() ), 1000);
  
   });
-      
-    // Add substances to page
-    str = "";
-    for (var i = 0; i < substance_units.length; i++) {
-      var active = ( act_subst.indexOf( substance_units[i][0] ) < 0 ) ? "" : "active";
-      str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" 
-            + substance_units[i][0] + "\" units=\"" + substance_units[i][1] + "\" "+active+">" + substance_units[i][0] + "</label>";
-    }
-    jQuery('#select-substances-checkboxes').append(str);
-    jQuery('#select-substances-checkboxes').on('change', 'label', function() {
-       // update number of selected substances
-       jQuery('#num-selected-substances').text( '(' + jQuery('#select-substances-checkboxes input:checked').length + ')' );
-    });
+
+  // Add substances to page
+  str = "";
+  for (var i = 0; i < substance_units.length; i++) {
+    var active = ( act_subst.indexOf( substance_units[i][0] ) < 0 ) ? "" : "active";
+    str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" 
+          + substance_units[i][0] + "\" units=\"" + substance_units[i][1] + "\" "+active+">" + substance_units[i][0] + "</label>";
+  }
+  jQuery('#select-substances-checkboxes').append(str);
+  jQuery('#select-substances-checkboxes').on('change', 'label', function() {
+     // update number of selected substances
+     jQuery('#num-selected-substances').text( '(' + jQuery('#select-substances-checkboxes input:checked').length + ')' );
+  });
 
   // clear the current session setting
   // jQuery.get('../../code/php/session.php?subjid=&session=', function() {});

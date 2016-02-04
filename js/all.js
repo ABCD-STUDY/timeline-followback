@@ -98,49 +98,6 @@
 
   }
 
-  // load the events
-  /* use full calendar eventsource instead of loadEvents
-  function loadEvents() {
-
-    jQuery.getJSON('code/php/events.php?action=list', function(data) {
-
-      for (var i = 0; i < data.length; i++) {
-        var event = new Object();
-
-        event.substance = data[i].substance;
-        event.amount = data[i].amount;
-        event.units = "";
-        for (var j = 0; j < substance_units.length; j++) {
-          if (substance_units[j][0] == event.substance) {
-            event.units = substance_units[j][1];
-            break;
-          }
-        }
-
-        event.title =  event.substance + ' (' + event.amount + ' ' + event.units + ')';
-        event.start = moment.parseZone(data[i].start);
-        event.end   = moment.parseZone(data[i].end);
-        event.user    = data[i].user;
-        event.eid     = data[i].eid; // event id
-
-        if (eventEditable(event).ok) {
-          // enable drag and drop for events
-          event.editable = true;
-        } else {
-          event.editable = false;
-        }
-
-        jQuery('#calendar-loc').fullCalendar('renderEvent', event, true);
-      }
-      // ugly workaround
-      setTimeout(function() {
-        jQuery("#calendar-loc").fullCalendar('render');
-      }, 1000);
-
-    });
-  }
-  */
-
   // save a new calendar event
   function storeEvent( event ) {
 
@@ -481,8 +438,6 @@ function createCalendar() {
     event.editable = false; // only allow edit on the datetimepicker for these
     storeEvent( event );
   }
-
-  //loadEvents();
 }
 
 function pad(num, size) {
@@ -735,7 +690,5 @@ jQuery(document).ready(function() {
   jQuery('#session-date-picker').data("DateTimePicker").setDate(new Date());
   setTimeout( updateEventRange, 1000);
   jQuery('#session-months').change( updateEventRange );
-  
-  // Does this do anything?: getActiveSubstances();
-  //loadEvents();
+
 });

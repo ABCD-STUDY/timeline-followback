@@ -97,41 +97,6 @@
   else
     $action = null;
 
-  if (isset($_GET["value"]))
-    $value = rawurldecode($_GET["value"]);
-  else
-    $value = null;
-
-  if (isset($_GET["value2"]))
-    $value2 = rawurldecode($_GET["value2"]);
-  else
-    $value2 = null;
-
-  if (isset($_GET["value3"]))
-    $value3 = rawurldecode($_GET["value3"]);
-  else
-    $value3 = null;
-  
-  if (isset($_GET["value4"]))
-    $value4 = rawurldecode($_GET["value4"]);
-  else
-    $value4 = null;
-
-  if (isset($_GET["value7"]))
-    $value7 = rawurldecode($_GET["value7"]);
-  else
-    $value7 = null;
-
-  if (isset($_GET["value8"]))
-    $value8 = rawurldecode($_GET["value8"]);
-  else
-    $value8 = null;
-
-  if (isset($_GET["value9"]))
-    $value9 = rawurldecode($_GET["value9"]);
-  else
-    $value9 = null;
-
   if (isset($_GET["start"]))
     $start = rawurldecode($_GET["start"]);
   else
@@ -143,14 +108,22 @@
     $end = null;
 
   // create a new event
-  if ($action == "create") { // TODO: do not create anything that is in the past
-    //if (!check_role( "admin" )) {
-    //   return;
-    //}
+  if ($action == "create") {
     $e = loadEvents();
     $eid = uniqid();
 
-    $e["data"][] = array("title" => $value, "start" => $value2, "end" => $value3, "user" => $user_name, "eid" => $eid, "substance" => $value7, "amount" => $value8, "units" => $value9);
+    $ar = array();
+    foreach ($_GET as $key => $value) {
+       if ($key == "eid") { // don't allow event id to be overwritten
+          continue;
+       }
+       if ($key == "action") {
+          continue;
+       }
+       $ar[$key] = rawurldecode($value);
+    }
+
+    $e["data"][] = $ar; // array("title" => $value, "start" => $value2, "end" => $value3, "user" => $user_name, "eid" => $eid, "substance" => $value7, "amount" => $value8, "units" => $value9);
  
     saveEvents($e);
 
@@ -158,20 +131,19 @@
     return;
 
   } else if ($action == "remove") { // TODO: do not remove anything that is in the past
-    //if (!check_role( "admin" )) {
-    //   return;
-    //}
-    $title       = $value;
-    $start       = $value2;
-    $end         = $value3;
-    $eid         = $value4;
+    $ar = array();
+    foreach ($_GET as $key => $value) {
+       if ($key == "action") {
+          continue;
+       }
+       $ar[$key] = rawurldecode($value);
+    }
+    $eid = $ar['eid'];
 
     $e = loadEvents();
     // identify the event just by the event id
     foreach ($e["data"] as $key => $event) {
       if ($event["eid"] == $eid) {
-        // found the event, delete it now
-        //echo("delete the event now\n");
         unset($e["data"][$key]);
         $e["data"] = array_values($e["data"]); // this removes keys again
         saveEvents($e); 
@@ -186,30 +158,30 @@
     return;
 
   } else if ($action == "update") {
-    //if (!check_role( "admin" )) {
-    //   return;
-    //}
-    $title       = $value;
-    $start       = $value2;
-    $end         = $value3;
-    $eid         = $value4;
-    $substance   = $value7;
-    $amount      = $value8;
-    $units       = $value9;
+ 
+    $eid = "";
+    if (isset($_GET['eid'])) {
+      $eid         = $_GET['eid'];
+    } else {
+      echo(json_encode(array("message" => "Error: event id not found", "ok" => 0)));
+      return;
+    }
 
     $e = loadEvents();
     // identify the event just by the event id
     foreach ($e["data"] as $key => &$event) {
       if ($event["eid"] == $eid) {
         // found the event, change it now
-      	$event["title"] = $title;
-        $event["start"] = $start;
-      	$event["end"]   = $end;
-        $event["substance"]   = $substance;
-      	$event["amount"]   = $amount;
-      	$event["units"]  = $units;
+        foreach ($_GET as $key => $value) {
+	   if ($key == "eid") {
+	      continue;
+	   }
+	   if ($key == "action") {
+	      continue;
+	   }
+	   $event[$key] = rawurldecode($value); // copy or update value
+        }
 
-        //echo(json_encode(array("message" => "save changed events")));
         $e["data"] = array_values($e["data"]); // this removes keys from the array
         saveEvents($e); 
 
@@ -233,7 +205,6 @@
 
       if ( ($dateA >= $startdate && $dateA <= $enddate) ||
            ($dateB >= $startdate || $dateB <= $enddate)) {
-        $event["title"] = $event["title"];
         $events[] = $event;
       }
     }

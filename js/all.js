@@ -163,7 +163,8 @@
       '&value2=' + encodeURIComponent(s) +
       '&value3=' + encodeURIComponent(e) +
       '&value7=' + event.substance +
-      '&value8=' + event.amount);
+      '&value8=' + event.amount +
+      '&value9=' + event.units);
 
     // send the url to create the event
     jQuery.getJSON(url, function(data) {
@@ -284,6 +285,9 @@
     createCalendar();
   });
 
+  var selectedSubstance;
+  var selectedUnits;
+
   // triggered when the user presses the save button
   jQuery('#save-event-button').click(function() {
 
@@ -303,7 +307,8 @@
 
     ev.user = user_name;
     ev.fullDay = jQuery('#add-event-fullday').prop('checked');
-    //ev.substance = jQuery('#add-event-substance').val();
+    ev.substance = selectedSubstance;
+    ev.units     = selectedUnits;
     ev.amount    = jQuery('#add-event-amount').val();
     ev.title     =  ev.substance + ' (' + ev.amount + ' ' + ev.units + ')';
     ev.editable  = true;
@@ -622,10 +627,14 @@ function exportToCsv(filename, rows) {
 jQuery(document).ready(function() {
 
     jQuery('#select-substance-radio-group').on('click', 'label', function() {
-	// copy the unit over
-	jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
-	// disable all other label
-	jQuery(this).siblings().removeClass('active');
+      // copy the unit over
+      jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
+      // disable all other label
+      jQuery(this).siblings().removeClass('active');
+
+      // store the selected substance and units
+      selectedSubstance = jQuery(this).text();
+      selectedUnits = jQuery(this).find('input').attr('unit');
     });
     
     jQuery('#add-event-recurring').change(function() {

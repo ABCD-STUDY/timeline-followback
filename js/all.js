@@ -448,12 +448,12 @@ function pad(num, size) {
     
 var substance_units = [
     [ "Alcohol", "ml" ],
-    [ "Tobacco cigarettes", "#" ],
+    [ "Tobacco cigarettes", "cigarettes" ],
     [ "E-cigarettes", "ml" ],
     [ "Smokeless tobacco", "pinches"],
-    [ "Cigars", "#" ],
-    [ "Hookah", "#" ],
-    [ "Blunts", "#" ],
+    [ "Cigars", "cigars" ],
+    [ "Hookah", "hits" ],
+    [ "Blunts", "blunts" ],
     [ "Smoked Marijuana", "grams" ],
     [ "Edible Marijuana", "mg THC"],
     [ "Fake Marijuana", "grams" ],

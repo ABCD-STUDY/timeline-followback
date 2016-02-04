@@ -112,7 +112,7 @@
     $e = loadEvents();
     $eid = uniqid();
 
-    $ar = array();
+    $ar = array( "eid" => $eid );
     foreach ($_GET as $key => $value) {
        if ($key == "eid") { // don't allow event id to be overwritten
           continue;
@@ -173,7 +173,7 @@
       if ($event["eid"] == $eid) {
         // found the event, change it now
         foreach ($_GET as $key => $value) {
-	   if ($key == "eid") {
+   	   if ($key == "eid") {
 	      continue;
 	   }
 	   if ($key == "action") {

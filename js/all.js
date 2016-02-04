@@ -116,12 +116,12 @@
     // form a url to create the event
     var url = encodeURI('code/php/events.php' +
       '?action=create' +
-      '&value=' + event.title +
-      '&value2=' + encodeURIComponent(s) +
-      '&value3=' + encodeURIComponent(e) +
-      '&value7=' + event.substance +
-      '&value8=' + event.amount +
-      '&value9=' + event.units);
+      '&title=' + encodeURIComponent(event.title) +
+      '&start=' + encodeURIComponent(s) +
+      '&end=' + encodeURIComponent(e) +
+      '&substance=' + encodeURIComponent(event.substance) +
+      '&amount=' + encodeURIComponent(event.amount) +
+      '&unit=' + encodeURIComponent(event.unit));
 
     // send the url to create the event
     jQuery.getJSON(url, function(data) {
@@ -207,13 +207,13 @@
     // form a url to update the event
     var url = encodeURI('code/php/events.php' +
       '?action=update' +
-      '&value=' + event.title +
-      '&value2=' + encodeURIComponent(s) +
-      '&value3=' + encodeURIComponent(e) +
-      '&value4=' + encodeURIComponent(event.eid) +
-      '&value7=' + event.substance +
-      '&value8=' + event.amount +
-      '&value9=' + event.units);
+      '&title=' + event.title +
+      '&start=' + encodeURIComponent(s) +
+      '&end=' + encodeURIComponent(e) +
+      '&eid=' + encodeURIComponent(event.eid) +
+      '&substance=' + event.substance +
+      '&amount=' + event.amount +
+      '&unit=' + event.units);
 
     // send the url to update the event
     jQuery.getJSON(url, function(data) {
@@ -284,6 +284,7 @@
     var cal  = jQuery('#calendar-loc').fullCalendar('getCalendar');
     ev.start = cal.moment(ev.start);
     ev.end   = cal.moment(ev.end);
+    ev.unit  = jQuery('#add-event-amount').next().text();
 
     if (typeof(ev.eid) !== 'undefined') {
       if (!updateEvent(ev)) {

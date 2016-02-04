@@ -98,49 +98,6 @@
 
   }
 
-  // load the events
-  /* use full calendar eventsource instead of loadEvents
-  function loadEvents() {
-
-    jQuery.getJSON('code/php/events.php?action=list', function(data) {
-
-      for (var i = 0; i < data.length; i++) {
-        var event = new Object();
-
-        event.substance = data[i].substance;
-        event.amount = data[i].amount;
-        event.units = "";
-        for (var j = 0; j < substance_units.length; j++) {
-          if (substance_units[j][0] == event.substance) {
-            event.units = substance_units[j][1];
-            break;
-          }
-        }
-
-        event.title =  event.substance + ' (' + event.amount + ' ' + event.units + ')';
-        event.start = moment.parseZone(data[i].start);
-        event.end   = moment.parseZone(data[i].end);
-        event.user    = data[i].user;
-        event.eid     = data[i].eid; // event id
-
-        if (eventEditable(event).ok) {
-          // enable drag and drop for events
-          event.editable = true;
-        } else {
-          event.editable = false;
-        }
-
-        jQuery('#calendar-loc').fullCalendar('renderEvent', event, true);
-      }
-      // ugly workaround
-      setTimeout(function() {
-        jQuery("#calendar-loc").fullCalendar('render');
-      }, 1000);
-
-    });
-  }
-  */
-
   // save a new calendar event
   function storeEvent( event ) {
 
@@ -285,6 +242,9 @@
     createCalendar();
   });
 
+  var selectedSubstance;
+  var selectedUnits;
+
   // triggered when the user presses the save button
   jQuery('#save-event-button').click(function() {
 
@@ -304,7 +264,8 @@
 
     ev.user = user_name;
     ev.fullDay = jQuery('#add-event-fullday').prop('checked');
-    ev.substance = jQuery('#add-event-substance').val();
+    ev.substance = selectedSubstance;
+    ev.units     = selectedUnits;
     ev.amount    = jQuery('#add-event-amount').val();
     ev.title     =  ev.substance + ' (' + ev.amount + ' ' + ev.units + ')';
     ev.editable  = true;
@@ -347,19 +308,6 @@
   jQuery('#add-event-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
   jQuery('#add-event-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
 
-
-  // triggered when the user selects the substance dropdown menu
-  jQuery(document).on('click', '.substance-selection', function(event) {
-    event.preventDefault();
-    jQuery('#add-event-substance').val( jQuery(this).text() );
-  });
-
-  // triggered when the user selects the units dropdown menu
-  jQuery(document).on('click', '.units-selection', function(event) {
-    event.preventDefault();
-    jQuery('#add-event-units').val( jQuery(this).text() );
-  });
-
   // triggered when the user presses the delete button
   jQuery('#delete-event-button').click(function() {
 
@@ -373,11 +321,11 @@
 
 var calendar = null;
 
-function addEventSubstances( active_substances ) {
-    jQuery('#select-substance').children().remove();
+function addEventActiveSubstances( active_substances ) {
+    jQuery('#select-substance-radio-group').children().remove();
     for(var i = 0; i < active_substances.length; i++) {
 	// jQuery('#substance-list').append("<li><a class=\"substance-selection\">" + active_substances[i] + "</a></li>");
-	jQuery('#select-substance').append("<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + active_substances[i][0] + "\" unit=\"" + active_substances[i][1] + "\">" + active_substances[i][0] + "</label>");
+	jQuery('#select-substance-radio-group').append("<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + active_substances[i][0] + "\" unit=\"" + active_substances[i][1] + "\">" + active_substances[i][0] + "</label>");
     }
 }
 
@@ -387,7 +335,8 @@ function createCalendar() {
     // copy the active substances to #substance-list
     var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
     var active_substances = active_input_fields.map(function(a) { return [[ jQuery(active_input_fields[a]).attr('substance'), jQuery(active_input_fields[a]).attr('units') ]]; });
-    addEventSubstances( active_substances );
+    // BUG: active_substances is empty after page reload
+    addEventActiveSubstances( active_substances );
 
     // if the calendar does not exist, create it (store in global variable)
     if (calendar == null) {
@@ -407,6 +356,9 @@ function createCalendar() {
 
         // the timezone in which dates throughout the API are parsed and rendered
         timezone: 'America/Los_Angeles',
+
+        // do not display the time in the event title
+        timeFormat: '',
 
         // allows a user to highlight multiple days or timeslots by clicking and dragging
         selectable: true,
@@ -487,8 +439,6 @@ function createCalendar() {
     event.editable = false; // only allow edit on the datetimepicker for these
     storeEvent( event );
   }
-
-  //loadEvents();
 }
 
 function pad(num, size) {
@@ -499,12 +449,12 @@ function pad(num, size) {
     
 var substance_units = [
     [ "Alcohol", "ml" ],
-    [ "Tobacco cigarettes", "#" ],
+    [ "Tobacco cigarettes", "cigarettes" ],
     [ "E-cigarettes", "ml" ],
     [ "Smokeless tobacco", "pinches"],
-    [ "Cigars", "#" ],
-    [ "Hookah", "#" ],
-    [ "Blunts", "#" ],
+    [ "Cigars", "cigars" ],
+    [ "Hookah", "hits" ],
+    [ "Blunts", "blunts" ],
     [ "Smoked Marijuana", "grams" ],
     [ "Edible Marijuana", "mg THC"],
     [ "Fake Marijuana", "grams" ],
@@ -576,6 +526,7 @@ function storeSubjectAndName() {
     jQuery('#calendar-loc').fadeOut();
     jQuery('#open-save-session').fadeOut();
   }
+  // BUG: getActiveSubstances returns empty list after page reload
   var active_substances = getActiveSubstances();
 
   var data = {
@@ -585,7 +536,7 @@ function storeSubjectAndName() {
   };
   
   jQuery.get('../../code/php/session.php', data, function() {
-    console.log('stored subject and session names: ' +  subject + ", " + session );
+    console.log('stored subject and session and act_subst: ' +  subject + ", " + session + ", " + encodeURIComponent(JSON.stringify(active_substances.toArray())));
   });
 }
 
@@ -631,11 +582,15 @@ function exportToCsv(filename, rows) {
 
 jQuery(document).ready(function() {
 
-    jQuery('#select-substance').on('click', 'label', function() {
-	// copy the unit over
-	jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
-	// disable all other label
-	jQuery(this).siblings().removeClass('active');
+    jQuery('#select-substance-radio-group').on('click', 'label', function() {
+      // copy the unit over
+      jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
+      // disable all other label
+      jQuery(this).siblings().removeClass('active');
+
+      // store the selected substance and units
+      selectedSubstance = jQuery(this).text();
+      selectedUnits = jQuery(this).find('input').attr('unit');
     });
     
     jQuery('#add-event-recurring').change(function() {
@@ -657,8 +612,9 @@ jQuery(document).ready(function() {
 	    jQuery(this).addClass("active");
 	}
     });
-    // add the list of active substances to the events dialog
-    addEventSubstances( act_subst );
+
+    // REMOVE: don't need this, will be called later by createCalendar()
+    //addEventActiveSubstances( act_subst );
     
     storeSubjectAndName();
     
@@ -673,9 +629,10 @@ jQuery(document).ready(function() {
   jQuery('#session-name').change(function() {
     storeSubjectAndName();
   });
+  /* REMOVE: don't need to save everytime a checkbox is selected
   jQuery('#select-substances-checkboxes').on('change', 'label', function() {
     storeSubjectAndName();
-  });
+  }); */
 
   jQuery('#open-save-session').click(function() {
     jQuery('#session-participant-again').val(""); // clear the value from before
@@ -734,7 +691,5 @@ jQuery(document).ready(function() {
   jQuery('#session-date-picker').data("DateTimePicker").setDate(new Date());
   setTimeout( updateEventRange, 1000);
   jQuery('#session-months').change( updateEventRange );
-  
-  // Does this do anything?: getActiveSubstances();
-  //loadEvents();
+
 });

@@ -158,10 +158,10 @@
     // form a url to remove the event
     var url = encodeURI('code/php/events.php' +
       '?action=remove' +
-      '&value=' + event.title +
-      '&value2=' + encodeURIComponent(event.start.format()) +
-      '&value3=' + encodeURIComponent(event.end.format()) +
-      '&value4=' + encodeURIComponent(event.eid));
+      '&title=' + encodeURIComponent(event.title) +
+      '&start=' + encodeURIComponent(event.start.format()) +
+      '&end=' + encodeURIComponent(event.end.format()) +
+      '&eid=' + encodeURIComponent(event.eid));
 
     // send the url to remove the event
     jQuery.getJSON(url, function(data) {
@@ -207,13 +207,13 @@
     // form a url to update the event
     var url = encodeURI('code/php/events.php' +
       '?action=update' +
-      '&title=' + event.title +
+      '&title=' + encodeURIComponent(event.title) +
       '&start=' + encodeURIComponent(s) +
       '&end=' + encodeURIComponent(e) +
       '&eid=' + encodeURIComponent(event.eid) +
-      '&substance=' + event.substance +
-      '&amount=' + event.amount +
-      '&unit=' + event.units);
+      '&substance=' + encodeURIComponent(event.substance) +
+      '&amount=' + encodeURIComponent(event.amount) +
+      '&unit=' + encodeURIComponent(event.units));
 
     // send the url to update the event
     jQuery.getJSON(url, function(data) {

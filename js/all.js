@@ -13,17 +13,6 @@
     });
   }
 
-  var recurring;
-  jQuery('#add-event-recurring').change(function() {
-    recurring = this.checked;
-    jQuery('#add-event-days-of-week').prop('disabled', !recurring);
-    if (recurring) {
-      jQuery('#add-event-days-of-week').css('visibility', 'visible');
-    } else {
-      jQuery('#add-event-days-of-week').css('visibility', 'hidden');
-    }
-  });
-
   function specifyEvent( event ) {
     if (!eventEditable(event).ok) {
       jQuery('#add-event-message').html("This event cannot be edited because " + eventEditable(event).message + ".");
@@ -615,8 +604,10 @@ jQuery(document).ready(function() {
   jQuery('#add-event-recurring').change(function() {
     if (jQuery('#add-event-recurring').prop('checked')) {
       jQuery('#recurring-details').show();
+      jQuery('#add-event-days-of-week').show();
     } else {
       jQuery('#recurring-details').hide();
+      jQuery('#add-event-days-of-week').hide();
     }
   });
     

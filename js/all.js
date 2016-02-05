@@ -332,10 +332,7 @@ function addEventActiveSubstances( active_substances ) {
 // setup the calendar
 function createCalendar() {
 
-  // copy the active substances to #substance-list
-  var active_input_fields = jQuery('#select-substances-checkboxes input:checked');
-  var active_substances = active_input_fields.map(function(a) { return [[ jQuery(active_input_fields[a]).attr('substance'), jQuery(active_input_fields[a]).attr('units') ]]; });
-  // BUG: active_substances is empty after page reload
+  var active_substances = getActiveSubstances();
   addEventActiveSubstances( active_substances );
 
   // if the calendar does not exist, create it (store in global variable)
@@ -527,7 +524,7 @@ function storeSubjectAndName() {
     jQuery('#calendar-loc').fadeOut();
     jQuery('#open-save-session').fadeOut();
   }
-  // BUG: getActiveSubstances returns empty list after page reload
+
   var active_substances = getActiveSubstances();
 
   var data = {
@@ -582,6 +579,28 @@ function exportToCsv(filename, rows) {
 
 jQuery(document).ready(function() {
 
+  // convert the 2D array of active substance names and units into a 1D array of substance names
+  var act_subst_names = [];
+  for (var i = 0; i < act_subst.length; i++) {
+    act_subst_names.push(act_subst[i][0]);
+  }
+
+  // for each substance, create a checkbox button
+  // if the substance is an active substance, then set the label as active
+  str = "";
+  for (var i = 0; i < substance_units.length; i++) {
+    var active = ( act_subst_names.indexOf( substance_units[i][0] ) < 0 ) ? "" : "active";
+    var checked = (active) ? "checked" : "";
+    str = str + "<label class=\"btn btn-default substance-checkbox "+active+"\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" 
+          + substance_units[i][0] + "\" units=\"" + substance_units[i][1] + "\""+checked+">" + substance_units[i][0] + "</label>";
+  }
+
+  jQuery('#select-substances-checkboxes').append(str);
+  jQuery('#select-substances-checkboxes').on('change', 'label', function() {
+     // update number of selected substances
+     jQuery('#num-selected-substances').text( '(' + jQuery('#select-substances-checkboxes input:checked').length + ')' );
+  });
+
   jQuery('#select-substance-radio-group').on('click', 'label', function() {
     // copy the unit over
     jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
@@ -605,16 +624,6 @@ jQuery(document).ready(function() {
   jQuery('#user_name').text("User: " + user_name);
   jQuery('#session-participant').val(subjid);
   jQuery('#session-name').val(session);
-  // add the list of active substances to the session dialog
-  jQuery('#select-substances-checkboxes').find('label').removeClass('active');
-  jQuery('#select-substances-checkboxes').each(function() {
-    if (jQuery.inArray(jQuery(this).attr('substance'), act_subst)) {
-      jQuery(this).addClass("active");
-    }
-  });
-
-  // REMOVE: don't need this, will be called later by createCalendar()
-  //addEventActiveSubstances( act_subst );
 
   storeSubjectAndName();
 
@@ -629,10 +638,6 @@ jQuery(document).ready(function() {
   jQuery('#session-name').change(function() {
     storeSubjectAndName();
   });
-  /* REMOVE: don't need to save everytime a checkbox is selected
-  jQuery('#select-substances-checkboxes').on('change', 'label', function() {
-    storeSubjectAndName();
-  }); */
 
   jQuery('#open-save-session').click(function() {
     jQuery('#session-participant-again').val(""); // clear the value from before
@@ -668,19 +673,6 @@ jQuery(document).ready(function() {
       };
     })( jQuery('#session-participant').val(), jQuery('#session-name').val() ), 1000);
  
-  });
-
-  // Add substances to page
-  str = "";
-  for (var i = 0; i < substance_units.length; i++) {
-    var active = ( act_subst.indexOf( substance_units[i][0] ) < 0 ) ? "" : "active";
-    str = str + "<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" 
-          + substance_units[i][0] + "\" units=\"" + substance_units[i][1] + "\" "+active+">" + substance_units[i][0] + "</label>";
-  }
-  jQuery('#select-substances-checkboxes').append(str);
-  jQuery('#select-substances-checkboxes').on('change', 'label', function() {
-     // update number of selected substances
-     jQuery('#num-selected-substances').text( '(' + jQuery('#select-substances-checkboxes input:checked').length + ')' );
   });
 
   // clear the current session setting

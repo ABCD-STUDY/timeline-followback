@@ -400,25 +400,25 @@
                   <div class="col-sm-9">
                   <div class="btn-group" data-toggle="buttons" id="add-event-days-of-week">
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="sunday"> Sun
+                      <input type="checkbox" name="options" dayOfWeek="0"> Sun
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="monday"> Mon
+                      <input type="checkbox" name="options" dayOfWeek="1"> Mon
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="tuesday"> Tue
+                      <input type="checkbox" name="options" dayOfWeek="2"> Tue
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="wednesday"> Wed
+                      <input type="checkbox" name="options" dayOfWeek="3"> Wed
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="thursday"> Thu
+                      <input type="checkbox" name="options" dayOfWeek="4"> Thu
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="friday"> Fri
+                      <input type="checkbox" name="options" dayOfWeek="5"> Fri
                     </label>
                     <label class="btn btn-default">
-                      <input type="checkbox" name="options" id="saturday"> Sat
+                      <input type="checkbox" name="options" dayOfWeek="6"> Sat
                     </label>
                   </div>
                   </div>

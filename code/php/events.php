@@ -31,6 +31,7 @@
   // Both the subject id and the visit (session) are used to make the assessment unique
   $subjid = "";
   $session = "";
+  $active_substances = array();
   if (isset($_SESSION['subjid'])) {
      $subjid = $_SESSION['subjid'];
   } else {
@@ -44,6 +45,10 @@
      return;
   }
 
+  if (isset($_SESSION['act_subst'])) {
+     $active_substances = json_decode(rawurldecode($_SESSION['act_subst']), true);
+  }
+  
   // this event will be saved at this location
   $events_file = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site . "/events_".$subjid."_".$session.".json";
 
@@ -123,7 +128,9 @@
        $ar[$key] = rawurldecode($value);
     }
 
-    $e["data"][] = $ar; // array("title" => $value, "start" => $value2, "end" => $value3, "user" => $user_name, "eid" => $eid, "substance" => $value7, "amount" => $value8, "units" => $value9);
+    $e["data"][] = $ar;
+    $e["active_substances"] = $active_substances;
+    // array("title" => $value, "start" => $value2, "end" => $value3, "user" => $user_name, "eid" => $eid, "substance" => $value7, "amount" => $value8, "units" => $value9);
  
     saveEvents($e);
 
@@ -183,6 +190,9 @@
         }
 
         $e["data"] = array_values($e["data"]); // this removes keys from the array
+	if (count($active_substances) > 0) {
+           $e["active_substances"] = $active_substances;
+        }
         saveEvents($e); 
 
         echo(json_encode(array("message" => "event changed right now", "ok" => 1)));

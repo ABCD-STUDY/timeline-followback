@@ -85,6 +85,16 @@
     //jQuery('#add-event-end-date-picker').data("DateTimePicker").setMinDate(new Date());
     jQuery('#add-event-end-date-picker').data("DateTimePicker").setDate(event.end);
 
+    // highlight the substance
+    jQuery('#select-substance-radio-group label').removeClass('active');
+      jQuery('#select-substance-radio-group input').each(function() {
+	  if (jQuery(this).attr('substance') == event.substance) {
+	      jQuery(this).parent().addClass('active');
+	  }
+      });
+
+    //jQuery('#select-substance-radio-group input').prop('checked', false);
+    //jQuery('#select-substance-radio-gropu label').prop('active', false);
   }
 
   // save a new calendar event
@@ -251,12 +261,12 @@
     }
     //ev.eid   = jQuery('#delete-event-button').data('eid');
 
-    ev.user = user_name;
-    ev.fullDay = jQuery('#add-event-fullday').prop('checked');
+    ev.user      = user_name;
+    ev.fullDay   = jQuery('#add-event-fullday').prop('checked');
     ev.substance = selectedSubstance;
     ev.units     = selectedUnits;
     ev.amount    = jQuery('#add-event-amount').val();
-    ev.title     =  ev.substance + ' (' + ev.amount + ' ' + ev.units + ')';
+    ev.title     = ev.substance + ' (' + ev.amount + ' ' + ev.units + ')';
     ev.editable  = true;
 
     ////////////////////////////////////
@@ -280,9 +290,36 @@
         jQuery('#calendar-loc').fullCalendar('refetchEvents');
       }
     } else {
-      if (!storeEvent(ev)) {
-        jQuery('#calendar-loc').fullCalendar('refetchEvents');
-      }
+	// If we have a multiple day event - split the event into separate days.
+	// This split is specific to the timeline followback implementation.
+
+	// we also need to use the highlighted days of the week if the event is marked recurring
+	var markedDaysOfWeek = [ 0, 1, 2, 3, 4, 5, 6 ];
+	if (jQuery('#add-event-recurring').prop('checked')) {
+	    markedDaysOfWeek = jQuery('#add-event-days-of-week input:checked').map(function(a) { return parseInt(jQuery(this).attr('dayOfWeek')); }).toArray();
+	}
+	
+	var a = ev.start.clone().startOf('day');
+	var o = ev.end.clone().startOf('day');
+	var sendOne = false;
+	do {
+	    if (markedDaysOfWeek.indexOf(a.weekday()) == -1) { // day not in marked days of week
+		continue;
+	    }
+	    var evN = ev;
+	    evN.start = a;
+	    evN.end = a;
+	    storeEvent(evN);
+	    sendOne = true;
+        } while( a.add(1, 'days').diff(o) < 0);
+	if (sendOne) {
+	    // do we need this?
+	    jQuery('#calendar-loc').fullCalendar('refetchEvents');
+	}
+	
+	//if (!storeEvent(ev)) {
+        //    jQuery('#calendar-loc').fullCalendar('refetchEvents');
+	//}
     }
   });
 
@@ -382,14 +419,11 @@ function createCalendar() {
 
         // create a new event
         var eventData = {
-          title: '',
           start: start,
           end: end,
           fullDay: fullDay
         };
         jQuery('#calendar-loc').fullCalendar('unselect');
-        jQuery('#add-event-title').val("");
-        jQuery('#add-event-substance').val("");
         jQuery('#add-event-amount').val("");
         jQuery('#add-event-recurring').prop('checked', false);
         specifyEvent( eventData );
@@ -597,7 +631,7 @@ jQuery(document).ready(function() {
     jQuery(this).siblings().removeClass('active');
 
     // store the selected substance and units
-    selectedSubstance = jQuery(this).text();
+    selectedSubstance = jQuery(this).find('input').attr('substance');
     selectedUnits = jQuery(this).find('input').attr('unit');
   });
     

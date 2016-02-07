@@ -49,8 +49,8 @@
 
     jQuery('#delete-event-button').data('eid', event.eid);
 
-    jQuery('#add-event-title').val(event.title);
-    jQuery('#add-event-substance').val(event.substance);
+    //jQuery('#add-event-title').val(event.title);
+    //jQuery('#add-event-substance').val(event.substance);
     jQuery('#add-event-amount').val(event.amount);
     
     var cal = $('#calendar-loc').fullCalendar('getCalendar');
@@ -90,6 +90,7 @@
       jQuery('#select-substance-radio-group input').each(function() {
 	  if (jQuery(this).attr('substance') == event.substance) {
 	      jQuery(this).parent().addClass('active');
+              jQuery('#add-event-amount').next().text(jQuery(this).attr('unit'));	      
 	  }
       });
 
@@ -218,7 +219,6 @@
 
     // send the url to update the event
     jQuery.getJSON(url, function(data) {
-
       // if the response is ok
       if (data.ok == 1) {
         // update the calendar event
@@ -269,13 +269,20 @@
     //ev.eid   = jQuery('#delete-event-button').data('eid');
 
     ev.user      = user_name;
-    ev.fullDay   = jQuery('#add-event-fullday').prop('checked');
-    ev.substance = selectedSubstance;
-    ev.units     = selectedUnits;
+    ev.fullDay   = jQuery('#add-event-fullday').prop('checked');  
+    ev.substance = jQuery('#select-substance-radio-group label.active').find('input').attr('substance'); // selectedSubstance;
+    ev.units     = jQuery('#select-substance-radio-group label.active').find('input').attr('unit'); //  selectedUnits;
     ev.amount    = jQuery('#add-event-amount').val();
     ev.title     = ev.substance + ' (' + ev.amount + ' ' + ev.units + ')';
     ev.editable  = true;
-    ev.color     = colors[selectedIndex];  
+    var su = jQuery('#select-substance-radio-group label').toArray();
+    for (var i = 0; i < su.length; i++) {
+        if (jQuery(su[i]).find('input').attr('substance') == ev.substance) {
+          selectedIndex = i;
+        }
+    }
+    selectedIndex = selectedIndex % colors.length; 
+    ev.color      = colors[selectedIndex];  
 
     ////////////////////////////////////
     //

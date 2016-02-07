@@ -238,6 +238,10 @@
   // triggered when the user presses the start button
   jQuery('#open-calendar-button').click(function() {
 
+    jQuery.getJSON('code/php/events.php?action=mark&status=start&user_name='+user_name, function(data) {
+	console.log(data);
+    });
+
     storeSubjectAndName();
     // update the calendar and display all special events
     createCalendar();
@@ -574,34 +578,47 @@ function closeSession() {
 }
 
 function exportToCsv(filename, rows) {
-  var processRow = function (row) {
-    var finalVal = "\"" + row.user + "\", \"" + row.substance + "\", \"" + "\", \"" + row.amount + "\", \""
-      + row.units + "\", \"" + moment(row.start).format("MM/DD/YYYY") + "\", \""
-      + moment(row.end).format("MM/DD/YYYY") + "\"";
-    return finalVal + '\n';
-  };
-
-  var csvFile = '';
-  for (var i = 0; i < rows.length; i++) {
-    csvFile += processRow(rows[i]);
-  }
-
-  var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
-  if (navigator.msSaveBlob) { // IE 10+
-    navigator.msSaveBlob(blob, filename);
-  } else {
-    var link = document.createElement("a");
-    if (link.download !== undefined) { // feature detection
-      // Browsers that support HTML5 download attribute
-      var url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", filename);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    var processRow = function (row) {
+	if (row.substance == "undefined") {
+	    row.substance = "";
+	} else {
+            row.substance = "\"" + row.substance + "\"";
+	}
+	if (row.amount == "undefined") {
+	    row.amount = "";
+	}
+	if (row.unit == "undefined") {
+	    row.unit = "";
+	} else {
+	    row.unit = "\"" + row.unit + "\"";
+	}
+	var finalVal = user_name + ",\"" + row.title + "\"," + row.substance + "," + row.amount + ","
+	    + row.unit + "," + moment(row.start).format("MM/DD/YYYY") + ","
+	    + moment(row.end).format("MM/DD/YYYY");
+	return finalVal + '\n';
+    };
+    
+    var csvFile = 'user name, title, substance, amount, unit, date (start), date (end)\n';
+    for (var i = 0; i < rows.length; i++) {
+	csvFile += processRow(rows[i]);
     }
-  }
+    
+    var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+	navigator.msSaveBlob(blob, filename);
+    } else {
+	var link = document.createElement("a");
+	if (link.download !== undefined) { // feature detection
+	    // Browsers that support HTML5 download attribute
+	    var url = URL.createObjectURL(blob);
+	    link.setAttribute("href", url);
+	    link.setAttribute("download", filename);
+	    link.style.visibility = 'hidden';
+	    document.body.appendChild(link);
+	    link.click();
+	    document.body.removeChild(link);
+	}
+    }
 }
 
 var colors = [ "#C6CAED", "#ADA8BE", "#A28497", "#6F5E5C", "#4A5240" ];
@@ -688,6 +705,9 @@ jQuery(document).ready(function() {
     }
 
     // mark the session as closed
+    jQuery.getJSON('code/php/events.php?action=mark&status=closed&user_name='+user_name, function(data) {
+	console.log(data);
+    });
 
     // create spreadsheet with data
     setTimeout( (function( subject, session ) {

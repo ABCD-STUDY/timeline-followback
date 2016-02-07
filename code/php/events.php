@@ -201,7 +201,28 @@
     }
 
     echo(json_encode(array("message" => "event not found", "ok" => 0)));
-    return;    
+    return;
+  } else if ( $action == "mark" ) {
+
+    $e = loadEvents();
+    $ar = array( 'date' => date(DATE_ATOM) );
+    foreach ($_GET as $key => $value) {
+       if ($key == "eid") {
+          continue;
+       }
+       if ($key == "action") {
+          continue;
+       }
+       if ($key == "date") {
+          continue; // ignore dates we don't set ourselfs
+       }
+       $ar[$key] = $value;
+    }
+
+    $e['status'][] = $ar;
+
+    saveEvents($e);
+    echo(json_encode(array( "message" => "stored mark", "ok" => 1)));
   } else if ( $start != null ) { // called by fullcalendar
     $e = loadEvents();
 

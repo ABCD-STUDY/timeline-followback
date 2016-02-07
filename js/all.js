@@ -120,6 +120,7 @@
       '&end=' + encodeURIComponent(e) +
       '&substance=' + encodeURIComponent(event.substance) +
       '&amount=' + encodeURIComponent(event.amount) +
+      '&color=' + encodeURIComponent(event.color) +
       '&unit=' + encodeURIComponent(event.unit));
 
     // send the url to create the event
@@ -212,7 +213,8 @@
       '&eid=' + encodeURIComponent(event.eid) +
       '&substance=' + encodeURIComponent(event.substance) +
       '&amount=' + encodeURIComponent(event.amount) +
-      '&unit=' + encodeURIComponent(event.units));
+      '&unit=' + encodeURIComponent(event.units) +
+      '&color=' + encodeURIComponent(event.color));
 
     // send the url to update the event
     jQuery.getJSON(url, function(data) {
@@ -243,6 +245,7 @@
 
   var selectedSubstance;
   var selectedUnits;
+  var selectedIndex = 0;
 
   // triggered when the user presses the save button
   jQuery('#save-event-button').click(function() {
@@ -268,6 +271,7 @@
     ev.amount    = jQuery('#add-event-amount').val();
     ev.title     = ev.substance + ' (' + ev.amount + ' ' + ev.units + ')';
     ev.editable  = true;
+    ev.color     = colors[selectedIndex];  
 
     ////////////////////////////////////
     //
@@ -600,6 +604,8 @@ function exportToCsv(filename, rows) {
   }
 }
 
+var colors = [ "#C6CAED", "#ADA8BE", "#A28497", "#6F5E5C", "#4A5240" ];
+
 jQuery(document).ready(function() {
 
   // convert the 2D array of active substance names and units into a 1D array of substance names
@@ -633,6 +639,9 @@ jQuery(document).ready(function() {
     // store the selected substance and units
     selectedSubstance = jQuery(this).find('input').attr('substance');
     selectedUnits = jQuery(this).find('input').attr('unit');
+    selectedIndex = jQuery('#select-substance-radio-group label').toArray().indexOf(jQuery(this).toArray()[0]); // the index of the selected substance is used as color later
+    selectedIndex = selectedIndex % colors.length; 
+    // console.log("index is: " + selectedIndex);
   });
     
   jQuery('#add-event-recurring').change(function() {

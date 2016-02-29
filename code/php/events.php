@@ -29,28 +29,32 @@
   }
 
   // Both the subject id and the visit (session) are used to make the assessment unique
-  $subjid = "";
-  $session = "";
-  $active_substances = array();
-  if (isset($_SESSION['subjid'])) {
-     $subjid = $_SESSION['subjid'];
-  } else {
+   $subjid = "";
+   $sessionid = "";
+   $active_substances = array();
+   if ( isset($_SESSION['ABCD']) && isset($_SESSION['ABCD']['timeline-followback']) ) {
+      if (isset($_SESSION['ABCD']['timeline-followback']['subjid'])) {  
+         $subjid  = $_SESSION['ABCD']['timeline-followback']['subjid'];
+      }
+      if (isset($_SESSION['ABCD']['timeline-followback']['sessionid'])) {
+         $sessionid  = $_SESSION['ABCD']['timeline-followback']['sessionid'];
+      }      
+      if (isset($_SESSION['ABCD']['timeline-followback']['act_subst'])) {
+         $active_substances = json_decode(rawurldecode($_SESSION['ABCD']['timeline-followback']['act_subst']), true);
+      }
+   }
+
+   if ($subjid == "") {
      echo(json_encode ( array( "message" => "Error: no subject id assigned" ) ) );
      return;
-  }
-  if (isset($_SESSION['sessionid'])) {
-     $session = $_SESSION['sessionid'];
-  } else {
+   }
+   if ($sessionid == "") {
      echo(json_encode ( array( "message" => "Error: no session specified" ) ) );
      return;
-  }
+   }
 
-  if (isset($_SESSION['act_subst'])) {
-     $active_substances = json_decode(rawurldecode($_SESSION['act_subst']), true);
-  }
-  
-  // this event will be saved at this location
-  $events_file = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site . "/events_".$subjid."_".$session.".json";
+   // this event will be saved at this location
+   $events_file = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site . "/events_".$subjid."_".$sessionid.".json";
 
   function loadEvents() {
      global $events_file;

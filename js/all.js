@@ -416,6 +416,11 @@ function createCalendar() {
         }
       },
 
+      // add jquery.ui.touch.js
+      //eventRender: function(event, element) {
+      //   jQuery(element).addTouch();
+      //},
+	
       // triggered when resizing stops and the event has changed in duration
       eventResize: function(calEvent, jsEvent, view) {
         alert("eventResize: function(calEvent, jsEvent, view)");
@@ -567,8 +572,9 @@ function storeSubjectAndName() {
 
   var data = {
     "subjid": subject,
-    "session": session,
-    "act_subst": encodeURIComponent(JSON.stringify(active_substances.toArray()))
+    "sessionid": session,
+    "act_subst": encodeURIComponent(JSON.stringify(active_substances.toArray())),
+    "task": "timeline-followback"
   };
   
   jQuery.get('../../code/php/session.php', data, function() {

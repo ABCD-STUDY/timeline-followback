@@ -14,11 +14,23 @@
     echo('<script type="text/javascript"> admin = '.($admin?"true":"false").'; </script>'."\n");
   }
    // if there is a running session it would have the follow information
-   $subjid  = $_SESSION['subjid'];
-   $session = $_SESSION['sessionid'];
-   $act_subst     = $_SESSION['act_subst'];
+   $subjid = "";
+   $sessionid = "";
+   $act_subst = array();
+   if ( isset($_SESSION['ABCD']) && isset($_SESSION['ABCD']['timeline-followback']) ) {
+      if (isset($_SESSION['ABCD']['timeline-followback']['subjid'])) {  
+         $subjid  = $_SESSION['ABCD']['timeline-followback']['subjid'];
+      }
+      if (isset($_SESSION['ABCD']['timeline-followback']['sessionid'])) {
+         $sessionid  = $_SESSION['ABCD']['timeline-followback']['sessionid'];
+      }      
+      if (isset($_SESSION['ABCD']['timeline-followback']['act_subst'])) {
+         $act_subst  = $_SESSION['ABCD']['timeline-followback']['act_subst'];
+      }
+   }
+
    echo('<script type="text/javascript"> subjid = "'.$subjid.'"; </script>'."\n");
-   echo('<script type="text/javascript"> session = "'.$session.'"; </script>'."\n");
+   echo('<script type="text/javascript"> session = "'.$sessionid.'"; </script>'."\n");
    if (isset($_SESSION['act_subst'])) {
      echo('<script type="text/javascript"> act_subst = '.urldecode($act_subst).'; </script>'."\n");
    } else {
@@ -447,6 +459,7 @@
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="js/jquery.ui.touch-punch.min.js"></script>
   <script src='js/moment.min.js'></script>
 
   <!-- allow users to download tables as csv and excel -->

@@ -133,8 +133,8 @@
         if (typeof(data.eid) !== 'undefined') {
           // set the event id
           event.eid = data.eid;
-          // render the event to the calendar
-          jQuery('#calendar-loc').fullCalendar('renderEvent', event, true);
+          // render the event to the calendar (this introduced a duplicate event), event still appears on calendar without this line
+          //jQuery('#calendar-loc').fullCalendar('renderEvent', event, true);
         } else {
           alert("Error: data.eid is not defined");
         }
@@ -325,6 +325,9 @@
 	    evN.start = a;
 	    evN.end = a;
 	    storeEvent(evN);
+	    //if (!storeEvent(evN)) {
+	    //	jQuery('#calendar-loc').fullCalendar('refetchEvents');
+            //}
 	    sendOne = true;
         } while( a.add(1, 'days').diff(o) < 0);
 	if (sendOne) {

@@ -31,11 +31,7 @@
 
    echo('<script type="text/javascript"> subjid = "'.$subjid.'"; </script>'."\n");
    echo('<script type="text/javascript"> session = "'.$sessionid.'"; </script>'."\n");
-   if (isset($_SESSION['act_subst'])) {
-     echo('<script type="text/javascript"> act_subst = '.urldecode($act_subst).'; </script>'."\n");
-   } else {
-     echo('<script type="text/javascript"> act_subst = []; </script>'."\n");      
-   }
+   echo('<script type="text/javascript"> act_subst = '.urldecode($act_subst).'; </script>'."\n");
 ?>
 
 <!DOCTYPE html>
@@ -110,7 +106,7 @@
       <div class="row">
         <div class="col-md-12">
           <center>
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#defineSession" title="Start a new assessment session">New Session</button>
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#defineSession" title="Start a new assessment session" id="new-session-button">New Session</button>
           </center>
         </div>
       </div>
@@ -139,8 +135,9 @@
       <div class="row">
         <div class="col-lg-12">
           <center>
+            <button class="btn btn-default btn-lg" onclick="closeSession();" id="cancel-session-button">Cancel Session</button>
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveSession" id="open-save-session">Save Session</button>
-          </center>
+          </center><br/><hr>
         </div>
       </div>
     </div>
@@ -400,7 +397,7 @@
                   <div class="col-sm-9">
                     <div class="checkbox">
                       <label for="add-event-recurring">
-                        <input type="checkbox" id="add-event-recurring" value="">Event recurring
+                        <input type="checkbox" id="add-event-recurring" value="">limit range by days of the week
                       </label>
                     </div>
                   </div>

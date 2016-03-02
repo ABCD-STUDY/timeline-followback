@@ -624,11 +624,11 @@ function createCalendar() {
 		{ start: '2016-09-22', title: 'Emancipation Day' },
 		{ start: '2016-09-23', title: 'Native Americans\' Day' },
 		{ start: '2016-09-25', title: 'Gold Star Mother\'s Day' },
-		{ start: '2016-10-3', title: 'Rosh Hashana' },
-		{ start: '2016-10-3', title: 'Muharram' },
-		{ start: '2016-10-3', title: 'Child Health Day' },
-		{ start: '2016-10-4', title: 'Feast of St Francis of Assisi' },
-		{ start: '2016-10-9', title: 'Leif Erikson Day' },
+		{ start: '2016-10-03', title: 'Rosh Hashana' },
+		{ start: '2016-10-03', title: 'Muharram' },
+		{ start: '2016-10-03', title: 'Child Health Day' },
+		{ start: '2016-10-04', title: 'Feast of St Francis of Assisi' },
+		{ start: '2016-10-09', title: 'Leif Erikson Day' },
 		{ start: '2016-10-10', title: 'Columbus Day' },
 		{ start: '2016-10-10', title: 'Columbus Day' },
 		{ start: '2016-10-10', title: 'Native Americans\' Day' },
@@ -645,11 +645,11 @@ function createCalendar() {
 		{ start: '2016-10-28', title: 'Nevada Day' },
 		{ start: '2016-10-29', title: 'Diwali/Deepavali' },
 		{ start: '2016-10-31', title: 'Halloween' },
-		{ start: '2016-11-1', title: 'All Saints\' Day' },
-		{ start: '2016-11-2', title: 'All Souls\' Day' },
-		{ start: '2016-11-6', title: 'Daylight Saving Time ends' },
-		{ start: '2016-11-8', title: 'Election Day' },
-		{ start: '2016-11-8', title: 'Election Day' },
+		{ start: '2016-11-01', title: 'All Saints\' Day' },
+		{ start: '2016-11-02', title: 'All Souls\' Day' },
+		{ start: '2016-11-06', title: 'Daylight Saving Time ends' },
+		{ start: '2016-11-08', title: 'Election Day' },
+		{ start: '2016-11-08', title: 'Election Day' },
 		{ start: '2016-11-10', title: 'Marine Corps Birthday' },
 		{ start: '2016-11-10', title: 'Return Day Delaware' },
 		{ start: '2016-11-11', title: 'Veterans Day' },
@@ -661,9 +661,9 @@ function createCalendar() {
 		{ start: '2016-11-25', title: 'American Indian Heritage Day' },
 		{ start: '2016-11-27', title: 'First Sunday of Advent' },
 		{ start: '2016-11-28', title: 'Cyber Monday' },
-		{ start: '2016-12-6', title: 'St Nicholas\' Day' },
-		{ start: '2016-12-7', title: 'Pearl Harbor Remembrance Day' },
-		{ start: '2016-12-8', title: 'Feast of the Immaculate Conception' },
+		{ start: '2016-12-06', title: 'St Nicholas\' Day' },
+		{ start: '2016-12-07', title: 'Pearl Harbor Remembrance Day' },
+		{ start: '2016-12-08', title: 'Feast of the Immaculate Conception' },
 		{ start: '2016-12-12', title: 'The Prophet\'s Birthday' },
 		{ start: '2016-12-12', title: 'Feast of Our Lady of Guadalupe' },
 		{ start: '2016-12-13', title: 'U.S. National Guard Birthday' },
@@ -707,6 +707,7 @@ function createCalendar() {
     event.editable = false; // only allow edit on the datetimepicker for these
     storeEvent( event );
   }
+  jQuery('#calendar-loc').fullCalendar('refetchEvents');    
 }
 
 function pad(num, size) {
@@ -819,7 +820,7 @@ function closeSession() {
   jQuery('#session-participant').val("");
   jQuery('#session-name').val("");
   jQuery('#select-substances-checkboxes').children().removeClass('active');
-  jQuery('#select-substances-radio-group').children().remove();
+  jQuery('#select-substance-radio-group').children().remove();
   jQuery('#num-selected-substances').text("");
   storeSubjectAndName();
 }
@@ -972,7 +973,7 @@ jQuery(document).ready(function() {
           jQuery('#session-participant').val("");
           jQuery('#session-name').val("");
           jQuery('#select-substances-checkboxes').children().removeClass('active');
-          jQuery('#select-substances-radio-group').children().remove();
+          jQuery('#select-substance-radio-group').children().remove();
           jQuery('#num-selected-substances').text("");
           storeSubjectAndName();
         });

@@ -31,7 +31,7 @@
 
    echo('<script type="text/javascript"> subjid = "'.$subjid.'"; </script>'."\n");
    echo('<script type="text/javascript"> session = "'.$sessionid.'"; </script>'."\n");
-   echo('<script type="text/javascript"> act_subst = '.urldecode($act_subst).'; </script>'."\n");
+   echo('<script type="text/javascript"> act_subst = '.json_encode($act_subst).'; </script>'."\n");
 ?>
 
 <!DOCTYPE html>

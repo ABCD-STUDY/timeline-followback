@@ -379,8 +379,16 @@ var calendar = null;
 function addEventActiveSubstances( active_substances ) {
     jQuery('#select-substance-radio-group').children().remove();
     for(var i = 0; i < active_substances.length; i++) {
-	// jQuery('#substance-list').append("<li><a class=\"substance-selection\">" + active_substances[i] + "</a></li>");
-	jQuery('#select-substance-radio-group').append("<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + active_substances[i][0] + "\" unit=\"" + active_substances[i][1] + "\">" + active_substances[i][0] + "</label>");
+	// a substance can have more than one dose, create a button group for each substance that has multiple doses
+	if (active_substances[i][1].split(":").length > 1) { // found multi-dose substance
+	    var ll = active_substances[i][1].split(":");
+	    for (var j = 0; j < ll.length; j++) {
+  		jQuery('#select-substance-radio-group').append("<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + active_substances[i][0] + "\" unit=\"" + ll[j] + "\">" + active_substances[i][0] + " " + "<span class=\"tiny\">" + ll[j] +  "</span></label>");
+	    }
+	} else { // found single dose substance	
+	    // jQuery('#substance-list').append("<li><a class=\"substance-selection\">" + active_substances[i] + "</a></li>");
+	    jQuery('#select-substance-radio-group').append("<label class=\"btn btn-default substance-checkbox\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" + active_substances[i][0] + "\" unit=\"" + active_substances[i][1] + "\">" + active_substances[i][0] + "</label>");
+	}
     }
 }
 
@@ -725,9 +733,9 @@ var substance_units = [
     [ "Hookah", "hits" ],
     [ "Blunts", "blunts" ],
     [ "Smoked MJ", "grams" ],
-    [ "Edible MJ", "mg THC"],
+    [ "Edible MJ", [ "mg THC", "occasions" ] ],
     [ "Fake MJ", "grams" ],
-    [ "MJ concentrates", "grams" ],
+    [ "MJ concentrates", [ "grams", "occasions" ] ],
     [ "Cocaine", "occasions" ],
     [ "Stimulant medication", "pills" ],
     [ "Cathinones", "occasions" ],
@@ -883,10 +891,16 @@ jQuery(document).ready(function() {
   // if the substance is an active substance, then set the label as active
   str = "";
   for (var i = 0; i < substance_units.length; i++) {
-    var active = ( act_subst_names.indexOf( substance_units[i][0] ) < 0 ) ? "" : "active";
-    var checked = (active) ? "checked" : "";
-    str = str + "<label class=\"btn btn-default substance-checkbox "+active+"\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" 
-          + substance_units[i][0] + "\" units=\"" + substance_units[i][1] + "\""+checked+">" + substance_units[i][0] + "</label>";
+      var active = ( act_subst_names.indexOf( substance_units[i][0] ) < 0 ) ? "" : "active";
+      var checked = (active) ? "checked" : "";
+      var su = substance_units[i][1];
+      if (! (typeof substance_units[i][1] === 'string')) {
+         su = substance_units[i][1].map(function(a) { return a.replace(/:/g, "_"); } ).join(":");
+      }
+      str = str + "<label class=\"btn btn-default substance-checkbox "
+            + active + "\"> <input type=\"checkbox\" name=\"options\" aria-invalid=\"false\" substance=\"" 
+            + substance_units[i][0] + "\" units=\"" + su
+            + "\"" + checked + ">" + substance_units[i][0] + "</label>";
   }
 
   jQuery('#select-substances-checkboxes').append(str);

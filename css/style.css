@@ -1,3 +1,9 @@
+.tiny {
+    position: absolute;
+    right: 10px;
+    font-size: 9pt;
+    bottom: 0px;
+}
 .dropdown-submenu {
     position: relative;
 }
@@ -85,8 +91,7 @@
     color: "#90EE90";
 }
 .substance-checkbox {
-    width: 150px;
-    overflow-x: hidden;
+    font-size: 15px;
 }
 #select-substances-checkboxes label.active {
     background-color: lightblue;

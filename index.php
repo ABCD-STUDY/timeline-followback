@@ -26,12 +26,17 @@
       }      
       if (isset($_SESSION['ABCD']['timeline-followback']['act_subst'])) {
          $act_subst  = $_SESSION['ABCD']['timeline-followback']['act_subst'];
+	 // this list has been created using encodeURIComponent(JSON.stringify(active_substances.toArray())),
       }
    }
 
    echo('<script type="text/javascript"> subjid = "'.$subjid.'"; </script>'."\n");
    echo('<script type="text/javascript"> session = "'.$sessionid.'"; </script>'."\n");
-   echo('<script type="text/javascript"> act_subst = '.json_encode($act_subst).'; </script>'."\n");
+   // This will revert the json urldecode. But this is tricky:
+   //    double quotes are forbidden from substance names
+   //    we trust the content of this variable <- cross-site scripting danger
+   $act_subst = rawurldecode($act_subst);
+   echo('<script type="text/javascript"> act_subst = '.$act_subst.'; </script>'."\n");
 ?>
 
 <!DOCTYPE html>

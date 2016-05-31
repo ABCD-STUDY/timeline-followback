@@ -56,6 +56,12 @@
    // this event will be saved at this location
    $events_file = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site . "/events_".$subjid."_".$sessionid.".json";
 
+   // check if the site directory exits, otherwise create it
+   $dd = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site;
+   if(!file_exists($dd)) {
+      mkdir($dd,0777);
+   }
+
   function loadEvents() {
      global $events_file;
 

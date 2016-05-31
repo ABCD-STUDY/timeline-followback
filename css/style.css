@@ -99,6 +99,7 @@
 }
 .modal-content {
     height: 100%;
+    overflow-y: scroll;
 }
 .close {
     margin-right: 20px;

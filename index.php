@@ -36,7 +36,11 @@
    //    double quotes are forbidden from substance names
    //    we trust the content of this variable <- cross-site scripting danger
    $act_subst = rawurldecode($act_subst);
-   echo('<script type="text/javascript"> act_subst = '.$act_subst.'; </script>'."\n");
+   if ($act_subst != "") {
+     echo('<script type="text/javascript"> act_subst = '.$act_subst.'; </script>'."\n");
+   } else {
+     echo('<script type="text/javascript"> act_subst = []; </script>'."\n");
+   }
 ?>
 
 <!DOCTYPE html>

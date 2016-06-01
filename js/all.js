@@ -1,6 +1,8 @@
   //----------------------------------------
   // User accounts
   //----------------------------------------
+
+
   // logout the current user
   function logout() {
     jQuery.get('/code/php/logout.php', function(data) {
@@ -12,6 +14,8 @@
       window.location.href = "/applications/User/login.php";
     });
   }
+
+  numSpecialEvents = 3;
 
   function specifyEvent( event ) {
     if (!eventEditable(event).ok) {
@@ -70,12 +74,10 @@
 
     jQuery('#session-date-picker').data("DateTimePicker").setDate(event.start);
 
-    jQuery('#special-event-01-start-date-picker').data("DateTimePicker").setDate(event.start);
-    jQuery('#special-event-01-end-date-picker').data("DateTimePicker").setDate(event.start);
-    jQuery('#special-event-02-start-date-picker').data("DateTimePicker").setDate(event.start);
-    jQuery('#special-event-02-end-date-picker').data("DateTimePicker").setDate(event.start);
-    jQuery('#special-event-03-start-date-picker').data("DateTimePicker").setDate(event.start);
-    jQuery('#special-event-03-end-date-picker').data("DateTimePicker").setDate(event.start);
+    for (var i = 1; i <= numSpecialEvents; i++) {
+        jQuery('#special-event-' + pad(i,2) + '-start-date-picker').data("DateTimePicker").setDate(event.start);
+	jQuery('#special-event-' + pad(i,2) + '-end-date-picker').data("DateTimePicker").setDate(event.start);
+    }
 
     // initialize the field for the start date
     //jQuery('#add-event-start-date-picker').data("DateTimePicker").setMinDate(new Date());
@@ -354,12 +356,10 @@
 
   // required to display the date and time picker
   jQuery('#session-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
-  jQuery('#special-event-01-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
-  jQuery('#special-event-01-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
-  jQuery('#special-event-02-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
-  jQuery('#special-event-02-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
-  jQuery('#special-event-03-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
-  jQuery('#special-event-03-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  for (var i = 1; i <= numSpecialEvents; i++) {
+      jQuery('#special-event-' + pad(i,2) + '-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+      jQuery('#special-event-' + pad(i,2) + '-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+  }
   jQuery('#add-event-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
   jQuery('#add-event-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
 
@@ -695,8 +695,7 @@ function createCalendar() {
   }
 
   // collect the current list of special events and add to the calendar (if they don't exist already)
-  for (var i = 1; i < 4; i++) {
-
+  for (var i = 1; i <= numSpecialEvents; i++) {
     var name = jQuery('#special-event-' + pad(i, 2) + '-name').val();
     if (name == "") {
       continue;

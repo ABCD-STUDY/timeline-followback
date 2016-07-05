@@ -13,10 +13,30 @@
     echo('<script type="text/javascript"> user_name = "'.$user_name.'"; </script>'."\n");
     echo('<script type="text/javascript"> admin = '.($admin?"true":"false").'; </script>'."\n");
   }
+
+  $permissions = list_permissions_for_user( $user_name );
+
+  // find the first permission that corresponds to a site
+  // Assumption here is that a user can only add assessment for the first site he has permissions for!
+  $site = "";
+  foreach ($permissions as $per) {
+     $a = explode("Site", $per); // permissions should be structured as "Site<site name>"
+
+     if (count($a) > 0) {
+        $site = $a[1];
+	break;
+     }
+  }
+  if ($site == "") {
+     echo (json_encode ( array( "message" => "Error: no site assigned to this user" ) ) );
+     return;
+  }
+
    // if there is a running session it would have the follow information
    $subjid = "";
    $sessionid = "";
    $act_subst = array();
+   $run = "";
    if ( isset($_SESSION['ABCD']) && isset($_SESSION['ABCD']['timeline-followback']) ) {
       if (isset($_SESSION['ABCD']['timeline-followback']['subjid'])) {  
          $subjid  = $_SESSION['ABCD']['timeline-followback']['subjid'];
@@ -28,10 +48,16 @@
          $act_subst  = $_SESSION['ABCD']['timeline-followback']['act_subst'];
 	 // this list has been created using encodeURIComponent(JSON.stringify(active_substances.toArray())),
       }
+      if (isset($_SESSION['ABCD']['timeline-followback']['run'])) {
+         $run  = $_SESSION['ABCD']['timeline-followback']['run'];
+      }
    }
 
    echo('<script type="text/javascript"> subjid = "'.$subjid.'"; </script>'."\n");
    echo('<script type="text/javascript"> session = "'.$sessionid.'"; </script>'."\n");
+   echo('<script type="text/javascript"> run     = "'.$run.'"; </script>'."\n");
+   echo('<script type="text/javascript"> site    = "'.$site.'"; </script>'."\n");
+   
    // This will revert the json urldecode. But this is tricky:
    //    double quotes are forbidden from substance names
    //    we trust the content of this variable <- cross-site scripting danger
@@ -202,15 +228,33 @@
 
                   <div class="form-group">
                     <label for="session-participant" class="control-label">Participant</label>
-                    <input type="text" class="form-control" placeholder="NDAR-#####" id="session-participant" required data-validation-required-message="Please enter the participant NDAR ID.">
+                    <!-- <input type="text" class="form-control" placeholder="NDAR-#####" id="session-participant" required data-validation-required-message="Please enter the participant NDAR ID." autofocus> -->
+		    <select class="form-control" id="session-participant"></select>
                     <p class="help-block text-danger"></p>
                   </div>
 
                   <div class="form-group">
                     <label for="session-name" class="control-label">Session name</label>
-                    <input type="text" class="form-control" placeholder="Baseline-01" id="session-name" required data-validation-required-message="Please enter the session ID.">
+		    <select class="form-control" id="session-name"></select>
+                    <!-- <input type="text" class="form-control" placeholder="Baseline-01" id="session-name" required data-validation-required-message="Please enter the session ID."> -->
                     <p class="help-block text-danger"></p>
                   </div>
+
+                  <div class="form-group">
+                    <label for="session-run" class="control-label">Session run</label>
+		    <select class="form-control" id="session-run">
+		      <option value="01">01</option>
+		      <option value="02">02</option>
+		      <option value="03">03</option>
+		    </select>		  
+                    <p class="help-block text-danger"></p>
+                  </div>
+
+                 <!--  <div class="form-group">
+                    <label for="session-name" class="control-label">Session name</label>
+                    <input type="text" class="form-control" placeholder="Baseline-01" id="session-name" required data-validation-required-message="Please enter the session ID.">
+                    <p class="help-block text-danger"></p>
+                  </div> -->
 
                   <div class="form-group">
                     <label for="session-months" class="control-label">Number of months captured</label>

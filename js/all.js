@@ -15,7 +15,7 @@
     });
   }
 
-  numSpecialEvents = 3;
+  numSpecialEvents = 6;
 
   function specifyEvent( event ) {
     if (!eventEditable(event).ok) {
@@ -474,217 +474,231 @@ function createCalendar() {
 	    color: 'white',
 	    textColor: 'black',
 	    events: [
+		{ start: '2015-12-21', title: 'Start Christmas holidays' },
+		{ start: '2016-01-01', title: 'End Christmas holidays' },
+		{ start: '2016-02-15', title: 'Start Winter holidays' },
+		{ start: '2016-02-19', title: 'End Winter holidays' },
+		{ start: '2016-03-25', title: 'Start Easter holidays' },
+		{ start: '2016-04-08', title: 'End Easter holidays' },
+		{ start: '2016-05-30', title: 'Start Spring holidays' },
+		{ start: '2016-06-03', title: 'End Spring holidays' },
+		{ start: '2016-06-20', title: 'Start Summer holidays' },
+		{ start: '2016-08-31', title: 'End Summer holidays' },
+		{ start: '2016-10-24', title: 'Start Autumn holidays' },
+		{ start: '2016-10-28', title: 'End Autumn holidays' },
+		{ start: '2016-12-19', title: 'Start Christmas holidays' },
+		{ start: '2017-01-02', title: 'End Christmas holidays' },
 		{ start: '2016-01-01', title: 'New Year\'s Day' },
-		{ start: '2016-01-06', title: 'Epiphany' },
-		{ start: '2016-01-07', title: 'Orthodox Christmas Day' },
-		{ start: '2016-01-13', title: 'Stephen Foster Memorial Day' },
-		{ start: '2016-01-14', title: 'Orthodox New Year' },
-		{ start: '2016-01-15', title: 'Lee Jackson Day' },
+		//{ start: '2016-01-06', title: 'Epiphany' },
+		//{ start: '2016-01-07', title: 'Orthodox Christmas Day' },
+		//{ start: '2016-01-13', title: 'Stephen Foster Memorial Day' },
+		//{ start: '2016-01-14', title: 'Orthodox New Year' },
+		//{ start: '2016-01-15', title: 'Lee Jackson Day' },
 		{ start: '2016-01-18', title: 'Martin Luther King Day' },
-		{ start: '2016-01-18', title: 'Robert E Lee\'s Birthday' },
-		{ start: '2016-01-18', title: 'State Holiday' },
-		{ start: '2016-01-18', title: 'Idaho Human Rights Day' },
-		{ start: '2016-01-18', title: 'Civil Rights Day' },
-		{ start: '2016-01-19', title: 'Robert E Lee\'s Birthday' },
-		{ start: '2016-01-19', title: 'State Holiday' },
-		{ start: '2016-01-25', title: 'Tu Bishvat/Tu B\'Shevat' },
-		{ start: '2016-01-29', title: 'Kansas Day' },
-		{ start: '2016-02-01', title: 'National Freedom Day' },
+		//{ start: '2016-01-18', title: 'Robert E Lee\'s Birthday' },
+		//{ start: '2016-01-18', title: 'State Holiday' },
+		//{ start: '2016-01-18', title: 'Idaho Human Rights Day' },
+		//{ start: '2016-01-18', title: 'Civil Rights Day' },
+		//{ start: '2016-01-19', title: 'Robert E Lee\'s Birthday' },
+		//{ start: '2016-01-19', title: 'State Holiday' },
+		//{ start: '2016-01-25', title: 'Tu Bishvat/Tu B\'Shevat' },
+		//{ start: '2016-01-29', title: 'Kansas Day' },
+		//{ start: '2016-02-01', title: 'National Freedom Day' },
 		{ start: '2016-02-02', title: 'Groundhog Day' },
-		{ start: '2016-02-04', title: 'Rosa Parks Day' },
-		{ start: '2016-02-05', title: 'National Wear Red Day' },
+		//{ start: '2016-02-04', title: 'Rosa Parks Day' },
+		//{ start: '2016-02-05', title: 'National Wear Red Day' },
 		{ start: '2016-02-08', title: 'Chinese New Year' },
-		{ start: '2016-02-09', title: 'Shrove Tuesday/Mardi Gras' },
-		{ start: '2016-02-10', title: 'Ash Wednesday' },
+		//{ start: '2016-02-09', title: 'Shrove Tuesday/Mardi Gras' },
+		//{ start: '2016-02-10', title: 'Ash Wednesday' },
 		{ start: '2016-02-12', title: 'Lincoln\'s Birthday' },
 		{ start: '2016-02-14', title: 'Valentine\'s Day' },
-		{ start: '2016-02-14', title: 'Statehood Day in Arizona' },
+		//{ start: '2016-02-14', title: 'Statehood Day in Arizona' },
 		{ start: '2016-02-15', title: 'Presidents\' Day' },
-		{ start: '2016-02-15', title: 'Daisy Gatson Bates Day' },
-		{ start: '2016-02-15', title: 'Susan B Anthony\'s Birthday' },
-		{ start: '2016-02-28', title: 'Linus Pauling Day' },
-		{ start: '2016-03-01', title: 'St. David\'s Day' },
-		{ start: '2016-03-01', title: 'Town Meeting Day Vermont' },
-		{ start: '2016-03-02', title: 'Texas Independence Day' },
+		//{ start: '2016-02-15', title: 'Daisy Gatson Bates Day' },
+		//{ start: '2016-02-15', title: 'Susan B Anthony\'s Birthday' },
+		//{ start: '2016-02-28', title: 'Linus Pauling Day' },
+		//{ start: '2016-03-01', title: 'St. David\'s Day' },
+		//{ start: '2016-03-01', title: 'Town Meeting Day Vermont' },
+		//{ start: '2016-03-02', title: 'Texas Independence Day' },
 		{ start: '2016-03-02', title: 'Read Across America Day' },
-		{ start: '2016-03-04', title: 'Employee Appreciation Day' },
-		{ start: '2016-03-07', title: 'Casimir Pulaski Day' },
+		//{ start: '2016-03-04', title: 'Employee Appreciation Day' },
+		//{ start: '2016-03-07', title: 'Casimir Pulaski Day' },
 		{ start: '2016-03-13', title: 'Daylight Saving Time starts' },
 		{ start: '2016-03-17', title: 'St. Patrick\'s Day' },
-		{ start: '2016-03-17', title: 'Evacuation Day' },
-		{ start: '2016-03-20', title: 'Palm Sunday' },
-		{ start: '2016-03-20', title: 'March equinox' },
-		{ start: '2016-03-24', title: 'Maundy Thursday' },
-		{ start: '2016-03-24', title: 'Purim' },
-		{ start: '2016-03-25', title: 'Good Friday' },
-		{ start: '2016-03-25', title: 'Maryland Day' },
-		{ start: '2016-03-25', title: 'Prince Jonah Kuhio Kalanianaoles dag observed' },
-		{ start: '2016-03-26', title: 'Holy Saturday' },
-		{ start: '2016-03-26', title: 'Prince Jonah Kuhio Kalanianaoles dag' },
+		//{ start: '2016-03-17', title: 'Evacuation Day' },
+		//{ start: '2016-03-20', title: 'Palm Sunday' },
+		//{ start: '2016-03-20', title: 'March equinox' },
+		//{ start: '2016-03-24', title: 'Maundy Thursday' },
+		//{ start: '2016-03-24', title: 'Purim' },
+		//{ start: '2016-03-25', title: 'Good Friday' },
+		//{ start: '2016-03-25', title: 'Maryland Day' },
+		//{ start: '2016-03-25', title: 'Prince Jonah Kuhio Kalanianaoles dag observed' },
+		//{ start: '2016-03-26', title: 'Holy Saturday' },
+		//{ start: '2016-03-26', title: 'Prince Jonah Kuhio Kalanianaoles dag' },
 		{ start: '2016-03-27', title: 'Easter Sunday' },
 		{ start: '2016-03-28', title: 'Easter Monday' },
-		{ start: '2016-03-28', title: 'Seward\'s Day' },
+		//{ start: '2016-03-28', title: 'Seward\'s Day' },
 		{ start: '2016-03-31', title: 'César Chávez Day' },
-		{ start: '2016-04-01', title: 'Pascua Florida Day observed' },
-		{ start: '2016-04-02', title: 'Pascua Florida Day' },
-		{ start: '2016-04-06', title: 'National Tartan Day' },
-		{ start: '2016-04-12', title: 'National Library Workers\' Day' },
+		//{ start: '2016-04-01', title: 'Pascua Florida Day observed' },
+		//{ start: '2016-04-02', title: 'Pascua Florida Day' },
+		//{ start: '2016-04-06', title: 'National Tartan Day' },
+		//{ start: '2016-04-12', title: 'National Library Workers\' Day' },
 		{ start: '2016-04-13', title: 'Thomas Jefferson\'s Birthday' },
-		{ start: '2016-04-15', title: 'Father Damien Day' },
-		{ start: '2016-04-15', title: 'Emancipation Day observed' },
-		{ start: '2016-04-16', title: 'Emancipation Day' },
-		{ start: '2016-04-18', title: 'Tax Day' },
+		//{ start: '2016-04-15', title: 'Father Damien Day' },
+		//{ start: '2016-04-15', title: 'Emancipation Day observed' },
+		//{ start: '2016-04-16', title: 'Emancipation Day' },
+		//{ start: '2016-04-18', title: 'Tax Day' },
 		{ start: '2016-04-18', title: 'Patriot\'s Day' },
-		{ start: '2016-04-21', title: 'San Jacinto Day' },
-		{ start: '2016-04-22', title: 'Oklahoma Day' },
-		{ start: '2016-04-23', title: 'Passover (first day)' },
-		{ start: '2016-04-25', title: 'Confederate Memorial Day' },
-		{ start: '2016-04-25', title: 'State Holiday' },
-		{ start: '2016-04-25', title: 'State Holiday' },
-		{ start: '2016-04-26', title: 'State Holiday' },
-		{ start: '2016-04-27', title: 'Administrative Professionals Day' },
+		//{ start: '2016-04-21', title: 'San Jacinto Day' },
+		//{ start: '2016-04-22', title: 'Oklahoma Day' },
+		//{ start: '2016-04-23', title: 'Passover (first day)' },
+		//{ start: '2016-04-25', title: 'Confederate Memorial Day' },
+		//{ start: '2016-04-25', title: 'State Holiday' },
+		//{ start: '2016-04-25', title: 'State Holiday' },
+		//{ start: '2016-04-26', title: 'State Holiday' },
+		//{ start: '2016-04-27', title: 'Administrative Professionals Day' },
 		{ start: '2016-04-28', title: 'Take our Daughters and Sons to Work Day' },
-		{ start: '2016-04-29', title: 'Orthodox Good Friday' },
-		{ start: '2016-04-29', title: 'Arbor Day' },
-		{ start: '2016-04-30', title: 'Last Day of Passover' },
-		{ start: '2016-04-30', title: 'Orthodox Holy Saturday' },
-		{ start: '2016-05-01', title: 'Orthodox Easter' },
-		{ start: '2016-05-01', title: 'Law Day' },
-		{ start: '2016-05-01', title: 'Loyalty Day' },
-		{ start: '2016-05-02', title: 'Orthodox Easter Monday' },
-		{ start: '2016-05-03', title: 'Primary Election Day Indiana' },
-		{ start: '2016-05-04', title: 'Yom HaShoah' },
-		{ start: '2016-05-04', title: 'Kent State Shootings Remembrance' },
-		{ start: '2016-05-04', title: 'Rhode Island Independence Day' },
-		{ start: '2016-05-05', title: 'Ascension Day' },
-		{ start: '2016-05-05', title: 'Isra and Mi\'raj' },
-		{ start: '2016-05-05', title: 'Cinco de Mayo' },
-		{ start: '2016-05-05', title: 'National Day of Prayer' },
-		{ start: '2016-05-06', title: 'National Nurses Day' },
-		{ start: '2016-05-07', title: 'National Explosive Ordnance Disposal (EOD) Day' },
+		//{ start: '2016-04-29', title: 'Orthodox Good Friday' },
+		//{ start: '2016-04-29', title: 'Arbor Day' },
+		//{ start: '2016-04-30', title: 'Last Day of Passover' },
+		//{ start: '2016-04-30', title: 'Orthodox Holy Saturday' },
+		//{ start: '2016-05-01', title: 'Orthodox Easter' },
+		//{ start: '2016-05-01', title: 'Law Day' },
+		//{ start: '2016-05-01', title: 'Loyalty Day' },
+		//{ start: '2016-05-02', title: 'Orthodox Easter Monday' },
+		//{ start: '2016-05-03', title: 'Primary Election Day Indiana' },
+		//{ start: '2016-05-04', title: 'Yom HaShoah' },
+		//{ start: '2016-05-04', title: 'Kent State Shootings Remembrance' },
+		//{ start: '2016-05-04', title: 'Rhode Island Independence Day' },
+		//{ start: '2016-05-05', title: 'Ascension Day' },
+		//{ start: '2016-05-05', title: 'Isra and Mi\'raj' },
+		//{ start: '2016-05-05', title: 'Cinco de Mayo' },
+		//{ start: '2016-05-05', title: 'National Day of Prayer' },
+		//{ start: '2016-05-06', title: 'National Nurses Day' },
+		//{ start: '2016-05-07', title: 'National Explosive Ordnance Disposal (EOD) Day' },
 		{ start: '2016-05-08', title: 'Mother\'s Day' },
-		{ start: '2016-05-08', title: 'Truman Day' },
-		{ start: '2016-05-09', title: 'Truman Day observed' },
-		{ start: '2016-05-10', title: 'State Holiday' },
-		{ start: '2016-05-10', title: 'State Holiday' },
-		{ start: '2016-05-10', title: 'Primary Election Day West Virginia' },
-		{ start: '2016-05-12', title: 'Yom Ha\'atzmaut' },
-		{ start: '2016-05-15', title: 'Pentecost' },
-		{ start: '2016-05-15', title: 'Peace Officers Memorial Day' },
-		{ start: '2016-05-16', title: 'Whit Monday' },
-		{ start: '2016-05-20', title: 'National Defense Transportation Day' },
-		{ start: '2016-05-21', title: 'Armed Forces Day' },
-		{ start: '2016-05-22', title: 'Trinity Sunday' },
-		{ start: '2016-05-22', title: 'National Maritime Day' },
-		{ start: '2016-05-22', title: 'Harvey Milk Day' },
-		{ start: '2016-05-25', title: 'Emergency Medical Services for Children Day' },
-		{ start: '2016-05-25', title: 'National Missing Children\'s Day' },
-		{ start: '2016-05-26', title: 'Corpus Christi' },
-		{ start: '2016-05-26', title: 'Lag BaOmer' },
+		//{ start: '2016-05-08', title: 'Truman Day' },
+		//{ start: '2016-05-09', title: 'Truman Day observed' },
+		//{ start: '2016-05-10', title: 'State Holiday' },
+		//{ start: '2016-05-10', title: 'State Holiday' },
+		//{ start: '2016-05-10', title: 'Primary Election Day West Virginia' },
+		//{ start: '2016-05-12', title: 'Yom Ha\'atzmaut' },
+		//{ start: '2016-05-15', title: 'Pentecost' },
+		//{ start: '2016-05-15', title: 'Peace Officers Memorial Day' },
+		//{ start: '2016-05-16', title: 'Whit Monday' },
+		//{ start: '2016-05-20', title: 'National Defense Transportation Day' },
+		//{ start: '2016-05-21', title: 'Armed Forces Day' },
+		//{ start: '2016-05-22', title: 'Trinity Sunday' },
+		//{ start: '2016-05-22', title: 'National Maritime Day' },
+		//{ start: '2016-05-22', title: 'Harvey Milk Day' },
+		//{ start: '2016-05-25', title: 'Emergency Medical Services for Children Day' },
+		//{ start: '2016-05-25', title: 'National Missing Children\'s Day' },
+		//{ start: '2016-05-26', title: 'Corpus Christi' },
+		//{ start: '2016-05-26', title: 'Lag BaOmer' },
 		{ start: '2016-05-30', title: 'Memorial Day' },
-		{ start: '2016-05-30', title: 'Jefferson Davis Birthday' },
-		{ start: '2016-06-01', title: 'Statehood Day' },
-		{ start: '2016-06-03', title: 'Jefferson Davis Birthday' },
-		{ start: '2016-06-06', title: 'Jefferson Davis Birthday' },
-		{ start: '2016-06-06', title: 'D-Day' },
-		{ start: '2016-06-07', title: 'Ramadan starts' },
-		{ start: '2016-06-10', title: 'Kamehameha Day observed' },
-		{ start: '2016-06-11', title: 'Kamehameha Day' },
-		{ start: '2016-06-12', title: 'Shavuot' },
-		{ start: '2016-06-14', title: 'U.S. Army Birthday' },
-		{ start: '2016-06-14', title: 'Flag Day' },
-		{ start: '2016-06-17', title: 'Bunker Hill Day' },
+		//{ start: '2016-05-30', title: 'Jefferson Davis Birthday' },
+		//{ start: '2016-06-01', title: 'Statehood Day' },
+		//{ start: '2016-06-03', title: 'Jefferson Davis Birthday' },
+		//{ start: '2016-06-06', title: 'Jefferson Davis Birthday' },
+		//{ start: '2016-06-06', title: 'D-Day' },
+		//{ start: '2016-06-07', title: 'Ramadan starts' },
+		//{ start: '2016-06-10', title: 'Kamehameha Day observed' },
+		//{ start: '2016-06-11', title: 'Kamehameha Day' },
+		//{ start: '2016-06-12', title: 'Shavuot' },
+		//{ start: '2016-06-14', title: 'U.S. Army Birthday' },
+		//{ start: '2016-06-14', title: 'Flag Day' },
+		//{ start: '2016-06-17', title: 'Bunker Hill Day' },
 		{ start: '2016-06-19', title: 'Father\'s Day' },
-		{ start: '2016-06-19', title: 'Juneteenth' },
-		{ start: '2016-06-19', title: 'Emancipation Day' },
-		{ start: '2016-06-20', title: 'June Solstice' },
-		{ start: '2016-06-20', title: 'West Virginia Day' },
-		{ start: '2016-06-20', title: 'American Eagle Day' },
-		{ start: '2016-07-02', title: 'Lailat al-Qadr' },
+		//{ start: '2016-06-19', title: 'Juneteenth' },
+		//{ start: '2016-06-19', title: 'Emancipation Day' },
+		//{ start: '2016-06-20', title: 'June Solstice' },
+		//{ start: '2016-06-20', title: 'West Virginia Day' },
+		//{ start: '2016-06-20', title: 'American Eagle Day' },
+		//{ start: '2016-07-02', title: 'Lailat al-Qadr' },
 		{ start: '2016-07-04', title: 'Independence Day' },
-		{ start: '2016-07-07', title: 'Eid al-Fitr' },
-		{ start: '2016-07-24', title: 'Pioneer Day' },
-		{ start: '2016-07-24', title: 'Parents\' Day' },
-		{ start: '2016-07-25', title: 'Pioneer Day observed' },
-		{ start: '2016-08-01', title: 'Colorado Day' },
-		{ start: '2016-08-04', title: 'U.S. Coast Guard Birthday' },
-		{ start: '2016-08-07', title: 'Purple Heart Day' },
-		{ start: '2016-08-08', title: 'Victory Day' },
-		{ start: '2016-08-14', title: 'Tisha B\'Av' },
-		{ start: '2016-08-15', title: 'Assumption of Mary' },
-		{ start: '2016-08-16', title: 'Bennington Battle Day' },
-		{ start: '2016-08-19', title: 'Statehood Day in Hawaii' },
-		{ start: '2016-08-19', title: 'National Aviation Day' },
-		{ start: '2016-08-21', title: 'Senior Citizens Day' },
-		{ start: '2016-08-26', title: 'Women\'s Equality Day' },
-		{ start: '2016-08-27', title: 'Lyndon Baines Johnson Day' },
+		//{ start: '2016-07-07', title: 'Eid al-Fitr' },
+		//{ start: '2016-07-24', title: 'Pioneer Day' },
+		//{ start: '2016-07-24', title: 'Parents\' Day' },
+		//{ start: '2016-07-25', title: 'Pioneer Day observed' },
+		//{ start: '2016-08-01', title: 'Colorado Day' },
+		//{ start: '2016-08-04', title: 'U.S. Coast Guard Birthday' },
+		//{ start: '2016-08-07', title: 'Purple Heart Day' },
+		//{ start: '2016-08-08', title: 'Victory Day' },
+		//{ start: '2016-08-14', title: 'Tisha B\'Av' },
+		//{ start: '2016-08-15', title: 'Assumption of Mary' },
+		//{ start: '2016-08-16', title: 'Bennington Battle Day' },
+		//{ start: '2016-08-19', title: 'Statehood Day in Hawaii' },
+		//{ start: '2016-08-19', title: 'National Aviation Day' },
+		//{ start: '2016-08-21', title: 'Senior Citizens Day' },
+		//{ start: '2016-08-26', title: 'Women\'s Equality Day' },
+		//{ start: '2016-08-27', title: 'Lyndon Baines Johnson Day' },
 		{ start: '2016-09-05', title: 'Labor Day' },
-		{ start: '2016-09-09', title: 'California Admission Day' },
-		{ start: '2016-09-10', title: 'Carl Garner Federal Lands Cleanup Day' },
-		{ start: '2016-09-11', title: 'Patriot Day' },
-		{ start: '2016-09-11', title: 'National Grandparents Day' },
-		{ start: '2016-09-13', title: 'Eid al-Adha' },
-		{ start: '2016-09-16', title: 'Constitution Day and Citizenship Day observed' },
-		{ start: '2016-09-16', title: 'National POW/MIA Recognition Day' },
-		{ start: '2016-09-17', title: 'Constitution Day and Citizenship Day' },
-		{ start: '2016-09-18', title: 'Air Force Birthday' },
-		{ start: '2016-09-22', title: 'September equinox' },
-		{ start: '2016-09-22', title: 'Emancipation Day' },
-		{ start: '2016-09-23', title: 'Native Americans\' Day' },
-		{ start: '2016-09-25', title: 'Gold Star Mother\'s Day' },
-		{ start: '2016-10-03', title: 'Rosh Hashana' },
-		{ start: '2016-10-03', title: 'Muharram' },
-		{ start: '2016-10-03', title: 'Child Health Day' },
-		{ start: '2016-10-04', title: 'Feast of St Francis of Assisi' },
-		{ start: '2016-10-09', title: 'Leif Erikson Day' },
-		{ start: '2016-10-10', title: 'Columbus Day' },
-		{ start: '2016-10-10', title: 'Columbus Day' },
-		{ start: '2016-10-10', title: 'Native Americans\' Day' },
-		{ start: '2016-10-10', title: 'Indigenous People\'s Day' },
-		{ start: '2016-10-12', title: 'Yom Kippur' },
-		{ start: '2016-10-13', title: 'U.S. Navy Birthday' },
-		{ start: '2016-10-15', title: 'White Cane Safety Day' },
-		{ start: '2016-10-17', title: 'First Day of Sukkot' },
-		{ start: '2016-10-17', title: 'Boss\'s Day' },
-		{ start: '2016-10-18', title: 'Alaska Day' },
-		{ start: '2016-10-23', title: 'Last Day of Sukkot' },
-		{ start: '2016-10-24', title: 'Shmini Atzeret' },
-		{ start: '2016-10-25', title: 'Simchat Torah' },
-		{ start: '2016-10-28', title: 'Nevada Day' },
-		{ start: '2016-10-29', title: 'Diwali/Deepavali' },
+		//{ start: '2016-09-09', title: 'California Admission Day' },
+		//{ start: '2016-09-10', title: 'Carl Garner Federal Lands Cleanup Day' },
+		//{ start: '2016-09-11', title: 'Patriot Day' },
+		//{ start: '2016-09-11', title: 'National Grandparents Day' },
+		//{ start: '2016-09-13', title: 'Eid al-Adha' },
+		//{ start: '2016-09-16', title: 'Constitution Day and Citizenship Day observed' },
+		//{ start: '2016-09-16', title: 'National POW/MIA Recognition Day' },
+		//{ start: '2016-09-17', title: 'Constitution Day and Citizenship Day' },
+		//{ start: '2016-09-18', title: 'Air Force Birthday' },
+		//{ start: '2016-09-22', title: 'September equinox' },
+		//{ start: '2016-09-22', title: 'Emancipation Day' },
+		//{ start: '2016-09-23', title: 'Native Americans\' Day' },
+		//{ start: '2016-09-25', title: 'Gold Star Mother\'s Day' },
+		//{ start: '2016-10-03', title: 'Rosh Hashana' },
+		//{ start: '2016-10-03', title: 'Muharram' },
+		//{ start: '2016-10-03', title: 'Child Health Day' },
+		//{ start: '2016-10-04', title: 'Feast of St Francis of Assisi' },
+		//{ start: '2016-10-09', title: 'Leif Erikson Day' },
+		//{ start: '2016-10-10', title: 'Columbus Day' },
+		//{ start: '2016-10-10', title: 'Columbus Day' },
+		//{ start: '2016-10-10', title: 'Native Americans\' Day' },
+		//{ start: '2016-10-10', title: 'Indigenous People\'s Day' },
+		//{ start: '2016-10-12', title: 'Yom Kippur' },
+		//{ start: '2016-10-13', title: 'U.S. Navy Birthday' },
+		//{ start: '2016-10-15', title: 'White Cane Safety Day' },
+		//{ start: '2016-10-17', title: 'First Day of Sukkot' },
+		//{ start: '2016-10-17', title: 'Boss\'s Day' },
+		//{ start: '2016-10-18', title: 'Alaska Day' },
+		//{ start: '2016-10-23', title: 'Last Day of Sukkot' },
+		//{ start: '2016-10-24', title: 'Shmini Atzeret' },
+		//{ start: '2016-10-25', title: 'Simchat Torah' },
+		//{ start: '2016-10-28', title: 'Nevada Day' },
+		//{ start: '2016-10-29', title: 'Diwali/Deepavali' },
 		{ start: '2016-10-31', title: 'Halloween' },
-		{ start: '2016-11-01', title: 'All Saints\' Day' },
-		{ start: '2016-11-02', title: 'All Souls\' Day' },
-		{ start: '2016-11-06', title: 'Daylight Saving Time ends' },
-		{ start: '2016-11-08', title: 'Election Day' },
-		{ start: '2016-11-08', title: 'Election Day' },
-		{ start: '2016-11-10', title: 'Marine Corps Birthday' },
-		{ start: '2016-11-10', title: 'Return Day Delaware' },
+		//{ start: '2016-11-01', title: 'All Saints\' Day' },
+		//{ start: '2016-11-02', title: 'All Souls\' Day' },
+		//{ start: '2016-11-06', title: 'Daylight Saving Time ends' },
+		//{ start: '2016-11-08', title: 'Election Day' },
+		//{ start: '2016-11-08', title: 'Election Day' },
+		//{ start: '2016-11-10', title: 'Marine Corps Birthday' },
+		//{ start: '2016-11-10', title: 'Return Day Delaware' },
 		{ start: '2016-11-11', title: 'Veterans Day' },
 		{ start: '2016-11-24', title: 'Thanksgiving Day' },
-		{ start: '2016-11-25', title: 'State Holiday' },
+		//{ start: '2016-11-25', title: 'State Holiday' },
 		{ start: '2016-11-25', title: 'Presidents\' Day' },
 		{ start: '2016-11-25', title: 'Lincoln\'s Birthday/Lincoln\'s Day' },
 		{ start: '2016-11-25', title: 'Black Friday' },
-		{ start: '2016-11-25', title: 'American Indian Heritage Day' },
-		{ start: '2016-11-27', title: 'First Sunday of Advent' },
+		//{ start: '2016-11-25', title: 'American Indian Heritage Day' },
+		//{ start: '2016-11-27', title: 'First Sunday of Advent' },
 		{ start: '2016-11-28', title: 'Cyber Monday' },
-		{ start: '2016-12-06', title: 'St Nicholas\' Day' },
-		{ start: '2016-12-07', title: 'Pearl Harbor Remembrance Day' },
-		{ start: '2016-12-08', title: 'Feast of the Immaculate Conception' },
-		{ start: '2016-12-12', title: 'The Prophet\'s Birthday' },
-		{ start: '2016-12-12', title: 'Feast of Our Lady of Guadalupe' },
-		{ start: '2016-12-13', title: 'U.S. National Guard Birthday' },
-		{ start: '2016-12-17', title: 'Pan American Aviation Day' },
-		{ start: '2016-12-17', title: 'Wright Brothers Day' },
-		{ start: '2016-12-21', title: 'December Solstice' },
-		{ start: '2016-12-23', title: 'Christmas Eve observed' },
+		//{ start: '2016-12-06', title: 'St Nicholas\' Day' },
+		//{ start: '2016-12-07', title: 'Pearl Harbor Remembrance Day' },
+		//{ start: '2016-12-08', title: 'Feast of the Immaculate Conception' },
+		//{ start: '2016-12-12', title: 'The Prophet\'s Birthday' },
+		//{ start: '2016-12-12', title: 'Feast of Our Lady of Guadalupe' },
+		//{ start: '2016-12-13', title: 'U.S. National Guard Birthday' },
+		//{ start: '2016-12-17', title: 'Pan American Aviation Day' },
+		//{ start: '2016-12-17', title: 'Wright Brothers Day' },
+		//{ start: '2016-12-21', title: 'December Solstice' },
+		//{ start: '2016-12-23', title: 'Christmas Eve observed' },
 		{ start: '2016-12-24', title: 'Christmas Eve' },
-		{ start: '2016-12-24', title: 'Christmas Eve' },
-		{ start: '2016-12-25', title: 'Chanukah/Hanukkah (first day)' },
+		//{ start: '2016-12-24', title: 'Christmas Eve' },
+		//{ start: '2016-12-25', title: 'Chanukah/Hanukkah (first day)' },
 		{ start: '2016-12-25', title: 'Christmas Day' },
-		{ start: '2016-12-26', title: 'Kwanzaa (until Jan 1)' },
-		{ start: '2016-12-26', title: 'Christmas Day observed' },
+		//{ start: '2016-12-26', title: 'Kwanzaa (until Jan 1)' },
+		//{ start: '2016-12-26', title: 'Christmas Day observed' },
 		{ start: '2016-12-26', title: 'Day After Christmas Day' },
 		{ start: '2016-12-30', title: 'New Year\'s Eve observed' },
 		{ start: '2016-12-31', title: 'New Year\'s Eve' }
@@ -786,14 +800,16 @@ function updateEventRange() {
 }
 
 function storeSubjectAndName() {
-  var subject = jQuery('#session-participant').val().replace(/\s/g, '');
-  var session = jQuery('#session-name').val().replace(/\s/g, '');
+  var subject = jQuery('#session-participant').val();
+  var session = jQuery('#session-name').val();
+  var run     = jQuery('#session-run').val();
   jQuery('#session-participant').val(subject);
   jQuery('#session-name').val(session);
   jQuery('.subject-id').text("Subject ID: " + subject);
   jQuery('.session-id').text("Session: " + session);
+  jQuery('.run-id').text("Run: " + run);
 
-  if (subject.length > 0 && session.length > 0) {
+  if (subject !== null && subject.length > 0 && session.length > 0) {
     jQuery('#session-active').text("Active Session");
     jQuery('#calendar-loc').fadeIn();
     jQuery('#open-save-session').fadeIn();
@@ -812,12 +828,13 @@ function storeSubjectAndName() {
   var data = {
     "subjid": subject,
     "sessionid": session,
+    "run": run,
     "act_subst": encodeURIComponent(JSON.stringify(active_substances.toArray())),
     "task": "timeline-followback"
   };
   
   jQuery.get('../../code/php/session.php', data, function() {
-    console.log('stored subject and session and act_subst: ' +  subject + ", " + session + ", " + encodeURIComponent(JSON.stringify(active_substances.toArray())));
+      console.log('stored subject,session, act_subst, and run: ' +  subject + ", " + session + ", " + encodeURIComponent(JSON.stringify(active_substances.toArray())) + ", " + run);
   });
 }
 
@@ -829,6 +846,7 @@ function closeSession() {
   jQuery('#select-substances-checkboxes').children().removeClass('active');
   jQuery('#select-substance-radio-group').children().remove();
   jQuery('#num-selected-substances').text("");
+  jQuery('#session-run').val("01");  
   storeSubjectAndName();
 }
 
@@ -876,10 +894,44 @@ function exportToCsv(filename, rows) {
     }
 }
 
+// get valid session names
+function getSessionNamesFromREDCap() {
+    jQuery.getJSON('/code/php/getRCEvents.php', function(data) {
+	for (var i = 0; i < data.length; i++) {
+	    val = "";
+	    if (i == 1) {
+		val = "selected=\"selected\"";
+	    }
+	    jQuery('#session-name').append("<option " + val + " value=\"" + data[i].unique_event_name + "\">" + data[i].event_name + "</option>");
+	}
+	getParticipantNamesFromREDCap();
+	//storeSubjectAndName();
+    });
+}
+
+function getParticipantNamesFromREDCap() {
+    jQuery.getJSON('/code/php/getParticipantNamesFromREDCap.php', function(data) {
+	for (var i = 0; i < data.length; i++) {
+	    jQuery('#session-participant').append("<option value=\"" + data[i] + "\">" + data[i] + "</option>");
+	}
+	// make sure we don't have selected a name here (only value in subjid counts at the beginning)
+	jQuery('#session-participant').val(subjid);
+	storeSubjectAndName();
+    });
+}
+
 var colors = [ "#C6CAED", "#ADA8BE", "#A28497", "#6F5E5C", "#4A5240" ];
 
 jQuery(document).ready(function() {
 
+  getSessionNamesFromREDCap();
+
+  // add the session variables to the interface
+  jQuery('#user_name').text("User: " + user_name);
+  jQuery('#session-participant').val(subjid);
+  jQuery('#session-name').val(session);
+  jQuery('#session-run').val(run);
+    
   // convert the 2D array of active substance names and units into a 1D array of substance names
   var act_subst_names = [];
   for (var i = 0; i < act_subst.length; i++) {
@@ -932,13 +984,6 @@ jQuery(document).ready(function() {
     }
   });
     
-  // add the session variables to the interface
-  jQuery('#user_name').text("User: " + user_name);
-  jQuery('#session-participant').val(subjid);
-  jQuery('#session-name').val(session);
-
-  storeSubjectAndName();
-
   createCalendar();
 
   checkConnectionStatus();
@@ -949,6 +994,9 @@ jQuery(document).ready(function() {
     storeSubjectAndName();
   });
   jQuery('#session-name').change(function() {
+    storeSubjectAndName();
+  });
+  jQuery('#session-run').change(function() {
     storeSubjectAndName();
   });
   jQuery('#select-substances-checkboxes').on('change', 'label', function() {

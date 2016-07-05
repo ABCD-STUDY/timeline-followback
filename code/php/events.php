@@ -45,7 +45,8 @@
    }
 
    if ($subjid == "") {
-     echo(json_encode ( array( "message" => "Error: no subject id assigned" ) ) );
+     // This would trip the calendar call, it does not expect a string to be returned - would produce a alert
+     //echo(json_encode ( array( "message" => "Error: no subject id assigned" ) ) );
      return;
    }
    if ($sessionid == "") {
@@ -111,6 +112,11 @@
     $action = $_GET["action"];
   else
     $action = null;
+
+  // check if this event can be saved
+  if ($action == "test") {
+     return; 
+  }
 
   if (isset($_GET["start"]))
     $start = rawurldecode($_GET["start"]);

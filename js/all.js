@@ -744,6 +744,7 @@ var substance_units = [
     [ "Tobacco chew", "pinches"],
     [ "Cigars", "cigars" ],
     [ "Hookah", "hits" ],
+    [ "Pipe Tabacco", "hits" ],
     [ "Blunts", "blunts" ],
     [ "Smoked MJ", "grams" ],
     [ "Edible MJ", [ "mg THC", "occasions" ] ],

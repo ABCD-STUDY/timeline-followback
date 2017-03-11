@@ -302,7 +302,8 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+       
+       <!--                 <tr>
                           <td><input type="text" class="form-control" id="special-event-01-name" placeholder="Event name"></td>
                           <td>
                             <div class='input-group date' id='special-event-01-start-date-picker'>
@@ -358,7 +359,7 @@
                               </span>
                             </div>
                           </td>
-                        </tr>
+                        </tr> -->
                       </tbody>
                     </table>
                   </div><!-- /.form-group -->
@@ -384,9 +385,9 @@
           </div>
         </div>
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2">
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="col-lg-10 col-lg-offset-1">
             <div class="modal-body">
               <!-- Details Go Here -->
               <h2>Event Details</h2>
@@ -518,8 +519,8 @@
   <!-- Bootstrap Core JavaScript -->
   <script src="js/bootstrap.min.js"></script>
 
-  <script src="js/bootstrap-datetimepicker.js"></script>
   <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/bootstrap-datetimepicker.js"></script>
   <script src="js/bootstrap-colorselector.js"></script>
 
   <!-- Plugin JavaScript -->

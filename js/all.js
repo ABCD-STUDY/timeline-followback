@@ -15,7 +15,7 @@
     });
   }
 
-  numSpecialEvents = 6;
+  numSpecialEvents = 15;
 
   function specifyEvent( event ) {
     if (!eventEditable(event).ok) {
@@ -74,10 +74,12 @@
 
     jQuery('#session-date-picker').data("DateTimePicker").setDate(event.start);
 
-    for (var i = 1; i <= numSpecialEvents; i++) {
-        jQuery('#special-event-' + pad(i,2) + '-start-date-picker').data("DateTimePicker").setDate(event.start);
-	jQuery('#special-event-' + pad(i,2) + '-end-date-picker').data("DateTimePicker").setDate(event.start);
-    }
+   /* for (var i = 1; i <= numSpecialEvents; i++) {
+	  if (typeof jQuery('#special-event-' + pad(i,2) + '-start-date-picker').data("DateTimePicker") != 'undefined')
+              jQuery('#special-event-' + pad(i,2) + '-start-date-picker').data("DateTimePicker").setDate(event.start);
+	  if (typeof jQuery('#special-event-' + pad(i,2) + '-end-date-picker').data("DateTimePicker") != 'undefined')
+	      jQuery('#special-event-' + pad(i,2) + '-end-date-picker').data("DateTimePicker").setDate(event.start);
+    } */
 
     // initialize the field for the start date
     //jQuery('#add-event-start-date-picker').data("DateTimePicker").setMinDate(new Date());
@@ -740,16 +742,21 @@ function pad(num, size) {
 var substance_units = [
     [ "Alcohol", "standard drinks" ],
     [ "Tobacco smoked", "cigarettes" ],
+    [ "Nicotine replacement", "doses" ],
     [ "E-cigarettes", "occasions" ],
     [ "Tobacco chew", "pinches"],
     [ "Cigars", "cigars" ],
     [ "Hookah", "hits" ],
-    [ "Pipe Tabacco", "hits" ],
-    [ "Blunts", "blunts" ],
+    [ "Pipe Tobacco", "hits" ],
+    [ "Blunts", "grams" ],
     [ "Smoked MJ", "grams" ],
     [ "Edible MJ", [ "mg THC", "occasions" ] ],
     [ "Fake MJ", "grams" ],
-    [ "MJ concentrates", [ "grams", "occasions" ] ],
+    [ "MJ concentrates", [ "mg", "occasions" ] ],
+    [ "MJ infused alcohol drinks", "standard drinks"],
+    [ "MJ tincture", "ml"],
+    [ "Magic mushrooms", "occasions"],
+    [ "Saliva", "occasions"],
     [ "Cocaine", "occasions" ],
     [ "Stimulant medication", "pills" ],
     [ "Cathinones", "occasions" ],
@@ -921,10 +928,51 @@ function getParticipantNamesFromREDCap() {
     });
 }
 
+function addSpecialEventsInterface( num ) {
+    for( var i = 1; i <= num; i++) {
+	jQuery('#sessions-table tbody').append(
+	    '<tr>' +
+                '<td style="width: 33%;"><input type="text" class="form-control" id="special-event-' + pad(i,2) + '-name" placeholder="Event name"></td>' +
+                '<td>' +
+                '  <div class="input-group date" id="special-event-' + pad(i,2) + '-start-date-picker">' +
+                '     <input type="text" data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-' + pad(i,2) + '-start-date" class="form-control" />' +
+                '             <span class="input-group-addon">' +
+                '             <span class="glyphicon glyphicon-calendar"></span>' +
+                '             </span>' +
+                '  </div>' +
+                '</td>' +
+                '<td>' +
+                '  <div class="input-group date" id="special-event-' + pad(i,2) + '-end-date-picker">' +
+                '     <input type="text" data-format="MM/dd/yyyy HH:mm:ss PP" id="special-event-' + pad(i,2) + '-end-date" class="form-control" />' +
+                '             <span class="input-group-addon">' +
+                '             <span class="glyphicon glyphicon-calendar"></span>' +
+                '             </span>' +
+                '  </div>' +
+                '</td></tr>');
+    }
+    for (var i = 1; i <= numSpecialEvents; i++) {
+	jQuery('#special-event-' + pad(i,2) + '-start-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+	jQuery('#special-event-' + pad(i,2) + '-end-date-picker').datetimepicker({language: 'en', format: "MM/DD/YYYY" });
+
+	// add a callback that makes this a single day (if start changes, copy to end if end is empty)
+	jQuery('#special-event-' + pad(i,2) + '-start-date').on('change', (function(start, end) {
+	    return function() {
+		console.log("in event " + start + " " + end);
+		if (jQuery(end).val() == "") { // if we don't have a date yet, copy the start date over
+		    jQuery(end).val(jQuery(start).val());
+		}
+	    };
+	})(jQuery('#special-event-' + pad(i,2) + '-start-date'), jQuery('#special-event-' + pad(i,2) + '-end-date')));
+    }
+}
+
 var colors = [ "#C6CAED", "#ADA8BE", "#A28497", "#6F5E5C", "#4A5240" ];
 
 jQuery(document).ready(function() {
 
+    // add special events section to interface
+    addSpecialEventsInterface(numSpecialEvents);
+    
   getSessionNamesFromREDCap();
 
   // add the session variables to the interface

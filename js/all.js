@@ -5,6 +5,9 @@
 
   // logout the current user
   function logout() {
+      if (stand_alone == 1)
+	  return; // nothing to be done because user is not logged in
+      
     jQuery.get('/code/php/logout.php', function(data) {
       if (data == "success") {
         // user is logged out, reload this page
@@ -782,15 +785,17 @@ function getActiveSubstances() {
 }
 
 function checkConnectionStatus() {
-  jQuery.getJSON('/code/php/heartbeat.php', function() {
-    //jQuery('#connection-status').addClass('connection-status-ok');
-    jQuery('#connection-status').css('color', "#228B22");
-    jQuery('#connection-status').attr('title', 'Connection established last at ' + Date());
-  }).error(function() {
-    // jQuery('#connection-status').removeClass('connection-status-ok');
-    jQuery('#connection-status').css('color', "#CD5C5C");
-    jQuery('#connection-status').attr('title', 'Connection failed at ' + Date());
-  });
+    if (!stand_alone) {
+	jQuery.getJSON('/code/php/heartbeat.php', function() {
+	    //jQuery('#connection-status').addClass('connection-status-ok');
+	    jQuery('#connection-status').css('color', "#228B22");
+	    jQuery('#connection-status').attr('title', 'Connection established last at ' + Date());
+	}).error(function() {
+	    // jQuery('#connection-status').removeClass('connection-status-ok');
+	    jQuery('#connection-status').css('color', "#CD5C5C");
+	    jQuery('#connection-status').attr('title', 'Connection failed at ' + Date());
+	});
+    }
 }
 
 // calculate the special event range for this session
@@ -817,7 +822,7 @@ function storeSubjectAndName() {
   jQuery('.session-id').text("Session: " + session);
   jQuery('.run-id').text("Run: " + run);
 
-  if (subject !== null && subject.length > 0 && session.length > 0) {
+  if (subject !== null && subject.length > 0 && session !== null && session.length > 0) {
     jQuery('#session-active').text("Active Session");
     jQuery('#calendar-loc').fadeIn();
     jQuery('#open-save-session').fadeIn();
@@ -840,8 +845,12 @@ function storeSubjectAndName() {
     "act_subst": encodeURIComponent(JSON.stringify(active_substances.toArray())),
     "task": "timeline-followback"
   };
-  
-  jQuery.get('../../code/php/session.php', data, function() {
+
+  url = "../../code/php/session.php";
+  if (stand_alone) {
+     url = "code/php/session.php";
+  }
+  jQuery.get(url, data, function() {
       console.log('stored subject,session, act_subst, and run: ' +  subject + ", " + session + ", " + encodeURIComponent(JSON.stringify(active_substances.toArray())) + ", " + run);
   });
 }
@@ -902,6 +911,19 @@ function exportToCsv(filename, rows) {
     }
 }
 
+function getSessionNamesFromLocalFile() {
+    jQuery.getJSON('session_names.json', function(data) {
+	for (var i = 0; i < data.length; i++) {
+	    val = "";
+	    if (i == 1) {
+		val = "selected=\"selected\"";
+	    }
+	    jQuery('#session-name').append("<option " + val + " value=\"" + data[i].unique_event_name + "\">" + data[i].event_name + "</option>");
+	}
+	getParticipantNamesFromLocalFile();
+    });
+}
+
 // get valid session names
 function getSessionNamesFromREDCap() {
     jQuery.getJSON('/code/php/getRCEvents.php', function(data) {
@@ -917,6 +939,17 @@ function getSessionNamesFromREDCap() {
     });
 }
 
+    function getParticipantNamesFromLocalFile() {
+	jQuery.getJSON('participants.json', function(data) {
+	    for (var i = 0; i < data.length; i++) {
+		jQuery('#session-participant').append("<option value=\"" + data[i] + "\">" + data[i] + "</option>");
+ 	    }
+	    // make sure we don't have selected a name here (only value in subjid counts at the beginning)
+	    jQuery('#session-participant').val(subjid);
+	    storeSubjectAndName();
+	});
+    }
+    
 function getParticipantNamesFromREDCap() {
     jQuery.getJSON('/code/php/getParticipantNamesFromREDCap.php', function(data) {
 	for (var i = 0; i < data.length; i++) {
@@ -972,8 +1005,12 @@ jQuery(document).ready(function() {
 
     // add special events section to interface
     addSpecialEventsInterface(numSpecialEvents);
-    
-  getSessionNamesFromREDCap();
+
+    if (stand_alone) {
+	getSessionNamesFromLocalFile();
+    } else {
+	getSessionNamesFromREDCap();
+    }
 
   // add the session variables to the interface
   jQuery('#user_name').text("User: " + user_name);

@@ -1,41 +1,50 @@
 <?php
   session_start();
 
-  include($_SERVER["DOCUMENT_ROOT"]."/code/php/AC.php");
-  $user_name = check_logged(); /// function checks if visitor is logged.
-  $admin = false;
+  $access_control_file = $_SERVER["DOCUMENT_ROOT"]."/code/php/AC.php";
+  $stand_alone = true;
+  if (file_exists($access_control_file)) {
+    $stand_alone = false;
+    include($access_control_file);
+    $user_name = check_logged(); /// function checks if visitor is logged.
+    $admin = false;
 
-  if ($user_name == "") {
-    // user is not logged in
+    if ($user_name == "") {
+      // user is not logged in
+    } else {
+      $admin = true;
+      echo('<script type="text/javascript"> user_name = "'.$user_name.'"; </script>'."\n");
+      echo('<script type="text/javascript"> admin = '.($admin?"true":"false").'; </script>'."\n");
+    }
 
-  } else {
-    $admin = true;
+    $permissions = list_permissions_for_user( $user_name );
+
+    // find the first permission that corresponds to a site
+    // Assumption here is that a user can only add assessment for the first site he has permissions for!
+    $site = "";
+    foreach ($permissions as $per) {
+       $a = explode("Site", $per); // permissions should be structured as "Site<site name>"
+
+       if (count($a) > 0) {
+          $site = $a[1]; 
+  	  break;
+       }
+    }
+    if ($site == "") {
+       echo (json_encode ( array( "message" => "Error: no site assigned to this user" ) ) );
+       return;
+    }
+  } else { // fall-back in case we don't have access control
+    $user_name = "anonymous";
+    $site = "anonymous";
     echo('<script type="text/javascript"> user_name = "'.$user_name.'"; </script>'."\n");
-    echo('<script type="text/javascript"> admin = '.($admin?"true":"false").'; </script>'."\n");
   }
-
-  $permissions = list_permissions_for_user( $user_name );
-
-  // find the first permission that corresponds to a site
-  // Assumption here is that a user can only add assessment for the first site he has permissions for!
-  $site = "";
-  foreach ($permissions as $per) {
-     $a = explode("Site", $per); // permissions should be structured as "Site<site name>"
-
-     if (count($a) > 0) {
-        $site = $a[1];
-	break;
-     }
-  }
-  if ($site == "") {
-     echo (json_encode ( array( "message" => "Error: no site assigned to this user" ) ) );
-     return;
-  }
-
+  echo('<script type="text/javascript"> stand_alone = "'.($stand_alone?"1":"0").'"; </script>'."\n");
+  
    // if there is a running session it would have the follow information
    $subjid = "";
    $sessionid = "";
-   $act_subst = array();
+   $act_subst = "";
    $run = "";
    if ( isset($_SESSION['ABCD']) && isset($_SESSION['ABCD']['timeline-followback']) ) {
       if (isset($_SESSION['ABCD']['timeline-followback']['subjid'])) {  
@@ -62,7 +71,7 @@
    //    double quotes are forbidden from substance names
    //    we trust the content of this variable <- cross-site scripting danger
    $act_subst = rawurldecode($act_subst);
-   if ($act_subst != "") {
+   if ($act_subst !== "") {
      echo('<script type="text/javascript"> act_subst = '.$act_subst.'; </script>'."\n");
    } else {
      echo('<script type="text/javascript"> act_subst = []; </script>'."\n");

@@ -18,13 +18,13 @@
 
   // find the first permission that corresponds to a site
   // Assumption here is that a user can only add assessment for the first site he has permissions for!
+//syslog(LOG_EMERG, "permissions: ".json_encode($permissions));
   $site = "";
   foreach ($permissions as $per) {
      $a = explode("Site", $per); // permissions should be structured as "Site<site name>"
-
-     if (count($a) > 0) {
+     if (count($a) > 1) {
         $site = $a[1];
-	break;
+	    break;
      }
   }
   if ($site == "") {

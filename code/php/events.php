@@ -2,32 +2,39 @@
 
   session_start(); /// initialize session, we will use session variables to store the subjid
 
-  include($_SERVER["DOCUMENT_ROOT"]."/code/php/AC.php");
-  $user_name = check_logged(); /// function checks if user is logged in
+  $access_control_file = $_SERVER["DOCUMENT_ROOT"]."/code/php/AC.php";
+  $stand_alone = true;
+  if (file_exists($access_control_file)) {
+    $stand_alone = false;
+    include($access_control_file);
+    $user_name = check_logged(); /// function checks if user is logged in
 
-  if (!$user_name || $user_name == "") {
-     echo (json_encode ( array( "message" => "no user name" ) ) );
-     return; // nothing
+    if (!$user_name || $user_name == "") {
+       echo (json_encode ( array( "message" => "no user name" ) ) );
+       return; // nothing
+    }
+
+    $permissions = list_permissions_for_user( $user_name );
+
+    // find the first permission that corresponds to a site
+    // Assumption here is that a user can only add assessment for the first site he has permissions for!
+    $site = "";
+    foreach ($permissions as $per) {
+       $a = explode("Site", $per); // permissions should be structured as "Site<site name>"
+
+       if (count($a) > 0) {
+          $site = $a[1];
+  	  break;
+       }
+    }
+    if ($site == "") {
+       echo (json_encode ( array( "message" => "Error: no site assigned to this user" ) ) );
+       return;
+    }
+  } else {
+    $user_name = "anonymous";
+    $site = "anonymous";
   }
-
-  $permissions = list_permissions_for_user( $user_name );
-
-  // find the first permission that corresponds to a site
-  // Assumption here is that a user can only add assessment for the first site he has permissions for!
-  $site = "";
-  foreach ($permissions as $per) {
-     $a = explode("Site", $per); // permissions should be structured as "Site<site name>"
-
-     if (count($a) > 0) {
-        $site = $a[1];
-	break;
-     }
-  }
-  if ($site == "") {
-     echo (json_encode ( array( "message" => "Error: no site assigned to this user" ) ) );
-     return;
-  }
-
   // Both the subject id and the visit (session) are used to make the assessment unique
    $subjid = "";
    $sessionid = "";
@@ -55,10 +62,18 @@
    }
 
    // this event will be saved at this location
-   $events_file = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site . "/events_".$subjid."_".$sessionid.".json";
+   if ($stand_alone) {
+      $events_file = "../../data/" . $site . "/events_".$subjid."_".$sessionid.".json";
+   } else {
+      $events_file = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site . "/events_".$subjid."_".$sessionid.".json";
+   }
 
    // check if the site directory exits, otherwise create it
-   $dd = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site;
+   if ($stand_alone) {
+      $dd = "../../data/" . $site;
+   } else {
+      $dd = $_SERVER['DOCUMENT_ROOT']."/applications/timeline-followback/data/" . $site;
+   }
    if(!file_exists($dd)) {
       mkdir($dd,0777);
    }

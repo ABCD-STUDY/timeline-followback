@@ -867,6 +867,7 @@ function getSessionNamesFromREDCap() {
 		jQuery('#session-participant').append("<option value=\"" + data[i] + "\">" + data[i] + "</option>");
  	    }
 	    // make sure we don't have selected a name here (only value in subjid counts at the beginning)
+	    jQuery('#session-participant').select2({ placeholder: "Select a pGUID" });
 	    jQuery('#session-participant').val(subjid);
 	    storeSubjectAndName();
 	});
@@ -878,7 +879,9 @@ function getParticipantNamesFromREDCap() {
 	    jQuery('#session-participant').append("<option value=\"" + data[i] + "\">" + data[i] + "</option>");
 	}
 	// make sure we don't have selected a name here (only value in subjid counts at the beginning)
-	jQuery('#session-participant').val(subjid);
+	jQuery('#session-participant').select2({ placeholder: "Select a pGUID" });
+	jQuery('#session-participant').val("").trigger('change');
+	//jQuery('#session-participant').val(subjid);
 	storeSubjectAndName();
     });
 }
@@ -925,17 +928,25 @@ var colors = [ "#C6CAED", "#ADA8BE", "#A28497", "#6F5E5C", "#4A5240" ];
 
 jQuery(document).ready(function() {
 
-
-    jQuery('#add-event-amount').on('keyup', function(e) {
-	var v = jQuery('#add-event-amount').val();
-	v = parseInt(v);
-	jQuery('#add-event-amount').val(v);
+    jQuery('#add-event-amount').on('change', function(e) {
+        // this should only happen for occasions, otherwise allow float
+        var unit = jQuery('#add-event-amount').next().text();
+        var v = jQuery('#add-event-amount').val();
+        if (v == "") {
+            return; // nothing to do
+        }
+        if (unit == "occasions") {
+            v = parseInt(v);
+        } else {
+            v = parseFloat(v);
+        }
+        jQuery('#add-event-amount').val(v);
     });
     
     // add special events section to interface
     addSpecialEventsInterface(numSpecialEvents);
 
-    if (stand_alone) {
+    if (stand_alone == true) {
 	getSessionNamesFromLocalFile();
     } else {
 	getSessionNamesFromREDCap();
@@ -976,17 +987,19 @@ jQuery(document).ready(function() {
   });
 
   jQuery('#select-substance-radio-group').on('click', 'label', function() {
-    // copy the unit over
-    jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
-    // disable all other label
-    jQuery(this).siblings().removeClass('active');
-
-    // store the selected substance and units
-    selectedSubstance = jQuery(this).find('input').attr('substance');
-    selectedUnits = jQuery(this).find('input').attr('unit');
-    selectedIndex = jQuery('#select-substance-radio-group label').toArray().indexOf(jQuery(this).toArray()[0]); // the index of the selected substance is used as color later
-    selectedIndex = selectedIndex % colors.length; 
-    // console.log("index is: " + selectedIndex);
+      // copy the unit over
+      jQuery('#add-event-amount').next().text(jQuery(this).find('input').attr('unit'));
+      // disable all other label
+      jQuery(this).siblings().removeClass('active');
+      // trigger a change event on the amount (in case there was something in there arealdy and we need to switch from float to int
+      jQuery('#add-event-amount').trigger('change');
+      
+      // store the selected substance and units
+      selectedSubstance = jQuery(this).find('input').attr('substance');
+      selectedUnits = jQuery(this).find('input').attr('unit');
+      selectedIndex = jQuery('#select-substance-radio-group label').toArray().indexOf(jQuery(this).toArray()[0]); // the index of the selected substance is used as color later
+      selectedIndex = selectedIndex % colors.length; 
+      // console.log("index is: " + selectedIndex);
   });
     
   jQuery('#add-event-recurring').change(function() {

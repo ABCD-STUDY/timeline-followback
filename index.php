@@ -102,6 +102,7 @@
   <!-- media="print" is required to display the fullcalendar header buttons -->
   <link rel='stylesheet' media='print' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.print.css' />
 
+  <link rel='stylesheet' href='css/select2.min.css' />
   <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -203,7 +204,7 @@
                 <div class="col-md-6">
 
                   <div class="form-group">
-                    <label for="session-participant" class="control-label">Confirm Participant ID</label>
+                    <label for="session-participant-again" class="control-label">Confirm Participant ID</label>
                     <input type="text" class="form-control" placeholder="NDAR-#####" id="session-participant-again" required data-validation-required-message="Please enter the participant NDAR ID.">
                     <p class="help-block text-danger"></p>
                   </div>
@@ -238,7 +239,7 @@
                   <div class="form-group">
                     <label for="session-participant" class="control-label">Participant</label>
                     <!-- <input type="text" class="form-control" placeholder="NDAR-#####" id="session-participant" required data-validation-required-message="Please enter the participant NDAR ID." autofocus> -->
-		    <select class="form-control" id="session-participant"></select>
+     		        <select class="form-control" id="session-participant"></select>
                     <p class="help-block text-danger"></p>
                   </div>
 
@@ -544,6 +545,7 @@
   <script src='js/fullcalendar.min.js'></script>
 
   <script src="js/d3.v3.min.js"></script>
+  <script src="js/select2.full.min.js"></script>
 
   <script type="text/javascript" src="js/all.js"></script>
 
